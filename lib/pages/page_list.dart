@@ -1,0 +1,15 @@
+export 'patients_page/add_patient_page.dart';
+export 'patients_page/patients_list.dart';
+export 'stat_page/patient_stat_page.dart';
+export 'search_page/search_page.dart';
+export 'home_page/home_page.dart';
+export 'message_page/message_page.dart';
+export 'doctor_page/user_page.dart';
+export 'doctor_page/edit_phone.dart';
+export 'login_page/login_page.dart';
+export 'input_page/single_input_page.dart';
+export 'splash_page/splash_page.dart';
+export 'result_page/result_page.dart';
+export 'patients_page/patient_detail.dart';
+export 'image_page/image_page.dart';
+export 'image_page/upload_image.dart';
