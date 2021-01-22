@@ -27,6 +27,7 @@ jobs:
         uses: subosito/flutter-action@v1.4.0
         with:
           channel: "stable"
+          flutter-version: '1.24.0-8.0.pre.343'
       # 升级flutter
       - run: flutter upgrade
       # 生成云配置文件
