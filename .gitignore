@@ -31,6 +31,8 @@
 .pub/
 /build/
 
+app_config.json
+
 # Web related
 lib/generated_plugin_registrant.dart
 
@@ -42,3 +44,4 @@ app.*.map.json
 
 /android/app/*.jks
 /lib/project_config.dart
+

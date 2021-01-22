@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cyr/config.dart';
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/project_config.dart';
 import 'package:cyr/utils/dialog/show_dialog.dart';
 import 'package:cyr/utils/pick_image/pick_image.dart';
 import 'package:cyr/utils/time_format/time_format.dart';
@@ -12,15 +12,17 @@ import 'package:flutter_tencent_ocr/IDCardOCR.dart';
 // 识别身份证
 Future<IDCard> idCardOCR(BuildContext context) async {
   File image = await pickImage(true);
+  print(CloudConfig.tencentOCRSecretKey);
+  print(CloudConfig.tencentOCRSecretId);
   IDCardOCRResponse res = await FlutterTencentOcr.iDCardOCR(
-    ProjectConfig.tencentOCRSeretId,
-    ProjectConfig.tencentOCRSeretkey,
+    CloudConfig.tencentOCRSecretId,
+    CloudConfig.tencentOCRSecretKey,
     IDCardOCRRequest.fromParams(
         config: IDCardOCRConfig.fromParams(reshootWarn: true),
         imageBase64:
             base64Encode(image.readAsBytesSync().buffer.asUint8List())),
   );
-  if(res.error != null){
+  if (res.error != null) {
     showAlertDialog(context, res.error.message, "身份证识别结果");
     return null;
   }

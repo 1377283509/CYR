@@ -4,14 +4,17 @@ import 'package:cloudbase_auth/cloudbase_auth.dart';
 import 'package:cloudbase_function/cloudbase_function.dart';
 import 'package:cloudbase_storage/cloudbase_storage.dart';
 import 'package:cloudbase_database/cloudbase_database.dart';
+import 'package:cyr/config.dart';
 import 'package:cyr/models/doctor/doctor_model.dart';
-import 'package:cyr/project_config.dart';
 import '../util_list.dart';
 
 class CloudBaseUtil {
   static final CloudBaseUtil _instance = CloudBaseUtil._internal();
   CloudBaseCore _core;
   CloudBaseCore get core => _core;
+
+  CloudConfig _cloudConfig;
+  CloudConfig get cloudConfig => _cloudConfig;
 
   CloudBaseAuth _auth;
   CloudBaseAuth get auth => _auth;
@@ -29,7 +32,10 @@ class CloudBaseUtil {
 
   Future<Doctor> getDoctor() async {
     if (_doctor == null) {
-      await login();
+      String res = await login();
+      if(res != "SUCCESS"){
+        return null;
+      }
     }
     return _doctor;
   }
@@ -38,10 +44,14 @@ class CloudBaseUtil {
 
   CloudBaseUtil._internal() {
     if (_core == null) {
-      String accessKey = Platform.isAndroid ? ProjectConfig.tcbAndroidAccessKey : ProjectConfig.tcbIOSAccessKey;
-      String accessKeyVersion = Platform.isAndroid ? ProjectConfig.tcbAndroidAccessKeyVersion : ProjectConfig.tcbIOSAccessKeyVersion;
+      String accessKey = Platform.isAndroid
+          ? CloudConfig.tcbAndroidAccessKey
+          : CloudConfig.tcbIOSAccessKey;
+      String accessKeyVersion = Platform.isAndroid
+          ? CloudConfig.tcbAndroidAccessKeyVersion
+          : CloudConfig.tcbIOSAccessKeyVersion;
       _core = CloudBaseCore.init({
-        'env': ProjectConfig.tcbEnv,
+        'env': CloudConfig.tcbEnv,
         'appAccess': {'key': accessKey, 'version': accessKeyVersion},
         'timeout': 3000
       });
@@ -52,19 +62,20 @@ class CloudBaseUtil {
     }
   }
 
-  Future<void> login() async {
-    if (await _auth.getAuthState() == null) {
-      _auth.signInAnonymously();
-    }
+  Future<String> login() async {
     // 登录
     try {
+      if (await _auth.getAuthState() == null) {
+        await _auth.signInAnonymously();
+      }
       String device = await getDeviceCode();
       CloudBaseResponse res = await _cloud
           .callFunction("doctor", {"\$url": "login", "device": device});
       Map result = Map.of(res.data);
       _doctor = Doctor.fromJson(result["data"]);
+      return "SUCCESS";
     } catch (e) {
-      print(e);
+      return e.toString();
     }
   }
 
@@ -83,7 +94,8 @@ class CloudBaseUtil {
   }
 
   // 下载文件
-  Future<void> downLoadFile(String fileId, String savePath, Function process) async {
+  Future<void> downLoadFile(
+      String fileId, String savePath, Function process) async {
     await _storage.downloadFile(
         fileId: fileId, savePath: savePath, onProcess: process);
   }
