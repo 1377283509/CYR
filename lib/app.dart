@@ -22,11 +22,11 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-      //设置Android状态栏透明
-  if (Platform.isAndroid) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-  }
+    //设置Android状态栏透明
+    if (Platform.isAndroid) {
+      SystemChrome.setSystemUIOverlayStyle(
+          SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
