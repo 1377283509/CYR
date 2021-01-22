@@ -1,10 +1,8 @@
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/pages/doctor_page/widgets/doctor_card.dart';
 import 'package:cyr/pages/page_list.dart';
-import 'package:cyr/pages/stat_page/doctor_stat_page.dart';
 import 'package:cyr/pages/stat_page/flow_stat_page.dart';
 import 'package:cyr/providers/provider_list.dart';
-import 'package:cyr/utils/navigator/custom_navigator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cyr/widgets/widget_list.dart';

@@ -1,5 +1,5 @@
 import 'package:cyr/models/model_list.dart';
-import 'file:///C:/Flutter_projects/CYR/lib/providers/statistic/patient_statistic_provider.dart';
+import 'package:cyr/providers/statistic/patient_statistic_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:provider/provider.dart';

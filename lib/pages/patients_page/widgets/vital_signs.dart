@@ -157,7 +157,7 @@ class VitalSignsWidget extends StatelessWidget {
                       context, "血压", "收缩压/舒张压 mmHg", TextInputType.number);
                   // 如果有输入
                   if (res != null) {
-                    await provider.setBloodPressure(context, "${res} mmHg");
+                    await provider.setBloodPressure(context, "$res mmHg");
                   }
                 },
               ),
@@ -178,7 +178,7 @@ class VitalSignsWidget extends StatelessWidget {
                   String res = await getInputValue(
                       context, "体重", "单位：kg", TextInputType.number);
                   if (res != null) {
-                    await provider.setWeight(context, "${res} kg");
+                    await provider.setWeight(context, "$res kg");
                   }
                 },
               ),

@@ -26,8 +26,6 @@ class _AppInfoCardState extends State<AppInfoCard> {
     });
   }
 
-  // 更新
-  void _update() {}
 
   @override
   void initState() {

@@ -1,7 +1,6 @@
 export 'doctor/doctor_provider.dart';
 export 'patient/patient_provider.dart';
 export 'message/message_provider.dart';
-export 'record/record_provider.dart';
 export 'utils/utils_provider.dart';
 export 'patient_detail/visit_record_provider.dart';
 export 'patient_detail/vital_signs_provider.dart';

@@ -1,10 +1,8 @@
-import 'dart:typed_data';
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/provider_list.dart';
 import 'package:cyr/utils/dialog/show_dialog.dart';
 import 'package:cyr/utils/permission/permission.dart';
-import 'package:cyr/utils/qr_code/qr_code_util.dart';
 import 'package:cyr/utils/toast/toast.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/material.dart';

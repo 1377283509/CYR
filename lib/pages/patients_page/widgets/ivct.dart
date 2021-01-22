@@ -1,7 +1,5 @@
-import 'package:cyr/models/model_list.dart';
 import 'package:cyr/pages/input_page/input_medicine_page.dart';
 import 'package:cyr/pages/input_page/input_nihss_page.dart';
-import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/patient_detail/ivct_provider.dart';
 import 'package:cyr/providers/patient_detail/visit_record_provider.dart';

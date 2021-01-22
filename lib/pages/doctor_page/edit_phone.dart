@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/buttons/send_auth_code.dart';
 import 'package:flutter/material.dart';
@@ -16,48 +15,9 @@ class _EditPhonePageState extends State<EditPhonePage> {
   bool  isButtonEnable=true;
   String buttonText='发送验证码';
   int count=60;
-  Timer timer;
-
-
-  void _initTimer(){
-    timer = new Timer.periodic(Duration(seconds: 1), (Timer timer) {
-      count--;
-      setState(() {
-        if(count==0){
-          timer.cancel();             //倒计时结束取消定时器
-          isButtonEnable=true;        //按钮可点击
-          count=60;                   //重置时间
-          buttonText='发送验证码';     //重置按钮文本
-        }else{
-          buttonText='重新发送($count)';  //更新文本内容
-        }
-      });
-    });
-  }
-
-  _sendAuthCode(){
-    bool res = verifyPhone(_phoneController.text);
-    if(!res){
-      showToast("手机号错误", context);
-      return;
-    }else{
-      // TODO: 发送验证码
-      setState(() {
-        if(isButtonEnable){
-          _initTimer();
-          isButtonEnable=false;
-          return null;
-        }else{
-          return null;
-        }
-      });
-    }
-  }
 
   @override
   void dispose() {
-    timer?.cancel();      //销毁计时器
-    timer=null;
     _phoneController.dispose();
     _codeController.dispose();
     super.dispose();
