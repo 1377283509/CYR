@@ -20,7 +20,6 @@ export 'visit_record/visit_record.dart';
 export 'refresh/custom_refresh.dart';
 export 'upload/upload_image.dart';
 export 'title/card_title.dart';
-export 'witting/select_witting_util.dart';
 export 'custom_tile/expansion_card.dart';
 export 'custom_tile/no_expansion_card.dart';
 export 'icon/round_icon.dart';

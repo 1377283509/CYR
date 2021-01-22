@@ -27,6 +27,8 @@ jobs:
         uses: subosito/flutter-action@v1.4.0
         with:
           channel: "stable"
+      # 升级flutter
+      - run: flutter upgrade
       # 生成云配置文件
       - run: echo $APP_CONFIG | base64 -di > app_config.json
       # 下载项目依赖
