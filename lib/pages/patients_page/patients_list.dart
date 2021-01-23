@@ -12,8 +12,7 @@ class PatientsPage extends StatelessWidget {
         "所有患者",
         style: Theme.of(context).textTheme.headline1,
       ),
-      actions: [
-      ],
+      actions: [],
     );
   }
 
@@ -33,26 +32,27 @@ class PatientsPageBody extends StatefulWidget {
 }
 
 class _PatientsPageBodyState extends State<PatientsPageBody> {
-  ScrollController _controller = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     PatientProvider patientProvider = Provider.of<PatientProvider>(context);
-    return CustomRefresh(
-        onRefresh: ()async{
-          await patientProvider.getAllPatients(context);
-        },
-        child: ListView.builder(
-          controller: _controller,
-          itemCount: patientProvider.patients.length,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, index) {
-            var patient = patientProvider.patients[index];
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: PatientCard(patient),
-            );
-          },
-        ));
+    return FutureBuilder(
+      future: patientProvider.getAllPatients(context),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return ListView.builder(
+            itemCount: patientProvider.patients.length,
+            itemBuilder: (BuildContext context, index) {
+              var patient = patientProvider.patients[index];
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: PatientCard(patient),
+              );
+            },
+          );
+        }else{
+          return LoadingIndicator();
+        }
+      },
+    );
   }
 }

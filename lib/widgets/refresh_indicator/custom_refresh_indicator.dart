@@ -4,7 +4,7 @@ class CustomRefreshIndicator extends StatelessWidget {
   final Function onRefresh;
   final Widget child;
 
-  CustomRefreshIndicator({@required this.child,@required this.onRefresh});
+  CustomRefreshIndicator({@required this.child, @required this.onRefresh});
 
   @override
   Widget build(BuildContext context) {

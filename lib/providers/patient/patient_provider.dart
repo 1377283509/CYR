@@ -24,7 +24,6 @@ class PatientProvider extends ChangeNotifier {
         List<Patient> list = [];
         res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
         _patients = list;
-        notifyListeners();
       } else {
         showToast(res.data["data"], context);
       }

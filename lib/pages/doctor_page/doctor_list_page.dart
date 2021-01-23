@@ -1,6 +1,6 @@
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/utils/dialog/show_dialog.dart';
-import 'package:cyr/widgets/refresh/custom_refresh.dart';
+import 'package:cyr/widgets/loading_indicator/loading_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,27 +78,33 @@ class _DoctorListPageBodyState extends State<DoctorListPageBody> {
 
   @override
   Widget build(BuildContext context) {
-    DoctorProvider doctorProvider = Provider.of<DoctorProvider>(context, listen: false);
+    DoctorProvider doctorProvider =
+        Provider.of<DoctorProvider>(context, listen: false);
     return Consumer<DoctorProvider>(
       builder: (_, provider, __) {
-        return CustomRefresh(
-            onRefresh: () async {
-              await provider.getAllDoctors(context);
-            },
-            child: ListView.builder(
-              itemCount: doctorProvider.doctorList.length,
-              itemBuilder: (BuildContext context, index) {
-                Map item = doctorProvider.doctorList[index];
-                return Card(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
-                  child: _buildExpansionTile(
-                      item["_id"], item["count"], item["list"]),
-                );
-              },
-            ));
+        return FutureBuilder(
+          future: provider.getAllDoctors(context),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return ListView.builder(
+                itemCount: doctorProvider.doctorList.length,
+                itemBuilder: (BuildContext context, index) {
+                  Map item = doctorProvider.doctorList[index];
+                  return Card(
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
+                    child: _buildExpansionTile(
+                        item["_id"], item["count"], item["list"]),
+                  );
+                },
+              );
+            } else {
+              return LoadingIndicator();
+            }
+          },
+        );
       },
     );
   }

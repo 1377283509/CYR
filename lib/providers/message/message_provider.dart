@@ -34,7 +34,6 @@ class MessageProvider with ChangeNotifier {
       list.forEach((element) {
         _messages.add(MessageModel.fromJson(element));
       });
-      notifyListeners();
     }catch(e){
       print(e);
     }

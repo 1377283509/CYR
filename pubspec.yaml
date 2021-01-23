@@ -79,7 +79,7 @@ dev_dependencies:
   # 页面切换过渡动画
   page_transition: ^1.1.7+2
   # 刷新与加载
-  pull_to_refresh: ^1.6.3
+  # pull_to_refresh: ^1.6.3
   build_runner: ^1.0.0
   json_serializable: ^2.0.0
 

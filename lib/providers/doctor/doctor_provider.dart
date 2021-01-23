@@ -21,7 +21,6 @@ class DoctorProvider extends ChangeNotifier {
         "\$url": "getAllDoctors",
       });
       _doctorList = res.data["data"];
-      notifyListeners();
     }catch(e){
       print(e);
       showToast("TCB异常", context);
