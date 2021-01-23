@@ -26,9 +26,9 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 // 本地打包 关闭注释
-def keyStorePropertieFile = rootProject.file("key.properties")
-def keyStoreProperties = new Properties()
-keyStoreProperties.load(new FileInputStream(keyStorePropertieFile))
+// def keyStorePropertieFile = rootProject.file("key.properties")
+// def keyStoreProperties = new Properties()
+// keyStoreProperties.load(new FileInputStream(keyStorePropertieFile))
 
 android {
     compileSdkVersion 29
@@ -40,15 +40,15 @@ android {
     signingConfigs{
         release{
             // 本地打包关闭下面的注释
-            keyAlias keyStoreProperties["keyAlias"]
-            keyPassword keyStoreProperties["keyPassword"]
-            storeFile = file(keyStoreProperties["storeFile"])
-            storePassword = keyStoreProperties["storePassword"]
+            // keyAlias keyStoreProperties["keyAlias"]
+            // keyPassword keyStoreProperties["keyPassword"]
+            // storeFile = file(keyStoreProperties["storeFile"])
+            // storePassword = keyStoreProperties["storePassword"]
             // 本地打包开启下面的注释
-            // storeFile file(System.getenv("KEYSTORE") ?:"keystore.jks")
-            // storePassword System.getenv("KEYSTORE_PASSWORD")
-            // keyAlias System.getenv("KEY_ALIAS")
-            // keyPassword System.getenv("KEY_PASSWORD")
+            storeFile file(System.getenv("KEYSTORE") ?:"keystore.jks")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
 
