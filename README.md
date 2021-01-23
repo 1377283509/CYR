@@ -24,7 +24,17 @@
 
 ## 软件截图
 
-<img src="https://gitee.com/cc_li/images/raw/master/20210120210915.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211148.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211146.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211152.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211153.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211149.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211147.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211150.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211151.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211145.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211144.jpg" style="zoom: 15%;"/>
+<img src="https://gitee.com/cc_li/images/raw/master/20210120210915.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211148.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211146.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211152.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211153.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211149.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211147.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211150.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211151.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211145.jpg" style="zoom: 15%;" />
+<img src="https://gitee.com/cc_li/images/raw/master/20210120211144.jpg" style="zoom: 15%;"/>
 
 ## 构建安装包
 
