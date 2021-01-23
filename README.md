@@ -24,47 +24,25 @@
 
 ## 软件截图
 
-<center class="half"><img src="https://gitee.com/cc_li/images/raw/master/20210120210915.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211148.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211146.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211152.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211153.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211149.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211147.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211150.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211151.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211145.jpg" width="200"/><img src="https://gitee.com/cc_li/images/raw/master/20210120211144.jpg" width="200"/>
+<img src="https://gitee.com/cc_li/images/raw/master/20210120210915.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211148.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211146.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211152.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211153.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211149.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211147.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211150.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211151.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211145.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210120211144.jpg" style="zoom: 15%;"/>
 
+## 构建安装包
 
+### 1. 登录CloudBase控制台，获取相关配置。
 
-</center>
+-   获取登录凭证
 
-## 构建
+    登录腾讯云CloudBase[控制台](https://cloud.tencent.com/)，进入以下页面，在移动应用安全来源处，点击添加应用，输入应用标识（应用标识必须是 Android 包名或者 iOS BundleID）。
 
-### Android应用
+    <img src="https://gitee.com/cc_li/images/raw/master/20210120214848.png" alt="控制台" style="zoom:50%;" />
 
-1.  搭建Flutter环境，详情见[官网](https://flutterchina.club/)。
+-   开通OCR识别。
 
-2.  登录CloudBase控制台，获取相关配置。
+    登录OCR[控制台](https://console.cloud.tencent.com/ocr/overview)，开通相关服务后，点击右上角个人账号下的访问管理，进入以下页面创建密钥。
 
-    -   获取登录凭证
+    <img src="https://gitee.com/cc_li/images/raw/master/20210120221052.png" style="zoom:50%;" />
 
-        登录腾讯云CloudBase[控制台](https://cloud.tencent.com/)，进入以下页面，在移动应用安全来源处，点击添加应用，输入应用标识（应用标识必须是 Android 包名或者 iOS BundleID）。
-
-        ![控制台](https://gitee.com/cc_li/images/raw/master/20210120214848.png)
-
-    -   开通OCR识别。
-
-        登录OCR[控制台](https://console.cloud.tencent.com/ocr/overview)，开通相关服务后，点击右上角个人账号下的访问管理，进入以下页面创建密钥。
-
-        ![](https://gitee.com/cc_li/images/raw/master/20210120221052.png)
-
-3.  修改/CYR/lib/project_config.dart
-
-```dart
-// 腾讯云OCR相关配置
-static const String tencentOCRSeretkey = ""; // 私钥
-static const String tencentOCRSeretId = ""; // 私钥ID
-// CloudBase相关配置
- static const tcbAndroidAccessKey = ""; // android 登录凭证
- static const tcbAndroidAccessKeyVersion = "1"; // android 登录凭证版本
- static const tcbIOSAccessKey = ""; // IOS 登录凭证
- static const tcbIOSAccessKeyVersion = ""; // IOS 登录凭证版本
- static const tcbEnv = ""; // tcb环境ID
-```
-
-4.  创建私钥信息
+### 2. 创建私钥信息
 
 ```shell
 keytool -genkey -v -keystore [存贮路径]/[文件名].jks -keyalg RSA -keysize 2048 -validity 10000 -alias [name]
@@ -87,58 +65,94 @@ keytool -genkey -v -keystore [存贮路径]/[文件名].jks -keyalg RSA -keysize
 
 -alias 要处理的条目的别名
 
-5.  在项目的android/app目录下新建key目录，将生成的证书（.jks）放入该文件夹。
+### 3. Fork仓库
 
-6.  在android目录下新建文件key.properties
+仓库地址：https://github.com/1377283509/CYR   点击右上角的Fork
 
-```shell
-# 在文件内写入以下信息
-storePassword = [store密码(自己设置的)]
-keyPassword = [key密码(自己设置的)]
-keyAlias = [别名]
-storeFile = key/[文件名].jks
-```
+### 4. 添加相关Secrets。
 
-7.  配置build.gradle。
+-   生成access token，步骤如下图
 
-```shell
-# 打开android/app目录下的build.gradle
+    Settings > Developr Settings > Personal access token > generate new token > 输入note、勾选权限，最后生成就OK了。
 
-# 在android{……}前添加以下code
-def keyStorePropertieFile = rootProject.file("key.properties")
-def keyStoreProperties = new Properties()
-keyStoreProperties.load(new FileInputStream(keyStorePropertieFile))
+    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213159.png" style="zoom:50%;" />
 
-# 在android{……}里面添加以下code
-signingConfigs{
-        release{
-            keyAlias keyStoreProperties["keyAlias"]
-            keyPassword keyStoreProperties["keyPassword"]
-            storeFile = file(keyStoreProperties["storeFile"])
-            storePassword = keyStoreProperties["storePassword"]
-        }
-    }
-  
-# 在android{……}里面的buildTypes{……}中修改以下code
-release {
-		# 将debug改为release
-        signingConfig signingConfigs.release
- }
-```
+    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213200.png" style="zoom:50%;" />
 
-8.  构建APK
+    
+
+    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213157.png" style="zoom:50%;" />
+    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213158.png" style="zoom:50%;" />
+
+-   添加Secrets
+
+    进入Fork的仓库 > Settings > Secrets > New respository secret
+
+![](https://gitee.com/cc_li/images/raw/master/20210123213156.png)
+
+
+
+​	需要添加的Secrets清单：KEY_ALIAS、KEY_PASSWORD、KEYSTORE_PASSWORD、ENCODED_KEYSTORE、APP_CONFIG
 
 ```shell
-flutter build apk
+# 值为创建步骤2(创建私钥)时输入的信息。
+KEY_ALIAS  # alias
+KEY_PASSWORD # password
+KEYSTORE_PASSWORD # keystore 的password
+
+# 值需要将生成的.jks文件转换为base64格式的数据
+ENCODED_KEYSTORE
+# 生成方法如下: 
+# openssl base64 -A -in [文件路径]/[文件名].jks # 注意路径
+
+# APP用到的云开发相关配置, 值同样为base64格式的数据
+APP_CONFIG
+# 生成方法:
+# 1. 在项目根目录下创建app_config.json, 具体文件内容如下。
+# 2. 将app_config.json转化成base64格式的数据
+# openssl base64 -A -in app_config.json  
+
 ```
 
-### IOS应用
+app_config.json中的数据如下：
 
-敬请期待！
+```json
+
+{
+    // 第一步获取的配置
+    "tencentOCRSecretKey": "腾讯OCR Secret Key",
+    "tencentOCRSecretId": "腾讯OCR Secret Id",
+    "tcbAndroidAccessKey": "Android access key",
+    "tcbAndroidAccessKeyVersion": "Android access key version",
+    "tcbIOSAccessKey": "IOS access key",
+    "tcbIOSAccessKeyVersion": "IOS access key version",
+    "tcbEnv": "云开发环境"
+}
+```
+
+添加完成后清单如图下所示
+
+![](https://gitee.com/cc_li/images/raw/master/20210123215705.png)
+
+### 5. 创建Release，启动自动构建Action
+
+步骤如下图:
+
+-   
+
+![](https://gitee.com/cc_li/images/raw/master/20210123220823.png)
 
 
 
+-   
 
+![](https://gitee.com/cc_li/images/raw/master/20210123220825.png)
+
+-   
+
+![](https://gitee.com/cc_li/images/raw/master/20210123220824.png)
+
+这边完成后就可以在tags里面查看到APK，目前只支持Android的自动构建。IOS的后面会逐渐更新。
 
 
 
