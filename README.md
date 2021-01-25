@@ -1,8 +1,10 @@
 # 卒中中心信息采集系统APP端
 
+云函数端仓库地址：https://github.com/1377283509/CYR_Cloud.git
+
 ## 概述		
 
-​	急性缺血性脑卒中是脑动脉闭塞引起部分脑组织梗死的中枢神经系统血管性疾病，具有较高的致残率和致死率，已成为危害人类健康的重大疾病之一。脑卒中发病后脑组织受损程度与缺血时间密切相关，该疾病的救治具有时间依赖性。
+​		急性缺血性脑卒中是脑动脉闭塞引起部分脑组织梗死的中枢神经系统血管性疾病，具有较高的致残率和致死率，已成为危害人类健康的重大疾病之一。脑卒中发病后脑组织受损程度与缺血时间密切相关，该疾病的救治具有时间依赖性。
 
 ​		常规卒中急救流程救治及护理虽然能够达到急救要求，但常规卒中急救及管理存在急救药品和设备准备不充分、任务分配不明确、信息共享时间长、各科室配合度差等问题，常会导致各环节衔接时间延长，增加患者生命健康危险性。因此，优化改进卒中急救流程，提高信息共享速度，对于降低患者死亡率、提高救治效率至关重要。
 
@@ -22,21 +24,11 @@
 
     [中文网](http://nodejs.cn/)   
 
-## 软件截图
+## 截图
 
-<img src="https://gitee.com/cc_li/images/raw/master/20210120210915.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211148.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211146.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211152.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211153.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211149.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211147.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211150.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211151.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211145.jpg" style="zoom: 15%;" />
-<img src="https://gitee.com/cc_li/images/raw/master/20210120211144.jpg" style="zoom: 15%;"/>
+<img src="https://gitee.com/cc_li/images/raw/master/20210125122618.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122612.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122619.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122617.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122616.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122613.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122609.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122614.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122615.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122611.jpg" style="zoom: 15%;" /><img src="https://gitee.com/cc_li/images/raw/master/20210125122610.jpg" style="zoom: 15%;"/>
 
-## 构建安装包
+## 安装
 
 ### 1. 登录CloudBase控制台，获取相关配置。
 
@@ -44,13 +36,13 @@
 
     登录腾讯云CloudBase[控制台](https://cloud.tencent.com/)，进入以下页面，在移动应用安全来源处，点击添加应用，输入应用标识（应用标识必须是 Android 包名或者 iOS BundleID）。
 
-    <img src="https://gitee.com/cc_li/images/raw/master/20210120214848.png" alt="控制台" style="zoom:50%;" />
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125123719.png" alt="控制台" style="zoom:50%;" />
 
 -   开通OCR识别。
 
     登录OCR[控制台](https://console.cloud.tencent.com/ocr/overview)，开通相关服务后，点击右上角个人账号下的访问管理，进入以下页面创建密钥。
 
-    <img src="https://gitee.com/cc_li/images/raw/master/20210120221052.png" style="zoom:50%;" />
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125123742.png" style="zoom:50%;" />
 
 ### 2. 创建私钥信息
 
@@ -85,20 +77,33 @@ keytool -genkey -v -keystore [存贮路径]/[文件名].jks -keyalg RSA -keysize
 
     Settings > Developr Settings > Personal access token > generate new token > 输入note、勾选权限，最后生成就OK了。
 
-    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213159.png" style="zoom:50%;" />
+    -   
 
-    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213200.png" style="zoom:50%;" />
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125121259.png" style="zoom:50%;" />
 
-    
+    -   
 
-    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213157.png" style="zoom:50%;" />
-    -   <img src="https://gitee.com/cc_li/images/raw/master/20210123213158.png" style="zoom:50%;" />
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125121318.png" style="zoom:50%;" />
+
+    -   
+
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125121227.png" style="zoom:50%;" />
+
+    -   
+
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125121228.png" style="zoom:50%;" />	
+
+    -   
+
+    <img src="https://gitee.com/cc_li/images/raw/master/20210125121229.png" style="zoom:50%;" />
+
+
 
 -   添加Secrets
 
     进入Fork的仓库 > Settings > Secrets > New respository secret
 
-![](https://gitee.com/cc_li/images/raw/master/20210123213156.png)
+![](https://gitee.com/cc_li/images/raw/master/20210125121223.png)
 
 
 
@@ -163,6 +168,14 @@ app_config.json中的数据如下：
 ![](https://gitee.com/cc_li/images/raw/master/20210123220824.png)
 
 这边完成后就可以在tags里面查看到APK，目前只支持Android的自动构建。IOS的后面会逐渐更新。
+
+## 使用
+
+1.  部署云函数。详情见 https://github.com/1377283509/CYR_Cloud.git 
+
+2.  在CMS中添加医护人员。(本系统只是提供给医护人员使用，后期会开发一个专供患者使用的小程序。医护人员信息是和手机设备码绑定在一起的，所以需要在CMS中添加医护人员，添加完成，重启即可进入APP)。
+
+
 
 
 

@@ -40,7 +40,8 @@ class VisitRecordProvider extends ChangeNotifier {
       CloudBaseResponse res =
           await _cloudBaseUtil.callFunction("visit-record", {
         "\$url": id == null ? "getByBangle" : "getVisitRecordDetail",
-        "id": id == null ? bangle : id
+        "id": id,
+        "bangle": bangle,
       });
       if (res.data["code"] == 1) {
         _visitRecordModel = VisitRecordModel.fromJson(res.data["data"]);
