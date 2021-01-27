@@ -107,9 +107,12 @@ keytool -genkey -v -keystore [存贮路径]/[文件名].jks -keyalg RSA -keysize
 
 
 
-​	需要添加的Secrets清单：KEY_ALIAS、KEY_PASSWORD、KEYSTORE_PASSWORD、ENCODED_KEYSTORE、APP_CONFIG
+​	需要添加的Secrets清单：KEY_ALIAS、KEY_PASSWORD、KEYSTORE_PASSWORD、ENCODED_KEYSTORE、APP_CONFIG、RELEASE_TOKEN
 
 ```shell
+RELEASE_TOKEN # 值为上一步创建的Personal access token
+
+
 # 值为创建步骤2(创建私钥)时输入的信息。
 KEY_ALIAS  # alias
 KEY_PASSWORD # password
