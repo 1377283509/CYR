@@ -12,6 +12,7 @@ class ImageCard extends StatelessWidget {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width / 3.6;
     FilesProvider provider = Provider.of<FilesProvider>(context);
+  print(fileId);
     return FutureBuilder(
       future: provider.downLoadImage(fileId, context),
       builder: (context, snapshot) {

@@ -209,8 +209,11 @@ class _ChoiceItemState extends State<ChoiceItem> {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      label: Text(widget.value),
+      label: Text(widget.value, style: TextStyle(
+        color: selected? Colors.white:Colors.black
+      ),),
       selected: selected,
+      selectedColor: Colors.indigo,
       onSelected: (value) {
         setState(() {
           selected = value;

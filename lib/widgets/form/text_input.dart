@@ -36,6 +36,11 @@ class _InputTextTileState extends State<InputTextTile> {
     return TextField(
       autofocus: widget.autoFocus,
       maxLines: 1,
+      onChanged: (v){
+        if(widget.onChanged != null){
+          widget.onChanged(v);
+        }
+      },
       decoration: InputDecoration(
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.transparent),

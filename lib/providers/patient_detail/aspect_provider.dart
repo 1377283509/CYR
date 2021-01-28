@@ -28,6 +28,7 @@ class AspectProvider extends ChangeNotifier {
       print(res);
       if (res.data["code"] == 1) {
         _aspectModel = AspectModel.fromJson(res.data["data"]);
+        notifyListeners();
       } else {
         showToast(res.data["data"], context);
       }

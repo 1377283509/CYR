@@ -34,14 +34,15 @@ class AspectCard extends StatelessWidget {
             flex: 1,
             child: LeftIcon(Consumer<AspectProvider>(
               builder: (_, provider, __) {
-                return StateIcon(provider.endTime != null);
+                print(provider.endTime);
+                return StateIcon(provider.endTime!=null);
               },
             )),
           ),
           Expanded(
               flex: 8,
               child: FutureBuilder(
-                future: Provider.of<AspectProvider>(context)
+                future: Provider.of<AspectProvider>(context, listen: false)
                     .getDataByVisitRecordId(context),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {

@@ -73,6 +73,7 @@ class CloudBaseUtil {
           .callFunction("doctor", {"\$url": "login", "device": device});
       Map result = Map.of(res.data);
       _doctor = Doctor.fromJson(result["data"]);
+      print(res.data);
       return "SUCCESS";
     } catch (e) {
       return e.toString();

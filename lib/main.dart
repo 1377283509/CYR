@@ -1,4 +1,5 @@
 import 'package:cyr/config.dart';
+import 'package:cyr/pages/error_page/error_page.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
@@ -13,6 +14,12 @@ void main() async {
     Doctor doctor = await CloudBaseUtil().getDoctor();
     runApp(MyApp(
       user: doctor,
+    ));
+  }).catchError((error){
+    runApp(MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primaryColor: Colors.indigo),
+      home: ErrorPage(error.toString()),
     ));
   });
 }

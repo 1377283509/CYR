@@ -1,3 +1,4 @@
+import 'package:cyr/models/model_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -39,10 +40,21 @@ class _PatientsPageBodyState extends State<PatientsPageBody> {
       future: patientProvider.getAllPatients(context),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          List<Patient> patients = patientProvider.patients;
+          if(patients.length == 0){
+            return Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 54),
+                child: Text("当前暂无患者", style: TextStyle(
+                  color: Colors.white54
+                ),),
+              ),
+            );
+          }
           return ListView.builder(
-            itemCount: patientProvider.patients.length,
+            itemCount:patients.length,
             itemBuilder: (BuildContext context, index) {
-              var patient = patientProvider.patients[index];
+              var patient = patients[index];
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: PatientCard(patient),

@@ -23,10 +23,15 @@ class FlowStatPage extends StatelessWidget {
 class FlowStatePageBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<bool>(
       future: Provider.of<FlowStatisticProvider>(context).initData(context),
       builder: (BuildContext context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
+          if(!snapshot.data){
+            return Center(
+              child: Text("暂无数据，每月初统计上月数据。"),
+            );
+          }
           return SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,

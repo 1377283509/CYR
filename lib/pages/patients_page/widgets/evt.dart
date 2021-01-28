@@ -71,8 +71,17 @@ class EVTCard extends StatelessWidget {
     return true;
   }
 
-  Future<void> eventHandle(BuildContext context,Future callback)async{
-    print("权限检查");
+  Future<bool> checkbangle(BuildContext context) async {
+    String bangle = await scan();
+    String curBangle = Provider.of<VisitRecordProvider>(context, listen: false).bangle;
+    if (bangle != curBangle) {
+      showToast("患者身份不匹配", context);
+      return false;
+    }
+    return true;
+  }
+
+  Future<void> eventHandle(BuildContext context, Future callback) async {
     if (!checkPermission(context)) {
       showToast("无权限", context);
       return;
@@ -103,7 +112,9 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "签署知情",
         buttonLabel: "确认",
-        value: provider.endWitting == null ? null : formatTime(provider.endWitting),
+        value: provider.endWitting == null
+            ? null
+            : formatTime(provider.endWitting),
         onTap: () async {
           await eventHandle(context, provider.setEndWitting(context));
         },
@@ -119,10 +130,8 @@ class EVTCard extends StatelessWidget {
         value: provider.beforeNIHSS,
         buttonLabel: "输入",
         onTap: () async {
-          List<int> res = await navigateTo(
-            context,
-            InputNIHSSPage(DateTime.now())
-          );
+          List<int> res =
+              await navigateTo(context, InputNIHSSPage(DateTime.now()));
           // 如果有输入
           if (res != null && res.length > 0) {
             await provider.setBeforeNIHSS(context, "${res[0]} 分");
@@ -138,9 +147,14 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "到达手术室大门",
         buttonLabel: "确认",
-        value: provider.arriveTime==null?null:formatTime(provider.arriveTime),
+        value: provider.arriveTime == null
+            ? null
+            : formatTime(provider.arriveTime),
         onTap: () async {
-          await eventHandle(context, provider.setArriveTime(context));
+          bool res = await checkbangle(context);
+          if (res) {
+            await eventHandle(context, provider.setArriveTime(context));
+          }
         },
       );
     });
@@ -152,9 +166,12 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "上手术台",
         buttonLabel: "确认",
-        value: provider.startTime == null ? null : formatTime(provider.startTime),
-        onTap: () async{
-          await eventHandle(context, provider.setStartTime(context));
+        value:
+            provider.startTime == null ? null : formatTime(provider.startTime),
+        onTap: () async {
+          if (await checkbangle(context)) {
+            await eventHandle(context, provider.setStartTime(context));
+          }
         },
       );
     });
@@ -166,7 +183,9 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "责任血管评估",
         buttonLabel: "完成",
-        value: provider.assetsTime == null ? null : formatTime(provider.assetsTime),
+        value: provider.assetsTime == null
+            ? null
+            : formatTime(provider.assetsTime),
         onTap: () async {
           await eventHandle(context, provider.setAssetsTime(context));
         },
@@ -179,7 +198,9 @@ class EVTCard extends StatelessWidget {
     return Consumer<EVTProvider>(builder: (_, provider, __) {
       return SingleTile(
         title: "穿刺",
-        value: provider.punctureTime == null ? null : formatTime(provider.punctureTime),
+        value: provider.punctureTime == null
+            ? null
+            : formatTime(provider.punctureTime),
         buttonLabel: "开始",
         onTap: () async {
           await eventHandle(context, provider.setPunctureTime(context));
@@ -193,7 +214,9 @@ class EVTCard extends StatelessWidget {
     return Consumer<EVTProvider>(builder: (_, provider, __) {
       return SingleTile(
         title: "造影",
-        value: provider.radiographyTime == null ? null : formatTime(provider.radiographyTime),
+        value: provider.radiographyTime == null
+            ? null
+            : formatTime(provider.radiographyTime),
         buttonLabel: "完成",
         onTap: () async {
           await eventHandle(context, provider.setRadiographyTime(context));
@@ -207,10 +230,15 @@ class EVTCard extends StatelessWidget {
     return Consumer<EVTProvider>(builder: (_, provider, __) {
       return SingleTile(
         title: "仅造影",
-        value: provider.onlyRadiography==null?null:provider.onlyRadiography?"是":"否",
+        value: provider.onlyRadiography == null
+            ? null
+            : provider.onlyRadiography
+                ? "是"
+                : "否",
         buttonLabel: "选择",
         onTap: () async {
-          bool res = await showConfirmDialog(context, "仅造影", confirmLabel: "是", cancelLabel: "否");
+          bool res = await showConfirmDialog(context, "仅造影",
+              confirmLabel: "是", cancelLabel: "否");
           await eventHandle(context, provider.setOnlyRadiography(context, res));
         },
       );
@@ -234,28 +262,30 @@ class EVTCard extends StatelessWidget {
         value: provider.methods,
         onTap: () async {
           List<String> res = await showModalBottomSheet<List<String>>(
-            context: context,
-            builder: (BuildContext context){
-              return Container(
-                child: ListView.separated(
-                  separatorBuilder: (BuildContext context,int index){
-                    return CustomDivider();
-                  },
-                  itemCount: _methods.length,
-                  itemBuilder: (context, index){
-                    return ListTile(
-                      onTap: (){
-                        Navigator.of(context).pop([_methods[index]]);
-                      },
-                      title: Text(_methods[index]),
-                      trailing: Icon(Icons.keyboard_arrow_right, color: Colors.grey,),
-                    );
-                  },
-                ),
-              );
-            }
-          );
-          if(res!=null){
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  child: ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) {
+                      return CustomDivider();
+                    },
+                    itemCount: _methods.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        onTap: () {
+                          Navigator.of(context).pop([_methods[index]]);
+                        },
+                        title: Text(_methods[index]),
+                        trailing: Icon(
+                          Icons.keyboard_arrow_right,
+                          color: Colors.grey,
+                        ),
+                      );
+                    },
+                  ),
+                );
+              });
+          if (res != null) {
             await eventHandle(context, provider.setMethods(context, res[0]));
           }
         },
@@ -269,9 +299,12 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "血管再通",
         buttonLabel: "确认",
-        value: provider.revascularizationTime == null?null:formatTime(provider.revascularizationTime),
+        value: provider.revascularizationTime == null
+            ? null
+            : formatTime(provider.revascularizationTime),
         onTap: () async {
-          await eventHandle(context, provider.setRevascularizationTime(context));
+          await eventHandle(
+              context, provider.setRevascularizationTime(context));
         },
       );
     });
@@ -283,7 +316,7 @@ class EVTCard extends StatelessWidget {
       return SingleTile(
         title: "手术结束",
         buttonLabel: "确认",
-        value: provider.endTime == null?null:formatTime(provider.endTime),
+        value: provider.endTime == null ? null : formatTime(provider.endTime),
         onTap: () async {
           await eventHandle(context, provider.setEndTime(context));
         },
@@ -308,28 +341,28 @@ class EVTCard extends StatelessWidget {
         value: provider.mTICI,
         onTap: () async {
           List<String> res = await showModalBottomSheet(
-            context: context,
-            builder: (BuildContext context){
-              return Container(
-                child: ListView.separated(
-                  itemCount: _mTICI.length,
-                  separatorBuilder: (context, index){
-                    return CustomDivider();
-                  },
-                  itemBuilder: (context, index){
-                    return ListTile(
-                      title: Text(_mTICI[index]),
-                      onTap: (){
-                        Navigator.of(context).pop([_mTICI[index]]);
-                      },
-                      trailing: const Icon(Icons.keyboard_arrow_right, color:Colors.grey),
-                    );
-                  },
-                ),
-              );
-            }
-          );
-          if(res!=null){
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  child: ListView.separated(
+                    itemCount: _mTICI.length,
+                    separatorBuilder: (context, index) {
+                      return CustomDivider();
+                    },
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(_mTICI[index]),
+                        onTap: () {
+                          Navigator.of(context).pop([_mTICI[index]]);
+                        },
+                        trailing: const Icon(Icons.keyboard_arrow_right,
+                            color: Colors.grey),
+                      );
+                    },
+                  ),
+                );
+              });
+          if (res != null) {
             await eventHandle(context, provider.setMTICI(context, res[0]));
           }
         },
@@ -346,13 +379,12 @@ class EVTCard extends StatelessWidget {
         value: provider.result,
         onTap: () async {
           List<String> res = await showDialog(
-            context: context,
-            builder: (BuildContext context){
-              return SingleInputDialog(
-                label: "手术结果",
-              );
-            }
-          );
+              context: context,
+              builder: (BuildContext context) {
+                return SingleInputDialog(
+                  label: "手术结果",
+                );
+              });
           // 如果有输入
           if (res != null && res.length > 0) {
             await provider.setResult(context, "${res[0]}");
@@ -370,10 +402,8 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "输入",
         value: provider.afterNIHSS,
         onTap: () async {
-          List<int> res = await navigateTo(
-            context,
-            InputNIHSSPage(DateTime.now())
-          );
+          List<int> res =
+              await navigateTo(context, InputNIHSSPage(DateTime.now()));
           // 如果有输入
           if (res != null && res.length > 0) {
             await provider.setAfterNIHSS(context, "${res[0]} 分");
@@ -383,7 +413,7 @@ class EVTCard extends StatelessWidget {
     });
   }
 
-  // 不良反应 
+  // 不良反应
   _buildAdverseReaction(BuildContext context) {
     return Consumer<EVTProvider>(builder: (_, provider, __) {
       return SingleTile(
@@ -392,13 +422,12 @@ class EVTCard extends StatelessWidget {
         value: provider.adverseReaction,
         onTap: () async {
           List<String> res = await showDialog(
-            context: context,
-            builder: (BuildContext context){
-              return SingleInputDialog(
-                label: "不良事件",
-              );
-            }
-          );
+              context: context,
+              builder: (BuildContext context) {
+                return SingleInputDialog(
+                  label: "不良事件",
+                );
+              });
           // 如果有输入
           if (res != null && res.length > 0) {
             await provider.setAdverseReaction(context, "${res[0]}");

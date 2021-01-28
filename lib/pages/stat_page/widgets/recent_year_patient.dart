@@ -48,10 +48,9 @@ class RecentYearPatientChart extends StatelessWidget {
                     ),
                   ]),
               SfCartesianChart(
-                  title: ChartTitle(text: "死亡率", textStyle: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey
-                  )),
+                  title: ChartTitle(
+                      text: "死亡率",
+                      textStyle: TextStyle(fontSize: 12, color: Colors.grey)),
                   primaryXAxis: CategoryAxis(),
                   legend:
                       Legend(isVisible: true, position: LegendPosition.bottom),
@@ -64,9 +63,14 @@ class RecentYearPatientChart extends StatelessWidget {
                       dataSource: provider.list.reversed.toList(),
                       xValueMapper: (PatientStatisticModel data, _) =>
                           "${data.month}月",
-                      yValueMapper: (PatientStatisticModel data, _) =>
-                          double.parse((data.deathCount / data.patientsCount)
-                              .toStringAsFixed(2)),
+                      yValueMapper: (PatientStatisticModel data, _) {
+                        if(data.deathCount == null || data.patientsCount==null){
+                          return 0;
+                        }
+                        return double.parse(
+                            (data.deathCount ?? 0 / data.patientsCount ?? 1)
+                                .toStringAsFixed(2));
+                      },
                       dataLabelSettings: DataLabelSettings(isVisible: true),
                     ),
                   ]),
@@ -87,13 +91,11 @@ class RecentYearDNTChart extends StatelessWidget {
       child: Consumer<PatientStatisticProvider>(
         builder: (_, provider, __) {
           return SfCartesianChart(
-              title: ChartTitle(text: "DNT统计", textStyle: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey
-              )),
+              title: ChartTitle(
+                  text: "DNT统计",
+                  textStyle: TextStyle(fontSize: 12, color: Colors.grey)),
               primaryXAxis: CategoryAxis(),
-              legend:
-              Legend(isVisible: true, position: LegendPosition.bottom),
+              legend: Legend(isVisible: true, position: LegendPosition.bottom),
               tooltipBehavior: TooltipBehavior(enable: true),
               series: [
                 LineSeries<PatientStatisticModel, String>(
@@ -102,9 +104,9 @@ class RecentYearDNTChart extends StatelessWidget {
                   name: "DNT平均时长(min)",
                   dataSource: provider.list.reversed.toList(),
                   xValueMapper: (PatientStatisticModel data, _) =>
-                  "${data.month}月",
+                      "${data.month}月",
                   yValueMapper: (PatientStatisticModel data, _) =>
-                  data.dntAverageTime,
+                      data.dntAverageTime,
                   dataLabelSettings: DataLabelSettings(isVisible: true),
                 ),
                 ColumnSeries<PatientStatisticModel, String>(
@@ -113,9 +115,9 @@ class RecentYearDNTChart extends StatelessWidget {
                   name: "DNT超时数",
                   dataSource: provider.list.reversed.toList(),
                   xValueMapper: (PatientStatisticModel data, _) =>
-                  "${data.month}月",
+                      "${data.month}月",
                   yValueMapper: (PatientStatisticModel data, _) =>
-                  data.dntTimeOutCount,
+                      data.dntTimeOutCount,
                   dataLabelSettings: DataLabelSettings(isVisible: true),
                 ),
               ]);
@@ -134,13 +136,11 @@ class EVTAndIVCTChart extends StatelessWidget {
       child: Consumer<PatientStatisticProvider>(
         builder: (_, provider, __) {
           return SfCartesianChart(
-              title: ChartTitle(text: "溶栓与血管内治疗", textStyle: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey
-              )),
+              title: ChartTitle(
+                  text: "溶栓与血管内治疗",
+                  textStyle: TextStyle(fontSize: 12, color: Colors.grey)),
               primaryXAxis: CategoryAxis(),
-              legend:
-              Legend(isVisible: true, position: LegendPosition.bottom),
+              legend: Legend(isVisible: true, position: LegendPosition.bottom),
               tooltipBehavior: TooltipBehavior(enable: true),
               series: [
                 ColumnSeries<PatientStatisticModel, String>(
@@ -149,9 +149,9 @@ class EVTAndIVCTChart extends StatelessWidget {
                   name: "静脉溶栓数",
                   dataSource: provider.list.reversed.toList(),
                   xValueMapper: (PatientStatisticModel data, _) =>
-                  "${data.month}月",
+                      "${data.month}月",
                   yValueMapper: (PatientStatisticModel data, _) =>
-                  data.ivctCount,
+                      data.ivctCount,
                   dataLabelSettings: DataLabelSettings(isVisible: true),
                 ),
                 ColumnSeries<PatientStatisticModel, String>(
@@ -160,9 +160,9 @@ class EVTAndIVCTChart extends StatelessWidget {
                   name: "血管内治疗数",
                   dataSource: provider.list.reversed.toList(),
                   xValueMapper: (PatientStatisticModel data, _) =>
-                  "${data.month}月",
+                      "${data.month}月",
                   yValueMapper: (PatientStatisticModel data, _) =>
-                  data.evtCount,
+                      data.evtCount,
                   dataLabelSettings: DataLabelSettings(isVisible: true),
                 ),
               ]);
@@ -171,4 +171,3 @@ class EVTAndIVCTChart extends StatelessWidget {
     );
   }
 }
-

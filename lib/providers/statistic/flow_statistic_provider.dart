@@ -10,9 +10,9 @@ class FlowStatisticProvider extends ChangeNotifier {
   List<RecordStatisticModel> get monthData => _monthData;
 
   // 初始化数据数据
-  Future<void> initData(BuildContext context) async {
+  Future<bool> initData(BuildContext context) async {
     if (_monthData.isNotEmpty) {
-      return;
+      return true;
     }
     try {
       CloudBaseResponse res = await _cloudBaseUtil
@@ -31,12 +31,11 @@ class FlowStatisticProvider extends ChangeNotifier {
         _monthData.add(RecordStatisticModel.fromJson(data["mRS"], FlowRecord.MRS));
         _monthData.add(RecordStatisticModel.fromJson(data["ivct"], FlowRecord.IVCT));
         _monthData.add(RecordStatisticModel.fromJson(data["evt"], FlowRecord.EVT));
-      } else {
-        showToast(res.data["data"], context);
-      }
+        return true;
+      } 
     } catch (e) {
-      print(e);
-      showToast(e.toString(), context);
+
     }
+    return false;
   }
 }

@@ -145,6 +145,7 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                                       (BuildContext context) =>
                                                           FilesProvider(),
                                                   child: UploadImagePage()));
+                                                  print(res);
                                           if (res != null) {
                                             // 更新图片
                                             await provider.setImages(

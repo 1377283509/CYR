@@ -32,7 +32,7 @@ class BangleCard extends StatelessWidget {
                       );
                     }
                     return Text(
-                      provider.bangle,
+                      "已绑定",
                       style: TextStyle(color: Colors.grey),
                     );
                   },

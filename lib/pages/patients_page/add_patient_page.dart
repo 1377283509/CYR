@@ -87,14 +87,14 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
           const BlankSpace(),
           _buildOtherInfoCard(),
           const BlankSpace(),
-          Container(
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: const Text(
-              " * 注：主治医生、手环可在患者详情页进行绑定",
-              style: TextStyle(color: Colors.white, fontSize: 12),
-            ),
-          ),
+          // Container(
+          //   alignment: Alignment.centerLeft,
+          //   padding: const EdgeInsets.symmetric(horizontal: 12),
+          //   child: const Text(
+          //     " * 注：主治医生、手环可在患者详情页进行绑定",
+          //     style: TextStyle(color: Colors.white, fontSize: 12),
+          //   ),
+          // ),
           const BlankSpace(),
           _buildButton(),
           const BlankSpace(),
@@ -162,41 +162,41 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
       child: Column(
         children: [
           // 主治医生
-          ListTile(
-            title: const Text(
-              "主治医生",
-            ),
-            onTap: () {
-              navigateTo(context, DoctorListPage()).then((value) {
-                if (value != null && value != []) {
-                  setState(() {
-                    _doctorName = value[1];
-                    _doctorId = value[0];
-                  });
-                }
-              });
-            },
-            leading: const Icon(Icons.person, color: Colors.red),
-            subtitle: Text(_doctorName ?? "点击绑定"),
-            trailing:
-                const Icon(Icons.keyboard_arrow_right, color: Colors.grey),
-          ),
-          // 手环
-          ListTile(
-            title: const Text(
-              "绑定手环",
-            ),
-            onTap: () async {
-              String bangle = await scan();
-              setState(() {
-                _bangle = bangle;
-              });
-            },
-            leading: const Icon(Icons.watch, color: Colors.green),
-            subtitle: Text(_bangle ?? "未绑定"),
-            trailing: const Icon(Icons.qr_code_scanner, color: Colors.grey),
-          ),
-          // 来院方式
+          // ListTile(
+          //   title: const Text(
+          //     "主治医生",
+          //   ),
+          //   onTap: () {
+          //     navigateTo(context, DoctorListPage()).then((value) {
+          //       if (value != null && value != []) {
+          //         setState(() {
+          //           _doctorName = value[1];
+          //           _doctorId = value[0];
+          //         });
+          //       }
+          //     });
+          //   },
+          //   leading: const Icon(Icons.person, color: Colors.red),
+          //   subtitle: Text(_doctorName ?? "点击绑定"),
+          //   trailing:
+          //       const Icon(Icons.keyboard_arrow_right, color: Colors.grey),
+          // ),
+          // // 手环
+          // ListTile(
+          //   title: const Text(
+          //     "绑定手环",
+          //   ),
+          //   onTap: () async {
+          //     String bangle = await scan();
+          //     setState(() {
+          //       _bangle = bangle;
+          //     });
+          //   },
+          //   leading: const Icon(Icons.watch, color: Colors.green),
+          //   subtitle: Text(_bangle ?? "未绑定"),
+          //   trailing: const Icon(Icons.qr_code_scanner, color: Colors.grey),
+          // ),
+          // // 来院方式
           ListTile(
             title: const Text(
               "到院方式",

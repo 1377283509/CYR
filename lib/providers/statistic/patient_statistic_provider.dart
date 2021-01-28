@@ -10,9 +10,9 @@ class PatientStatisticProvider extends ChangeNotifier {
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();
 
   // 获取近12个月数据
-  Future<void> getStatisticData(BuildContext context) async {
+  Future<bool> getStatisticData(BuildContext context) async {
     if(list.isNotEmpty){
-      return;
+      return true;
     }
     try{
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("statistic", {
@@ -23,6 +23,7 @@ class PatientStatisticProvider extends ChangeNotifier {
         res.data["data"].forEach((e)=>{
           list.add(PatientStatisticModel.fromJson(e))
         });
+        return true;
       }else{
         showToast(res.data["data"], context);
       }
@@ -30,5 +31,6 @@ class PatientStatisticProvider extends ChangeNotifier {
       showToast("加载失败", context);
       print(e);
     }
+    return false;
   }
 }
