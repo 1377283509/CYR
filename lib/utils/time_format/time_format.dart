@@ -33,13 +33,13 @@ String formatTime(DateTime time, {TimeFormatType format}) {
   return s;
 }
 
-String calculateTime(DateTime start, DateTime end) {
+int calculateTime(DateTime start, DateTime end) {
   if(start == null || end == null){
-    return "未完成";
+    return -1;
   }
   Duration diff = start.difference(end);
-  int minute = diff.inMinutes;
-  return "${(minute/60).ceil().abs()} 小时 ${minute.abs()%60} 分钟";
+  int minutes = diff.inMinutes;
+  return minutes.abs();
 }
 
 int calculateAge(DateTime birth){

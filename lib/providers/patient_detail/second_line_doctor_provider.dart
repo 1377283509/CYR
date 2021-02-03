@@ -55,7 +55,6 @@ class SecondLineDoctorProvider extends ChangeNotifier {
           "\$url": "getSecondLineDoctors",
         });
         if (res.data["code"] == 1) {
-          print(res.data["data"]);
           res.data["data"]
               .forEach((e) => {_secondLineDoctors.add(Doctor.fromJson(e))});
           notifyListeners();
@@ -63,7 +62,6 @@ class SecondLineDoctorProvider extends ChangeNotifier {
           showToast(res.data["data"], context);
         }
       } catch (e) {
-        print(e);
         showToast(e.toString(), context);
       }
     }

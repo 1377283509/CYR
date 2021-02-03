@@ -19,7 +19,13 @@ import 'single_tile.dart';
 class CTCard extends StatelessWidget {
   // 检查患者身份
   Future<bool> _checkBangle(BuildContext context, String curBangleId) async {
-    String bangle = await scan();
+    String bangle;
+    try{
+     bangle = await scan();
+    }catch(e){
+
+    }
+  
     if (bangle != curBangleId) {
       showToast("患者身份不匹配", context);
       return false;
@@ -63,13 +69,17 @@ class CTCard extends StatelessWidget {
                                 : formatTime(provider.orderTime),
                             onTap: () async {
                               //检查身份权限
+                              // 获取自己的id
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
                                   .user;
-                              if (!permissionHandler(
-                                  PermissionType.CT, doctor.department)) {
-                                showToast("该操作只能由影像科进行", context);
+                              
+                              // 获取主治医生id
+                              String dutyDoctorId = Provider.of<VisitRecordProvider>(context, listen: false).doctorId;
+
+                              if(doctor.idCard != dutyDoctorId){
+                                showToast("需由主治医生操作", context);
                                 return;
                               }
                               // 检查患者身份

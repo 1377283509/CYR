@@ -22,6 +22,7 @@ class IVCTProvider extends ChangeNotifier{
   DateTime get startTime => _ivctModel?.startTime;
   DateTime get endTime => _ivctModel?.endTime;
 
+
   String get beforeNIHSS => _ivctModel?.beforeNIHSS;
   String get afterNIHSS => _ivctModel?.afterNIHSS;
 

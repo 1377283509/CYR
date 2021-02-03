@@ -1,3 +1,4 @@
+import 'package:cyr/pages/patients_page/quility_control_page.dart';
 import 'package:cyr/pages/patients_page/widgets/aspect.dart';
 import 'package:cyr/pages/patients_page/widgets/ct.dart';
 import 'package:cyr/pages/patients_page/widgets/ecg.dart';
@@ -7,8 +8,11 @@ import 'package:cyr/pages/patients_page/widgets/second_line_doctor.dart';
 import 'package:cyr/pages/patients_page/widgets/visit_info.dart';
 import 'package:cyr/providers/patient_detail/evt_provider.dart';
 import 'package:cyr/providers/patient_detail/patient_detail_provider.dart';
+import 'package:cyr/providers/patient_detail/quility_control_provider.dart';
 import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
 import 'package:cyr/providers/provider_list.dart';
+import 'package:cyr/utils/navigator/custom_navigator.dart';
+import 'package:cyr/utils/toast/toast.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -125,9 +129,11 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
 
   @override
   Widget build(BuildContext context) {
+    GlobalKey scaffoldKey = GlobalKey();
     VisitRecordProvider visitRecordProvider =
         Provider.of<VisitRecordProvider>(context, listen: false);
     return Scaffold(
+        key: scaffoldKey,
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           title: Consumer<VisitRecordProvider>(
@@ -141,6 +147,25 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
             },
           ),
           centerTitle: true,
+          actions: [
+            TextButton(
+              child: Text(
+                "质控",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                String id = Provider.of<VisitRecordProvider>(context, listen: false).visitRecordModel.id;
+                if(id == null && widget.id == null) {
+                  showToast("加载中", context);
+                  return;
+                }
+                navigateTo(context, ChangeNotifierProvider<QuilityControlProvider>(
+                  create: (context) => QuilityControlProvider(),
+                  child: QuilityControlPage(widget.id??id),
+                ));
+              },
+            )
+          ],
         ),
         body: Padding(
           padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16),

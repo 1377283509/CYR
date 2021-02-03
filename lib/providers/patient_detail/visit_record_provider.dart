@@ -19,6 +19,8 @@ class VisitRecordProvider extends ChangeNotifier {
   DateTime get visitTime => _visitRecordModel?.visitTime;
   // 发病时间
   DateTime get diseaseTime => _visitRecordModel?.diseaseTime;
+  // 到院时间
+  DateTime get arriveTime => _visitRecordModel?.arriveTime;
 
   // 手环
   String get bangle => _visitRecordModel?.bangle;
@@ -60,7 +62,7 @@ class VisitRecordProvider extends ChangeNotifier {
   // 绑定手环
   Future<void> setBangle(BuildContext context, String bangle) async {
     _visitRecordModel.bangle = bangle;
-    _visitRecordModel.visitTime = DateTime.now();
+    _visitRecordModel.arriveTime = DateTime.now();
     notifyListeners();
     try {
       CloudBaseResponse res =
@@ -68,15 +70,17 @@ class VisitRecordProvider extends ChangeNotifier {
         "\$url": "bindBangle",
         "bangle": bangle,
         "id": _visitRecordModel.id,
-        "visitTime": _visitRecordModel.visitTime.toIso8601String()
+        "arriveTime": _visitRecordModel.arriveTime.toIso8601String()
       });
       if (res.data["code"] != 1) {
         _visitRecordModel.bangle = null;
+        _visitRecordModel.arriveTime = null;
         showToast(res.data["data"], context);
         notifyListeners();
       }
     } catch (e) {
-      print(e);
+      _visitRecordModel.bangle = null;
+      _visitRecordModel.arriveTime = null;
       showToast(e.toString(), context);
     }
   }
@@ -108,6 +112,7 @@ class VisitRecordProvider extends ChangeNotifier {
     // 本地更新doctor信息
     _visitRecordModel.doctorId = doctorId;
     _visitRecordModel.doctorName = doctorName;
+    _visitRecordModel.visitTime = DateTime.now();
     notifyListeners();
     try {
       CloudBaseResponse res =
@@ -115,23 +120,26 @@ class VisitRecordProvider extends ChangeNotifier {
         "\$url": "setDoctor",
         "id": _visitRecordModel.id,
         "doctorId": doctorId,
-        "doctorName": doctorName
+        "doctorName": doctorName,
+        "visitTime": _visitRecordModel.visitTime.toIso8601String(),
       });
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _visitRecordModel.doctorId = null;
         _visitRecordModel.doctorName = null;
+        _visitRecordModel.visitTime = null;
         notifyListeners();
       }
     } catch (e) {
       showToast(e.toString(), context);
       _visitRecordModel.doctorId = null;
       _visitRecordModel.doctorName = null;
+      _visitRecordModel.visitTime = null;
       notifyListeners();
     }
   }
 
-  // 更新TIA值
+  // 更新TIA
   Future<void> setTIA(BuildContext context, bool isTIA) async {
     _visitRecordModel.isTIA = isTIA;
     notifyListeners();
@@ -205,8 +213,8 @@ class VisitRecordProvider extends ChangeNotifier {
     _visitRecordModel.lastStep = result;
     notifyListeners();
     try {
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction(
-          "visit-record", {
+      CloudBaseResponse res =
+          await _cloudBaseUtil.callFunction("visit-record", {
         "\$url": "setLastStep",
         "lastStep": result,
         "endTime": DateTime.now().toIso8601String(),

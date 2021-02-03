@@ -29,6 +29,10 @@ class VisitInfo extends StatelessWidget {
                   title: "就诊信息",
                   children: [
                     SingleTile(
+                      title: "到院时间",
+                      value: formatTime(provider.visitRecordModel.arriveTime),
+                    ),
+                    SingleTile(
                       title: "就诊时间",
                       value: formatTime(provider.visitRecordModel.visitTime),
                     ),
@@ -42,7 +46,7 @@ class VisitInfo extends StatelessWidget {
                         // 权限判断
                         if (doctor.idCard !=
                             provider.visitRecordModel.doctorId) {
-                          showConfirmDialog(context, "无权限", content: "修改需由主治医师进行");
+                          showConfirmDialog(context, "无权限", content: "该操作需由主治医师进行");
                           return;
                         }
 

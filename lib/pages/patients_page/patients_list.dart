@@ -2,6 +2,7 @@ import 'package:cyr/models/model_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:cyr/providers/provider_list.dart';
 import 'widgets/patient_card.dart';
@@ -9,10 +10,7 @@ import 'widgets/patient_card.dart';
 class PatientsPage extends StatelessWidget {
   _appBar(context) {
     return AppBar(
-      title: Text(
-        "所有患者",
-        style: Theme.of(context).textTheme.headline1,
-      ),
+      title: Text("所有患者"),
       actions: [],
     );
   }
@@ -41,18 +39,19 @@ class _PatientsPageBodyState extends State<PatientsPageBody> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           List<Patient> patients = patientProvider.patients;
-          if(patients.length == 0){
+          if (patients.length == 0) {
             return Center(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 54),
-                child: Text("当前暂无患者", style: TextStyle(
-                  color: Colors.white54
-                ),),
+                child: Text(
+                  "当前暂无患者",
+                  style: TextStyle(color: Colors.white54),
+                ),
               ),
             );
           }
           return ListView.builder(
-            itemCount:patients.length,
+            itemCount: patients.length,
             itemBuilder: (BuildContext context, index) {
               var patient = patients[index];
               return Padding(
@@ -61,7 +60,7 @@ class _PatientsPageBodyState extends State<PatientsPageBody> {
               );
             },
           );
-        }else{
+        } else {
           return LoadingIndicator();
         }
       },

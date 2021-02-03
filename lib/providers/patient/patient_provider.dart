@@ -13,6 +13,11 @@ class PatientProvider extends ChangeNotifier {
   List<Patient> _patients = [];
   List<Patient> get patients => _patients;
 
+  // 完成的患者
+  List<Patient> _finished = [];
+  List<Patient> get finished => _finished;
+
+
   // 获取所有患者
   Future<void> getAllPatients(BuildContext context) async {
     try {
@@ -31,6 +36,27 @@ class PatientProvider extends ChangeNotifier {
       print(e);
     }
   }
+
+   Future<void> getAllFinishedPatients(BuildContext context) async {
+    try {
+      CloudBaseResponse res =
+          await _cloudBaseUtil.callFunction("visit-record", {
+        "\$url": "getAllFinishedRecords",
+      });
+      if (res.data["code"] == 1) {
+        List<Patient> list = [];
+        res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
+        _finished = list;
+      } else {
+        showToast(res.data["data"], context);
+      }
+    } catch (e) {
+      showToast(e.toString(), context);
+    }
+  }
+
+
+
 
   // 添加患者
   Future<void> createPatient(

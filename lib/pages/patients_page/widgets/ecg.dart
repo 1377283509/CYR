@@ -110,32 +110,8 @@ class EctCard extends StatelessWidget {
                         // 完成时间
                         SingleTile(
                           title: "完成时间",
-                          value: provider.ecgModel.endTime == null
-                              ? null
-                              : formatTime(provider.ecgModel.endTime),
-                          buttonLabel: "完成",
-                          onTap: () async{
-                            // 权限检查
-                            String doctorId = Provider.of<DoctorProvider>(context, listen: false).user.idCard;
-                            if(doctorId!=provider.ecgModel.doctorId){
-                              showToast("无权限", context);
-                              return;
-                            }
-                            bool res = await showConfirmDialog(context, "完成确认", content: "一旦确认后将不可更改");
-                            if(res){
-                              await provider.setEndTime(context);
-                            }
-                          },
+                          value: formatTime(provider.ecgModel.endTime) ,
                         ),
-                        Visibility(
-                            visible: provider.images.length==0 && provider.endTime != null,
-                            child: Container(
-                              alignment: Alignment.center,
-                              child:const Text("未上传图片", style: TextStyle(
-                                color: Colors.grey
-                              ),),
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                            )),
                       ],
                     );
                   });

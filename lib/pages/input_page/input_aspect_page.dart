@@ -70,11 +70,13 @@ class _InputAspectPageState extends State<InputAspectPage> {
         title: Text("Aspect评分"),
         actions: [
           TextButton(
-            child: Text("提交", style: TextStyle(
-              color: Colors.white
-            ),),
-            onPressed: (){
-              Navigator.of(context).pop<List<String>>([totalScore.toString(), score.toString(), result]);
+            child: Text(
+              "提交",
+              style: TextStyle(color: Colors.white),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop<List<String>>(
+                  [totalScore.toString(), score.toString(), result]);
             },
           ),
         ],
@@ -103,17 +105,15 @@ class _InputAspectPageState extends State<InputAspectPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               AspectItemCard(
-                imagePath: AssetImages.aspect_01,
                 items: ["M1", "M2", "M3", "I", "L", "C", "IC", "P"],
                 controller: _controller,
               ),
               AspectItemCard(
-                imagePath: AssetImages.aspect_02,
                 items: ["A", "M4", "M5", "M6"],
                 controller: _controller,
               ),
+              Image.asset(AssetImages.aspect),
               AspectItemCard(
-                imagePath: AssetImages.aspect_03,
                 items: ["Po", "Cb"],
                 controller: _controller,
               ),
@@ -149,15 +149,9 @@ class _InputAspectPageState extends State<InputAspectPage> {
 class AspectItemCard extends StatelessWidget {
   final List<String> items;
 
-  final String imagePath;
-
   final StreamController controller;
 
-  AspectItemCard(
-      {@required this.items,
-      @required this.imagePath,
-      @required this.controller,
-      Key key})
+  AspectItemCard({@required this.items, @required this.controller, Key key})
       : super(key: key);
 
   @override
@@ -166,30 +160,17 @@ class AspectItemCard extends StatelessWidget {
       width: double.infinity,
       color: Colors.white,
       padding: const EdgeInsets.only(left: 16),
-      child: Row(
-        children: [
-          Expanded(
-            flex: 5,
-            child: Container(
-              child: AspectImage(imagePath),
-            ),
-          ),
-          Expanded(
-            flex: 2,
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: items
-                    .map((e) => ChoiceItem(
-                          e,
-                          controller,
-                          key: ValueKey(e),
-                        ))
-                    .toList(),
-              ),
-            ),
-          ),
-        ],
+      child: Wrap(
+        children: items
+            .map((e) => Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: ChoiceItem(
+                    e,
+                    controller,
+                    key: ValueKey(e),
+                  ),
+                ))
+            .toList(),
       ),
     );
   }
@@ -209,9 +190,10 @@ class _ChoiceItemState extends State<ChoiceItem> {
   @override
   Widget build(BuildContext context) {
     return ChoiceChip(
-      label: Text(widget.value, style: TextStyle(
-        color: selected? Colors.white:Colors.black
-      ),),
+      label: Text(
+        widget.value,
+        style: TextStyle(color: selected ? Colors.white : Colors.black),
+      ),
       selected: selected,
       selectedColor: Colors.indigo,
       onSelected: (value) {
@@ -220,22 +202,6 @@ class _ChoiceItemState extends State<ChoiceItem> {
         });
         widget.controller.add(AspectItemModel(widget.value, selected));
       },
-    );
-  }
-}
-
-class AspectImage extends StatelessWidget {
-  final String assetImagePath;
-  AspectImage(this.assetImagePath);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: Image.asset(
-        assetImagePath,
-        fit: BoxFit.contain,
-      ),
     );
   }
 }

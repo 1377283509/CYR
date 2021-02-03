@@ -50,9 +50,6 @@ class NIHSSCard extends StatelessWidget {
                                       listen: false)
                                   .user;
                               List<int> res = await navigateTo(context, InputNIHSSPage(startTime));
-
-                              print(res);
-
                               // 如果有输入
                               if (res != null && res.length > 0) {
                                 await provider.setResult(context, startTime,

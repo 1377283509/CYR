@@ -4,7 +4,7 @@ import 'package:cyr/utils/util_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
 
-class ECGProvider extends ChangeNotifier{
+class ECGProvider extends ChangeNotifier {
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();
   // 所属就诊记录Id
   final String visitRecordId;
@@ -13,7 +13,7 @@ class ECGProvider extends ChangeNotifier{
   ECGModel _ecgModel;
   ECGModel get ecgModel => _ecgModel;
 
-  List<String> get images => _ecgModel?.images??[];
+  List<String> get images => _ecgModel?.images ?? [];
 
   DateTime get endTime => _ecgModel?.endTime;
 
@@ -52,7 +52,7 @@ class ECGProvider extends ChangeNotifier{
         "doctorId": doctorId,
         "doctorName": doctorName,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ecgModel.startTime = null;
         _ecgModel.doctorId = null;
@@ -69,17 +69,18 @@ class ECGProvider extends ChangeNotifier{
   }
 
   // 更新图片
-  Future<void> setImages(
-      BuildContext context,List<String> images) async {
+  Future<void> setImages(BuildContext context, List<String> images) async {
+    _ecgModel.endTime = DateTime.now();
     _ecgModel.images = images;
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("ecg", {
         "\$url": "setImages",
         "images": images,
+        "endTime": _ecgModel.endTime.toIso8601String(),
         "id": _ecgModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ecgModel.images = null;
         notifyListeners();
@@ -90,29 +91,4 @@ class ECGProvider extends ChangeNotifier{
       notifyListeners();
     }
   }
-
-  // 更新完成时间
-  Future<void> setEndTime(
-      BuildContext context) async {
-    DateTime endTime = DateTime.now();
-    _ecgModel.endTime = endTime;
-    notifyListeners();
-    try {
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction("ecg", {
-        "\$url": "setEndTime",
-        "endTime": endTime.toIso8601String(),
-        "id": _ecgModel.id,
-      });
-      if(res.data["code"] != 1){
-        showToast(res.data["data"], context);
-        _ecgModel.endTime = null;
-        notifyListeners();
-      }
-    } catch (e) {
-      print(e);
-      _ecgModel.endTime = null;
-      notifyListeners();
-    }
-  }
-
 }

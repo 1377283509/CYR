@@ -30,7 +30,7 @@ class TimeInfoCard extends StatelessWidget {
               builder: (_, provider, __) {
                 return TimeInfo(
                   title: "到院时长",
-                  startTime: provider.visitTime,
+                  startTime: provider.arriveTime,
                 );
               },
             ),

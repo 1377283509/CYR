@@ -4,6 +4,7 @@ import 'package:cyr/providers/provider_list.dart';
 import 'package:cyr/utils/dialog/show_dialog.dart';
 import 'package:cyr/utils/permission/permission.dart';
 import 'package:cyr/utils/toast/toast.dart';
+import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -35,6 +36,7 @@ class BindDoctor extends StatelessWidget {
                             showToast("无权限", context);
                             return;
                           }
+
                           bool res = await showConfirmDialog(
                               context,
                               "主治医生绑定确认",

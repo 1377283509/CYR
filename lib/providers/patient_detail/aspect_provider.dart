@@ -25,7 +25,6 @@ class AspectProvider extends ChangeNotifier {
         "\$url": "getByVisitRecordId",
         "visitRecordId": visitRecordId,
       });
-      print(res);
       if (res.data["code"] == 1) {
         _aspectModel = AspectModel.fromJson(res.data["data"]);
         notifyListeners();
@@ -33,7 +32,6 @@ class AspectProvider extends ChangeNotifier {
         showToast(res.data["data"], context);
       }
     } catch (e) {
-      print(e);
       showToast(e.toString(), context);
     }
   }
@@ -59,19 +57,13 @@ class AspectProvider extends ChangeNotifier {
       });
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
-        _aspectModel.endTime = null;
-        _aspectModel.score = null;
-        _aspectModel.totalScore = null;
-        _aspectModel.result = null;
+        _aspectModel = null;
         notifyListeners();
       }
     } catch (e) {
       print(e);
       showToast(e.toString(), context);
-      _aspectModel.endTime = null;
-      _aspectModel.score = null;
-      _aspectModel.totalScore = null;
-      _aspectModel.result = null;
+      _aspectModel = null;
       notifyListeners();
     }
   }

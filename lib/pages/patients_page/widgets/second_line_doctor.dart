@@ -2,6 +2,7 @@ import 'package:cyr/models/doctor/doctor_model.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/pages/patients_page/widgets/single_tile.dart';
 import 'package:cyr/providers/provider_list.dart';
+import 'package:cyr/utils/permission/permission.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,6 +78,11 @@ class SecondLineDoctor extends StatelessWidget {
                                 : formatTime(provider.arriveTime),
                             buttonLabel: "到达",
                             onTap: () async {
+                              Doctor doctor = await Provider.of<DoctorProvider>(context, listen: false).user; 
+                              if(!permissionHandler(PermissionType.SECOND_LINE_DOCTOR, doctor.department)){
+                                  showToast("神经内科权限", context);
+                                  return;
+                              }
                               String bangleId = await scan();
                               String curId = Provider.of<VisitRecordProvider>(
                                       context,
@@ -87,11 +93,6 @@ class SecondLineDoctor extends StatelessWidget {
                                 showToast("患者身份不匹配", context);
                                 return;
                               }
-
-                              Doctor doctor = Provider.of<DoctorProvider>(
-                                      context,
-                                      listen: false)
-                                  .user;
                               // 到达
                               await provider.setArriveTime(
                                   context, doctor.idCard, doctor.name);

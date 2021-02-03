@@ -17,6 +17,8 @@ class VisitRecordModel {
   String pastHistory;
   // 主诉
   String chiefComplaint;
+  // 到院时间
+  DateTime arriveTime;
   // 就诊时间
   DateTime visitTime;
   // 诊断结果
@@ -37,6 +39,7 @@ class VisitRecordModel {
       this.pastHistory,
       this.chiefComplaint,
       this.visitTime,
+      this.arriveTime,
         this.lastStep,
         this.isEVT,
         this.isIVCT,
@@ -57,6 +60,9 @@ class VisitRecordModel {
     }
     if (json["visitTime"] != null) {
       visitTime = DateTime.parse(json["visitTime"]);
+    }
+    if (json["arriveTime"] != null) {
+      arriveTime = DateTime.parse(json["arriveTime"]);
     }
     result = json["result"];
     isTIA = json["isTIA"];

@@ -1,3 +1,4 @@
+import 'package:cyr/pages/accident_recourse_page/finished_patients_list.dart';
 import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/utils/navigator/custom_navigator.dart';
 import 'package:cyr/widgets/message/message_list.dart';
@@ -60,6 +61,18 @@ class HomePage extends StatelessWidget {
                 title: "所有患者",
                 icon: Icons.menu,
                 color: Colors.green,
+              ),
+            ),
+            BlankSpace(),
+            // 完成就诊的患者
+            InkWell(
+              onTap: () {
+                navigateTo(context, FinishedPatientsPage());
+              },
+              child:const Cell(
+                title: "事故追溯",
+                icon: Icons.restore,
+                color: Colors.red,
               ),
             ),
             BlankSpace(),

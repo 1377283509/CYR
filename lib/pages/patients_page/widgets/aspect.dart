@@ -4,8 +4,6 @@ import 'package:cyr/pages/input_page/input_aspect_page.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/pages/patients_page/widgets/single_tile.dart';
 import 'package:cyr/providers/provider_list.dart';
-import 'package:cyr/utils/permission/permission.dart';
-import 'package:cyr/utils/qr_code/qr_code_util.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,20 +11,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AspectCard extends StatelessWidget {
-  // 检查患者身份
-  Future<bool> _checkBangle(BuildContext context, String curBangleId) async {
-    String bangle = await scan();
-    if (bangle != curBangleId) {
-      showToast("患者身份不匹配", context);
-      return false;
-    }
-    return true;
-  }
 
   @override
   Widget build(BuildContext context) {
-    String curBangleId =
-        Provider.of<VisitRecordProvider>(context, listen: false).bangle;
     return IntrinsicHeight(
       child: Row(
         children: [
@@ -75,14 +62,6 @@ class AspectCard extends StatelessWidget {
                                         context,
                                         listen: false)
                                     .user;
-                                if (!permissionHandler(
-                                    PermissionType.CT, doctor.department)) {
-                                  showToast("该操作只能由影像科进行", context);
-                                  return;
-                                }
-                                // 检查患者身份
-                                if (!await _checkBangle(context, curBangleId))
-                                  return;
                                 DateTime startTime = DateTime.now();
                                 // res[0]:总分, res[1]：去除A、P、Po、Cb的得分, res[2]：结果
                                 List<String> res = await navigateTo(

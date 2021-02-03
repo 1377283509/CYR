@@ -37,7 +37,7 @@ class FilesProvider extends ChangeNotifier {
 
   // 上传
   upLoadFile(File file) async {
-    _doneList.add(UpLoad(0, file, ""));
+    _doneList.add(UpLoad(0, file, null));
     notifyListeners();
     UploadRes res = await _cloudBase.upLoadFile(file.path, (now, total) {
       _process = now / total;

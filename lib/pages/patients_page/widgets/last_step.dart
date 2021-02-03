@@ -30,12 +30,6 @@ class LastStepCard extends StatelessWidget {
             if(provider.lastStep != null){
               return;
             }
-
-            Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
-            if(provider.doctorId != doctor.idCard){
-              showToast("无权限", context);
-              return;
-            }
             List<String> res = await showModalBottomSheet(
                 context: context,
                 builder: (BuildContext context){
