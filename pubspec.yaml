@@ -106,6 +106,9 @@ flutter:
      - assets/images/male.png
      - assets/images/female.png
      - assets/images/aspect.png
+     - assets/images/aspect01.png
+     - assets/images/aspect02.png
+     - assets/images/aspect03.png
      - app_config.json
 
   # An image asset can refer to one or more resolution-specific "variants", see

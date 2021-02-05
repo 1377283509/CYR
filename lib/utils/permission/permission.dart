@@ -24,7 +24,7 @@ Map<PermissionType, String> departmentPermission = {
   PermissionType.VISIT_RESULT: "急诊科",
   PermissionType.DOCTOR: "急诊科",
   PermissionType.VITAL_SIGNS: "急诊科",
-  PermissionType.ECG: "影像科",
+  PermissionType.ECG: "急诊科",
   PermissionType.LABORATORY_EXAMINATION: "检验科",
   PermissionType.CT: "影像科",
   PermissionType.SECOND_LINE_DOCTOR: "神经内科"

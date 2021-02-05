@@ -168,34 +168,10 @@ class CTCard extends StatelessWidget {
                           SingleTile(
                             title: "完成时间",
                             buttonLabel: "完成",
-                            value: provider.endTime == null
-                                ? null
-                                : formatTime(provider.endTime),
-                            onTap: () async {
-                              String department =
-                                  Provider.of<DoctorProvider>(
-                                      context,
-                                      listen: false)
-                                      .user
-                                      .department;
-                              if (!permissionHandler(
-                                  PermissionType.CT, department)) {
-                                showToast("该操作只能由影像科进行", context);
-                                return;
-                              }
-                              await provider.setEndTime(context);
-                            },
+                            value: formatTime(provider.endTime),
                           ),
 
-                          Visibility(
-                              visible: provider.images.length==0 && provider.endTime != null,
-                              child: Container(
-                                alignment: Alignment.center,
-                                child:const Text("未上传图片", style: TextStyle(
-                                    color: Colors.grey
-                                ),),
-                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                              )),
+                          
                         ],
                       );
                     },

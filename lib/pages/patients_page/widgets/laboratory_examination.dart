@@ -72,10 +72,9 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                   .user;
                               // 权限检查
                               if (!permissionHandler(
-                                  PermissionType.LABORATORY_EXAMINATION,
-                                  doctor.department)) {
+                                  PermissionType.DOCTOR, doctor.department)) {
                                 showConfirmDialog(context, "无权限",
-                                    content: "该操作需由检验科人员进行");
+                                    content: "该操作需由急诊科人员进行");
                                 return;
                               }
                               await provider.startDrawBlood(
@@ -117,7 +116,8 @@ class LaboratoryExaminationCard extends StatelessWidget {
                               runAlignment: WrapAlignment.spaceBetween,
                               crossAxisAlignment: WrapCrossAlignment.center,
                               runSpacing: 2,
-                              children: provider.endTime == null && provider.images.isEmpty
+                              children: provider.endTime == null &&
+                                      provider.images.isEmpty
                                   ? [
                                       SingleTile(
                                         title: "结果图片",
@@ -145,7 +145,7 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                                       (BuildContext context) =>
                                                           FilesProvider(),
                                                   child: UploadImagePage()));
-                                                  print(res);
+                                          print(res);
                                           if (res != null) {
                                             // 更新图片
                                             await provider.setImages(
@@ -165,43 +165,9 @@ class LaboratoryExaminationCard extends StatelessWidget {
                           // 完成时间
                           SingleTile(
                             title: "完成时间",
-                            value: provider.endTime == null
-                                ? null
-                                : formatTime(provider.endTime),
+                            value: formatTime(provider.endTime),
                             buttonLabel: "完成",
-                            onTap: () async {
-                              String department = Provider.of<DoctorProvider>(
-                                      context,
-                                      listen: false)
-                                  .user
-                                  .department;
-                              if(!permissionHandler(PermissionType.LABORATORY_EXAMINATION, department)){
-                                showConfirmDialog(context, "无权限", content: "该操作需由检验科人员进行");
-                                return;
-                              }
-                              bool res = await showConfirmDialog(
-                                  context, "确认完成吗?",
-                                  content: "一旦确认将不可更改");
-                              if (res) {
-                                await provider.setEndTime(context);
-                              }
-                            },
                           ),
-                          // 无图片提示
-                          Visibility(
-                            visible: provider.endTime != null &&
-                                provider.images.isEmpty,
-                            child: Container(
-                              alignment: Alignment.center,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
-                              child: Text(
-                                "未上传图片",
-                                style:
-                                    TextStyle(fontSize: 14, color: Colors.grey),
-                              ),
-                            ),
-                          )
                         ],
                       );
                     },

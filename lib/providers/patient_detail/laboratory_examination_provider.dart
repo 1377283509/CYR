@@ -106,50 +106,27 @@ class LaboratoryExaminationProvider extends ChangeNotifier{
   // 更新图片
   Future<void> setImages(BuildContext context, List<String> images) async {
     _laboratoryExamination.images = images;
+    _laboratoryExamination.endTime = DateTime.now();
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("laboratory-examination", {
         "\$url": "setImages",
         "id": _laboratoryExamination.id,
-        "images": images
-      });
-      print(res);
-      if (res.data["code"] != 1) {
-        showToast(res.data["data"], context);
-        _laboratoryExamination.images = null;
-        notifyListeners();
-      }
-    } catch (e) {
-      print(e);
-      showToast(e.toString(), context);
-      _laboratoryExamination.images = null;
-      notifyListeners();
-    }
-  }
-
-  // 更新结果回报时间
-  Future<void> setEndTime(BuildContext context)async{
-    _laboratoryExamination.endTime = DateTime.now();
-    notifyListeners();
-    try {
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction("laboratory-examination", {
-        "\$url": "setEndTime",
-        "id": _laboratoryExamination.id,
+        "images": images,
         "endTime": _laboratoryExamination.endTime.toIso8601String()
       });
       print(res);
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _laboratoryExamination.images = null;
+        _laboratoryExamination.endTime = null;
         notifyListeners();
       }
     } catch (e) {
-      print(e);
       showToast(e.toString(), context);
       _laboratoryExamination.images = null;
+      _laboratoryExamination.endTime = null;
       notifyListeners();
     }
-
-
   }
 }

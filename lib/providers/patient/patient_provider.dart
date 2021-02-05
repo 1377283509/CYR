@@ -25,6 +25,7 @@ class PatientProvider extends ChangeNotifier {
           await _cloudBaseUtil.callFunction("visit-record", {
         "\$url": "getAllRecords",
       });
+      print(res.data);
       if (res.data["code"] == 1) {
         List<Patient> list = [];
         res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
@@ -34,6 +35,7 @@ class PatientProvider extends ChangeNotifier {
       }
     } catch (e) {
       print(e);
+      showToast(e.toString(), context);
     }
   }
 
