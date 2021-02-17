@@ -9,9 +9,11 @@ import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cyr/providers/patient_detail/second_line_doctor_provider.dart';
 
 class AspectCard extends StatelessWidget {
-
+  final bool isAccidentRecourse;
+  AspectCard({this.isAccidentRecourse = false});
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
@@ -21,8 +23,7 @@ class AspectCard extends StatelessWidget {
             flex: 1,
             child: LeftIcon(Consumer<AspectProvider>(
               builder: (_, provider, __) {
-                print(provider.endTime);
-                return StateIcon(provider.endTime!=null);
+                return StateIcon(provider.endTime != null);
               },
             )),
           ),
@@ -39,57 +40,78 @@ class AspectCard extends StatelessWidget {
                           title: "ASPECT评分",
                           children: [
                             Visibility(
-                              visible: provider.totalScore != null,
+                              visible: provider.totalScore != null && !isAccidentRecourse,
                               child: SingleTile(
                                 title: "总分",
                                 value: provider.totalScore.toString(),
                               ),
                             ),
                             Visibility(
-                              visible: provider.score != null,
+                              visible: provider.score != null && !isAccidentRecourse,
                               child: SingleTile(
                                 title: "去除A、P、Po、Cb四项得分",
                                 value: provider.totalScore.toString(),
                               ),
                             ),
-                            SingleTile(
-                              title: "结果",
-                              buttonLabel: "输入",
-                              value: provider.result,
-                              onTap: () async {
-                                //检查身份权限
-                                Doctor doctor = Provider.of<DoctorProvider>(
-                                        context,
-                                        listen: false)
-                                    .user;
-                                DateTime startTime = DateTime.now();
-                                // res[0]:总分, res[1]：去除A、P、Po、Cb的得分, res[2]：结果
-                                List<String> res = await navigateTo(
-                                    context, InputAspectPage());
-                                AspectModel aspect = AspectModel(
-                                    startTime: startTime,
-                                    totalScore: int.parse(res[0]),
-                                    score: int.parse(res[1]),
-                                    result: res[2],
-                                    endTime: DateTime.now(),
-                                    doctorId: doctor.idCard,
-                                    doctorName: doctor.name);
-                                if (res != null && res.isNotEmpty) {
-                                  await provider.setResult(context, aspect);
-                                }
-                              },
+                            Visibility(
+                              visible:!isAccidentRecourse,
+                              child: SingleTile(
+                                title: "结果",
+                                buttonLabel: "输入",
+                                value: provider.result,
+                                onTap: () async {
+                                  //检查身份权限
+                                  Doctor doctor = Provider.of<DoctorProvider>(
+                                          context,
+                                          listen: false)
+                                      .user;
+                                  String secondLineDoctorId =
+                                      Provider.of<SecondLineDoctorProvider>(
+                                              context,
+                                              listen: false)
+                                          .secondDoctorId;
+                                  if (doctor.idCard != secondLineDoctorId) {
+                                    showToast("二线医生权限", context);
+                                    return;
+                                  }
+                                  DateTime startTime = DateTime.now();
+                                  // res[0]:总分, res[1]：去除A、P、Po、Cb的得分, res[2]：结果
+                                  List<String> res = await navigateTo(
+                                      context, InputAspectPage());
+                                  if (res != null) {
+                                    AspectModel aspect = AspectModel(
+                                        startTime: startTime,
+                                        totalScore: int.parse(res[0]),
+                                        score: int.parse(res[1]),
+                                        result: res[2],
+                                        endTime: DateTime.now(),
+                                        doctorId: doctor.idCard,
+                                        doctorName: doctor.name);
+                                    if (res != null && res.isNotEmpty) {
+                                      await provider.setResult(context, aspect);
+                                    }
+                                  }
+                                },
+                              ),
                             ),
                             SingleTile(
                               title: "完成时间",
                               value: formatTime(provider.endTime),
                             ),
+                            Visibility(
+                              visible: isAccidentRecourse,
+                              child: SingleTile(
+                                title: "责任医生",
+                                value: provider.doctorName,
+                              ),
+                            )
                           ],
                         );
                       },
                     );
                   } else {
                     return NoExpansionCard(
-                      title: "Aspect评分",
+                      title: "ASPECT评分",
                       trailing: CupertinoActivityIndicator(),
                     );
                   }

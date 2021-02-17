@@ -30,44 +30,12 @@ class SecondLineDoctor extends StatelessWidget {
                   return Consumer<SecondLineDoctorProvider>(
                     builder: (_, provider, __) {
                       return ExpansionCard(
-                        title: "二线信息",
+                        title: "二线医生",
                         children: [
                           // 有通知时间，说明已经通知
                           SingleTile(
                             title: "通知时间",
-                            value: provider.notificationTime == null
-                                ? null
-                                : formatTime(provider.notificationTime),
-                            buttonLabel: "通知",
-                            onTap: () async {
-                              List<String> res = await showModalBottomSheet(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return FutureBuilder(
-                                        future: provider
-                                            .getSecondLineDoctors(context),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            return ListView.builder(
-                                              itemCount: provider
-                                                  .secondLineDoctors.length,
-                                                  itemBuilder: (context, index){
-                                                    return DoctorCard(provider.secondLineDoctors[index]);
-                                                  },
-                                            );
-                                          }else{
-                                            return Center(
-                                              child: CupertinoActivityIndicator(),
-                                            );
-                                          }
-                                        });
-                                  });
-                              if (res != null) {
-                                await provider.setNotificationTime(
-                                    context, res[0], res[1]);
-                              }
-                            },
+                            value: formatTime(Provider.of<VisitRecordProvider>(context, listen: true).createTime),
                           ),
 
                           // 到达时间
@@ -78,18 +46,15 @@ class SecondLineDoctor extends StatelessWidget {
                                 : formatTime(provider.arriveTime),
                             buttonLabel: "到达",
                             onTap: () async {
-                              Doctor doctor = await Provider.of<DoctorProvider>(context, listen: false).user; 
+                              Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user; 
                               if(!permissionHandler(PermissionType.SECOND_LINE_DOCTOR, doctor.department)){
                                   showToast("神经内科权限", context);
                                   return;
                               }
-                              String bangleId = await scan();
-                              String curId = Provider.of<VisitRecordProvider>(
-                                      context,
-                                      listen: false)
-                                  .bangle;
-
-                              if (bangleId != curId) {
+                              // 扫码验证身份
+                              String bangle = await scan();
+                              String curBangle = Provider.of<VisitRecordProvider>(context, listen: false).bangle;
+                              if(bangle != curBangle) {
                                 showToast("患者身份不匹配", context);
                                 return;
                               }

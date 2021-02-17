@@ -1,5 +1,4 @@
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/doctor/doctor_provider.dart';
 import 'package:cyr/providers/patient_detail/ct_provider.dart';
@@ -10,7 +9,6 @@ import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/custom_tile/expansion_card.dart';
 import 'package:cyr/widgets/custom_tile/no_expansion_card.dart';
 import 'package:cyr/widgets/icon/state_icon.dart';
-import 'package:cyr/widgets/image_card/image_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,12 +18,10 @@ class CTCard extends StatelessWidget {
   // 检查患者身份
   Future<bool> _checkBangle(BuildContext context, String curBangleId) async {
     String bangle;
-    try{
-     bangle = await scan();
-    }catch(e){
+    try {
+      bangle = await scan();
+    } catch (e) {}
 
-    }
-  
     if (bangle != curBangleId) {
       showToast("患者身份不匹配", context);
       return false;
@@ -69,22 +65,21 @@ class CTCard extends StatelessWidget {
                                 : formatTime(provider.orderTime),
                             onTap: () async {
                               //检查身份权限
-                              // 获取自己的id
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
                                   .user;
-                              
-                              // 获取主治医生id
-                              String dutyDoctorId = Provider.of<VisitRecordProvider>(context, listen: false).doctorId;
 
-                              if(doctor.idCard != dutyDoctorId){
-                                showToast("需由主治医生操作", context);
+                              // 获取主治医生id
+                              String dutyDoctorId =
+                                  Provider.of<VisitRecordProvider>(context,
+                                          listen: false)
+                                      .doctorId;
+
+                              if (doctor.idCard != dutyDoctorId) {
+                                showToast("急诊科权限", context);
                                 return;
                               }
-                              // 检查患者身份
-                              if (!await _checkBangle(context, curBangleId))
-                                return;
                               // 更新开单时间
                               await provider.setOrderTime(
                                   context, doctor.idCard, doctor.name);
@@ -105,7 +100,7 @@ class CTCard extends StatelessWidget {
                                   .user;
                               if (!permissionHandler(
                                   PermissionType.CT, doctor.department)) {
-                                showToast("该操作只能由影像科进行", context);
+                                showToast("影像科权限", context);
                                 return;
                               }
                               if (!await _checkBangle(context, curBangleId))
@@ -114,64 +109,27 @@ class CTCard extends StatelessWidget {
                                   context, doctor.idCard, doctor.name);
                             },
                           ),
-                          // 图片
-                          Container(
-                            width: double.infinity,
-                            child: Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              runAlignment: WrapAlignment.spaceBetween,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              runSpacing: 2,
-                              children: provider.endTime == null && provider.images.isEmpty
-                                  ? [
-                                      SingleTile(
-                                        title: "结果图片",
-                                        buttonLabel: "上传",
-                                        onTap: () async {
-                                          // 权限校验
-                                          String department =
-                                              Provider.of<DoctorProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .user
-                                                  .department;
-                                          if (!permissionHandler(
-                                              PermissionType.CT, department)) {
-                                            showToast("该操作只能由影像科进行", context);
-                                            return;
-                                          }
-                                          List<String> res = await navigateTo(
-                                              context,
-                                              ChangeNotifierProvider(
-                                                  create:
-                                                      (BuildContext context) =>
-                                                          FilesProvider(),
-                                                  child: UploadImagePage()));
-                                          if (res != null) {
-                                            // 更新图片
-                                            await provider.setImages(
-                                                context, res);
-                                          }
-                                        },
-                                      ),
-                                    ]
-                                  : provider.images
-                                      .map((e) => Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: ImageCard(e),
-                                          ))
-                                      .toList(),
-                            ),
-                          ),
-
                           // 完成时间
                           SingleTile(
                             title: "完成时间",
                             buttonLabel: "完成",
-                            value: formatTime(provider.endTime),
-                          ),
+                            value: provider.endTime == null
+                                ? null
+                                : formatTime(provider.endTime),
+                            onTap: ()async{
+                              Doctor doctor = Provider.of<DoctorProvider>(
+                                      context,
+                                      listen: false)
+                                  .user;
+                              if (!permissionHandler(
+                                  PermissionType.CT, doctor.department)) {
+                                showToast("影像科权限", context);
+                                return;
+                              }
+                              await provider.setEndTime(context);
 
-                          
+                            },
+                          ),
                         ],
                       );
                     },

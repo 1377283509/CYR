@@ -1,0 +1,91 @@
+PODS:
+  - Aspects (1.4.1)
+  - cloudbase_auth (0.0.1):
+    - Aspects
+    - Flutter
+    - WechatOpenSDK
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
+  - device_info (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+  - flutter_local_notifications (0.0.1):
+    - Flutter
+  - image_picker (0.0.1):
+    - Flutter
+  - local_auth (0.0.1):
+    - Flutter
+  - package_info (0.0.1):
+    - Flutter
+  - path_provider (0.0.1):
+    - Flutter
+  - Reachability (3.2)
+  - shared_preferences (0.0.1):
+    - Flutter
+  - url_launcher (0.0.1):
+    - Flutter
+  - WechatOpenSDK (1.8.7.1)
+
+DEPENDENCIES:
+  - cloudbase_auth (from `.symlinks/plugins/cloudbase_auth/ios`)
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - device_info (from `.symlinks/plugins/device_info/ios`)
+  - Flutter (from `Flutter`)
+  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
+  - local_auth (from `.symlinks/plugins/local_auth/ios`)
+  - package_info (from `.symlinks/plugins/package_info/ios`)
+  - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+
+SPEC REPOS:
+  trunk:
+    - Aspects
+    - Reachability
+    - WechatOpenSDK
+
+EXTERNAL SOURCES:
+  cloudbase_auth:
+    :path: ".symlinks/plugins/cloudbase_auth/ios"
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
+  device_info:
+    :path: ".symlinks/plugins/device_info/ios"
+  Flutter:
+    :path: Flutter
+  flutter_local_notifications:
+    :path: ".symlinks/plugins/flutter_local_notifications/ios"
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
+  local_auth:
+    :path: ".symlinks/plugins/local_auth/ios"
+  package_info:
+    :path: ".symlinks/plugins/package_info/ios"
+  path_provider:
+    :path: ".symlinks/plugins/path_provider/ios"
+  shared_preferences:
+    :path: ".symlinks/plugins/shared_preferences/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+
+SPEC CHECKSUMS:
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
+  cloudbase_auth: 95061f2b1e6422ad3def02dfeef6682a5e487a4a
+  connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
+  device_info: d7d233b645a32c40dfdc212de5cf646ca482f175
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
+  local_auth: 25938960984c3a7f6e3253e3f8d962fdd16852bd
+  package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
+  path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
+  WechatOpenSDK: 6a4d1436c15b3b5fe2a0bd383f3046010186da44
+
+PODFILE CHECKSUM: 9c50eea620483b5cbbfa3b7ba38a3880c335d9d8
+
+COCOAPODS: 1.10.1

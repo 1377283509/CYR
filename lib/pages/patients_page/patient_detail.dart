@@ -3,9 +3,7 @@ import 'package:cyr/pages/patients_page/widgets/aspect.dart';
 import 'package:cyr/pages/patients_page/widgets/ct.dart';
 import 'package:cyr/pages/patients_page/widgets/ecg.dart';
 import 'package:cyr/pages/patients_page/widgets/laboratory_examination.dart';
-import 'package:cyr/pages/patients_page/widgets/nihss.dart';
 import 'package:cyr/pages/patients_page/widgets/second_line_doctor.dart';
-import 'package:cyr/pages/patients_page/widgets/visit_info.dart';
 import 'package:cyr/providers/patient_detail/evt_provider.dart';
 import 'package:cyr/providers/patient_detail/patient_detail_provider.dart';
 import 'package:cyr/providers/patient_detail/quility_control_provider.dart';
@@ -19,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'widgets/bangle.dart';
 import 'widgets/bind_doctor.dart';
-import 'widgets/disease_info.dart';
+import 'widgets/ci.dart';
 import 'widgets/evt.dart';
 import 'widgets/ivct.dart';
 import 'widgets/mRS.dart';
@@ -27,6 +25,8 @@ import 'widgets/last_step.dart';
 import 'widgets/patient_info.dart';
 import 'widgets/time_info.dart';
 import 'widgets/vital_signs.dart';
+import 'widgets/disease_info.dart';
+import 'widgets/tia.dart';
 
 // 就诊详情页
 class PatientDetailPage extends StatelessWidget {
@@ -154,15 +154,20 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
                 style: TextStyle(color: Colors.white),
               ),
               onPressed: () {
-                String id = Provider.of<VisitRecordProvider>(context, listen: false).visitRecordModel.id;
-                if(id == null && widget.id == null) {
+                String id =
+                    Provider.of<VisitRecordProvider>(context, listen: false)
+                        .visitRecordModel
+                        .id;
+                if (id == null && widget.id == null) {
                   showToast("加载中", context);
                   return;
                 }
-                navigateTo(context, ChangeNotifierProvider<QuilityControlProvider>(
-                  create: (context) => QuilityControlProvider(),
-                  child: QuilityControlPage(widget.id??id),
-                ));
+                navigateTo(
+                    context,
+                    ChangeNotifierProvider<QuilityControlProvider>(
+                      create: (context) => QuilityControlProvider(),
+                      child: QuilityControlPage(widget.id ?? id),
+                    ));
               },
             )
           ],
@@ -173,8 +178,7 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
             future: visitRecordProvider.getVisitRecord(
                 context, widget.id, widget.bangle),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.data) {
+              if (snapshot.connectionState == ConnectionState.done) {
                 return Container(
                   height: MediaQuery.of(context).size.height,
                   width: double.infinity,
@@ -200,14 +204,14 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
                               // 绑定主治医生
                               BindDoctor(),
 
+                              // 二线医生
+                              SecondLineDoctor(),
+
                               // 患者信息
                               PatientInfoCard(),
 
                               // 发病信息
                               DiseaseInfoCard(),
-
-                              // 就诊信息
-                              VisitInfo(),
 
                               // 生命体征
                               VitalSignsCard(),
@@ -221,36 +225,63 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
                               // CT检查
                               CTCard(),
 
-                              // ASPECT评分
-                              AspectCard(),
-
-                              // 二线医生
-                              SecondLineDoctor(),
-
-                              // NIHSS评估
-                              NIHSSCard(),
-
-                              // mRS评估
-                              MRSCard(),
-
-                              // 是否溶栓
-                              IVCTConfirmCard(),
+                              // 是否缺血性脑卒中
+                              CIConfirmCard(),
 
                               Consumer<VisitRecordProvider>(
                                 builder: (_, provider, __) {
                                   return Visibility(
-                                    visible: provider.isIVCT,
+                                    visible: provider.isCI,
+                                    child: TIAConfirmCard(),
+                                  );
+                                },
+                              ),
+                              
+
+                              // ASPECT评分
+                              Consumer<VisitRecordProvider>(
+                                builder: (_, provider, __) {
+                                  return Visibility(
+                                    visible: provider.isCI,
+                                    child: AspectCard(),
+                                  );
+                                },
+                              ),
+
+                              // mRS评估
+                              Consumer<VisitRecordProvider>(
+                                builder: (_, provider, __) {
+                                  return Visibility(
+                                    visible: provider.isCI,
+                                    child: MRSCard(),
+                                  );
+                                },
+                              ),
+
+                              Consumer<VisitRecordProvider>(
+                                builder: (_, provider, __) {
+                                  return Visibility(
+                                    visible: provider.isCI,
                                     child: IVCTCard(),
                                   );
                                 },
                               ),
 
                               // 血管内治疗
-                              EVTConfirmCard(),
+
                               Consumer<VisitRecordProvider>(
                                 builder: (_, provider, __) {
                                   return Visibility(
-                                    visible: provider.isEVT,
+                                    visible: provider.isCI,
+                                    child: EVTConfirmCard(),
+                                  );
+                                },
+                              ),
+
+                              Consumer<VisitRecordProvider>(
+                                builder: (_, provider, __) {
+                                  return Visibility(
+                                    visible: provider.isEVT && provider.isCI,
                                     child: EVTCard(),
                                   );
                                 },

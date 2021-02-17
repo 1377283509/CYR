@@ -21,7 +21,6 @@ IVCTModel _$IVCTModelFromJson(Map<String, dynamic> json) {
       startTime: json['startTime'] == null
           ? null
           : DateTime.parse(json['startTime'] as String),
-      riskAssessment: json['riskAssessment'] as String,
       medicineInfo: json['medicineInfo'] as String,
       afterNIHSS: json['afterNIHSS'] as String,
       adverseReaction: json['adverseReaction'] as String,

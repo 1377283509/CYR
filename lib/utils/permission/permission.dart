@@ -15,7 +15,9 @@ enum PermissionType {
   // CT
   CT,
   // 二线
-  SECOND_LINE_DOCTOR
+  SECOND_LINE_DOCTOR,
+  ASPECT,
+  CI
 }
 
 // 科室 权限表
@@ -25,9 +27,11 @@ Map<PermissionType, String> departmentPermission = {
   PermissionType.DOCTOR: "急诊科",
   PermissionType.VITAL_SIGNS: "急诊科",
   PermissionType.ECG: "急诊科",
-  PermissionType.LABORATORY_EXAMINATION: "检验科",
+  PermissionType.LABORATORY_EXAMINATION: "急诊科",
   PermissionType.CT: "影像科",
-  PermissionType.SECOND_LINE_DOCTOR: "神经内科"
+  PermissionType.SECOND_LINE_DOCTOR: "神经内科",
+  PermissionType.ASPECT: "神经内科",
+  PermissionType.CI: "神经内科"
 };
 
 bool permissionHandler(PermissionType type, String department) => departmentPermission[type] == department;

@@ -33,7 +33,7 @@ class CloudBaseUtil {
   Future<Doctor> getDoctor() async {
     if (_doctor == null) {
       String res = await login();
-      if(res != "SUCCESS"){
+      if (res != "SUCCESS") {
         return null;
       }
     }
@@ -73,7 +73,6 @@ class CloudBaseUtil {
           .callFunction("doctor", {"\$url": "login", "device": device});
       Map result = Map.of(res.data);
       _doctor = Doctor.fromJson(result["data"]);
-      print(res.data);
       return "SUCCESS";
     } catch (e) {
       return e.toString();

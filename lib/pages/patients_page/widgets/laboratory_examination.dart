@@ -1,8 +1,6 @@
 import 'package:cyr/models/doctor/doctor_model.dart';
-import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/provider_list.dart';
-import 'package:cyr/utils/dialog/show_dialog.dart';
 import 'package:cyr/utils/permission/permission.dart';
 import 'package:cyr/utils/time_format/time_format.dart';
 import 'package:cyr/utils/toast/toast.dart';
@@ -10,7 +8,6 @@ import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/custom_tile/expansion_card.dart';
 import 'package:cyr/widgets/custom_tile/no_expansion_card.dart';
 import 'package:cyr/widgets/icon/state_icon.dart';
-import 'package:cyr/widgets/image_card/image_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'single_tile.dart';
@@ -30,7 +27,7 @@ class LaboratoryExaminationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String curBangleId =
-        Provider.of<VisitRecordProvider>(context, listen: false).bangle;
+        Provider.of<VisitRecordProvider>(context, listen: true).bangle;
     return IntrinsicHeight(
         child: Row(
       children: [
@@ -62,19 +59,19 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                 ? null
                                 : formatTime(provider.bloodTime),
                             onTap: () async {
-                              // 扫描手环
-                              if (!await _checkBangle(context, curBangleId)) {
-                                return;
-                              }
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
                                   .user;
                               // 权限检查
                               if (!permissionHandler(
-                                  PermissionType.DOCTOR, doctor.department)) {
-                                showConfirmDialog(context, "无权限",
-                                    content: "该操作需由急诊科人员进行");
+                                  PermissionType.LABORATORY_EXAMINATION,
+                                  doctor.department)) {
+                                showToast('急诊科权限', context);
+                                return;
+                              }
+                              // 扫描手环
+                              if (!await _checkBangle(context, curBangleId)) {
                                 return;
                               }
                               await provider.startDrawBlood(
@@ -88,10 +85,6 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                 ? null
                                 : formatTime(provider.arriveLaboratoryTime),
                             onTap: () async {
-                              // 校验手环
-                              if (!await _checkBangle(context, curBangleId)) {
-                                return;
-                              }
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
@@ -100,73 +93,37 @@ class LaboratoryExaminationCard extends StatelessWidget {
                               if (!permissionHandler(
                                   PermissionType.LABORATORY_EXAMINATION,
                                   doctor.department)) {
-                                showConfirmDialog(context, "无权限",
-                                    content: "该操作需由检验科人员进行");
+                                showToast('急诊科权限', context);
                                 return;
                               }
+                              // 校验手环
+                              if (!await _checkBangle(context, curBangleId)) {
+                                return;
+                              }
+
                               await provider.setArriveTime(
                                   context, doctor.idCard, doctor.name);
                             },
                           ),
-                          // 图片
-                          Container(
-                            width: double.infinity,
-                            child: Wrap(
-                              alignment: WrapAlignment.spaceBetween,
-                              runAlignment: WrapAlignment.spaceBetween,
-                              crossAxisAlignment: WrapCrossAlignment.center,
-                              runSpacing: 2,
-                              children: provider.endTime == null &&
-                                      provider.images.isEmpty
-                                  ? [
-                                      SingleTile(
-                                        title: "结果图片",
-                                        buttonLabel: "上传",
-                                        onTap: () async {
-                                          // 权限校验
-                                          String department =
-                                              Provider.of<DoctorProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .user
-                                                  .department;
-                                          if (!permissionHandler(
-                                              PermissionType
-                                                  .LABORATORY_EXAMINATION,
-                                              department)) {
-                                            showConfirmDialog(context, "无权限",
-                                                content: "该操作需由检验科人员进行");
-                                            return;
-                                          }
-                                          List<String> res = await navigateTo(
-                                              context,
-                                              ChangeNotifierProvider(
-                                                  create:
-                                                      (BuildContext context) =>
-                                                          FilesProvider(),
-                                                  child: UploadImagePage()));
-                                          print(res);
-                                          if (res != null) {
-                                            // 更新图片
-                                            await provider.setImages(
-                                                context, res);
-                                          }
-                                        },
-                                      ),
-                                    ]
-                                  : provider.images
-                                      .map((e) => Padding(
-                                            padding: const EdgeInsets.all(4.0),
-                                            child: ImageCard(e),
-                                          ))
-                                      .toList(),
-                            ),
-                          ),
-                          // 完成时间
                           SingleTile(
                             title: "完成时间",
-                            value: formatTime(provider.endTime),
+                            value: provider.endTime == null
+                                ? null
+                                : formatTime(provider.endTime),
                             buttonLabel: "完成",
+                            onTap: () async {
+                              Doctor doctor = Provider.of<DoctorProvider>(
+                                      context,
+                                      listen: false)
+                                  .user;
+                              if (!permissionHandler(
+                                  PermissionType.LABORATORY_EXAMINATION,
+                                  doctor.department)) {
+                                showToast('急诊科权限', context);
+                                return;
+                              }
+                              await provider.setEndTime(context);
+                            },
                           ),
                         ],
                       );

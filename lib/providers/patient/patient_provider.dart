@@ -13,6 +13,9 @@ class PatientProvider extends ChangeNotifier {
   List<Patient> _patients = [];
   List<Patient> get patients => _patients;
 
+    int _patientsCount;
+  int get patientCount => _patientsCount;
+
   // 完成的患者
   List<Patient> _finished = [];
   List<Patient> get finished => _finished;
@@ -25,7 +28,6 @@ class PatientProvider extends ChangeNotifier {
           await _cloudBaseUtil.callFunction("visit-record", {
         "\$url": "getAllRecords",
       });
-      print(res.data);
       if (res.data["code"] == 1) {
         List<Patient> list = [];
         res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
@@ -34,7 +36,6 @@ class PatientProvider extends ChangeNotifier {
         showToast(res.data["data"], context);
       }
     } catch (e) {
-      print(e);
       showToast(e.toString(), context);
     }
   }
@@ -57,6 +58,20 @@ class PatientProvider extends ChangeNotifier {
     }
   }
 
+  // 获取患者数
+  Future<void> getPatientsCount()async{
+    print("获取患者");
+    try{
+      CloudBaseResponse res = await _cloudBaseUtil.callFunction("visit-record", {
+        "\$url": "getProcessPatientsCount"
+      });
+      if(res.data["code"] == 1){
+        _patientsCount = res.data["data"] as int;
+        notifyListeners();
+      }
+    }catch(error){
+    }
+  }
 
 
 
@@ -89,6 +104,7 @@ class PatientProvider extends ChangeNotifier {
         "isWakeUpStroke": isWakeUpStroke,
         "diseaseTime": diseaseTime.toString(),
         "wayToHospital": way,
+        "createTime": DateTime.now().toIso8601String()
       });
       if (res.data["code"] == 1) {
         // 发送消息

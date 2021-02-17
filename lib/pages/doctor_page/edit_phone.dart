@@ -12,9 +12,9 @@ class _EditPhonePageState extends State<EditPhonePage> {
   TextEditingController _phoneController = TextEditingController();
   TextEditingController _codeController = TextEditingController();
 
-  bool  isButtonEnable=true;
-  String buttonText='发送验证码';
-  int count=60;
+  bool isButtonEnable = true;
+  String buttonText = '发送验证码';
+  int count = 60;
 
   @override
   void dispose() {
@@ -49,9 +49,10 @@ class _EditPhonePageState extends State<EditPhonePage> {
                       inputType: TextInputType.phone,
                       autoFocus: true,
                       prefix: Icon(Icons.phone),
-                      onSubmitted: (v) {
-                      }),
-                  SizedBox(height: 6,),
+                      onSubmitted: (v) {}),
+                  SizedBox(
+                    height: 6,
+                  ),
                   // 验证码
                   Container(
                     child: Row(
@@ -67,28 +68,30 @@ class _EditPhonePageState extends State<EditPhonePage> {
                               prefix: Icon(Icons.code),
                               onSubmitted: () {}),
                         ),
-                        SizedBox(width: 8,),
-                        Expanded(
-                          flex: 2,
-                          child: SendAuthCodeButton(
-                            beforeAction: (){
-                              return verifyPhone(_phoneController.text);
-                            },
-                            afterAction: (){
-                              // TODO： 发送验证码
-                              print("向${_phoneController.text}发送验证码");
-                            },
-                          )
+                        SizedBox(
+                          width: 8,
                         ),
+                        Expanded(
+                            flex: 2,
+                            child: SendAuthCodeButton(
+                              beforeAction: () {
+                                return verifyPhone(_phoneController.text);
+                              },
+                              afterAction: () {
+                                print("向${_phoneController.text}发送验证码");
+                              },
+                            )),
                       ],
                     ),
                   ),
-                  SizedBox(height: 36,),
+                  SizedBox(
+                    height: 36,
+                  ),
                   // button
                   Container(
                     child: CustomButton(
                       title: "验证",
-                      onTap: (){
+                      onTap: () {
                         // 验证手机号和验证码
                         print("修改手机");
                       },

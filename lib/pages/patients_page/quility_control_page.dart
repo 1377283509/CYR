@@ -171,9 +171,12 @@ class CenterList extends StatelessWidget {
               timePointModel.arriveTime, timePointModel.revascularizationTime),
           referTime: timePointModel.drt));
     return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: list.map((e) => CenterItem(centerItemModel: e)).toList(),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: list.map((e) => CenterItem(centerItemModel: e)).toList(),
+        ),
       ),
     );
   }
@@ -187,7 +190,7 @@ class CenterItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 3),
+      margin: const EdgeInsets.symmetric(horizontal: 2),
       padding: const EdgeInsets.symmetric(horizontal: 6),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -195,9 +198,11 @@ class CenterItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
-              centerItemModel.time == -1?" — ":"${centerItemModel.time}",
+              centerItemModel.time == -1 ? " — " : "${centerItemModel.time}",
               style: TextStyle(
-                  color: centerItemModel.time > centerItemModel.referTime?Colors.red:Colors.green,
+                  color: centerItemModel.time > centerItemModel.referTime
+                      ? Colors.red
+                      : Colors.green,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
@@ -363,7 +368,7 @@ class TimePointItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              time == -1?" — ":"$time",
+              time == -1 ? " — " : "$time",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,

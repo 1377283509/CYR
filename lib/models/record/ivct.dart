@@ -1,6 +1,8 @@
 // 静脉溶栓
 import 'package:json_annotation/json_annotation.dart';
 
+import 'risk_assessment.dart';
+
 part 'ivct.g.dart';
 
 @JsonSerializable()
@@ -20,7 +22,7 @@ class IVCTModel {
   DateTime startTime;
 
   // 风险评估
-  String riskAssessment;
+  RiskAssessmentModel riskAssessment;
 
   // 用药信息
   String medicineInfo;
@@ -42,7 +44,6 @@ class IVCTModel {
     this.wittingUtil,
     this.beforeNIHSS,
     this.startTime,
-    this.riskAssessment,
     this.medicineInfo,
     this.afterNIHSS,
     this.adverseReaction,

@@ -42,8 +42,8 @@ class MRSCard extends StatelessWidget {
           Expanded(
             flex: 1,
             child: LeftIcon(Consumer<MRSProvider>(
-              builder: (_,provider,__){
-                return StateIcon(provider.endTime!=null);
+              builder: (_, provider, __) {
+                return StateIcon(provider.endTime != null);
               },
             )),
           ),
@@ -67,39 +67,58 @@ class MRSCard extends StatelessWidget {
                             onTap: () async {
                               DateTime startTime = DateTime.now();
                               Doctor doctor = Provider.of<DoctorProvider>(
-                                  context,
-                                  listen: false)
+                                      context,
+                                      listen: false)
                                   .user;
+                              String secondLineDoctorId =
+                                  Provider.of<SecondLineDoctorProvider>(context,
+                                          listen: false)
+                                      .secondDoctorId;
+                              if (doctor.idCard != secondLineDoctorId) {
+                                showToast("二线医生权限", context);
+                                return;
+                              }
                               List<String> res = await showModalBottomSheet(
-                                context: context,
-                                builder: (BuildContext context){
-                                  return ListView.separated(
-                                    itemCount: mrsData.length,
-                                    separatorBuilder: (BuildContext context, int index){
-                                      return CustomDivider();
-                                    },
-                                    itemBuilder: (BuildContext context, int index){
-                                      if(index == 0){
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return ListView.separated(
+                                      itemCount: mrsData.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) {
+                                        return CustomDivider();
+                                      },
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        if (index == 0) {
+                                          return ListTile(
+                                            title:
+                                                Text(mrsData[index]["grade"]),
+                                            trailing: const Icon(
+                                              Icons.keyboard_arrow_right,
+                                              color: Colors.grey,
+                                            ),
+                                            onTap: () {
+                                              Navigator.pop(context,
+                                                  [mrsData[index]["grade"]]);
+                                            },
+                                          );
+                                        }
                                         return ListTile(
                                           title: Text(mrsData[index]["grade"]),
-                                          trailing:const Icon(Icons.keyboard_arrow_right, color: Colors.grey,),
-                                          onTap: (){
-                                            Navigator.pop(context,[mrsData[index]["grade"]]);
+                                          subtitle: Text(
+                                              mrsData[index]["description"]),
+                                          trailing: const Icon(
+                                            Icons.keyboard_arrow_right,
+                                            color: Colors.grey,
+                                          ),
+                                          onTap: () {
+                                            Navigator.pop(context,
+                                                [mrsData[index]["grade"]]);
                                           },
                                         );
-                                      }
-                                      return ListTile(
-                                        title: Text(mrsData[index]["grade"]),
-                                        subtitle: Text(mrsData[index]["description"]),
-                                        trailing:const Icon(Icons.keyboard_arrow_right, color: Colors.grey,),
-                                        onTap: (){
-                                          Navigator.pop(context,[mrsData[index]["grade"]]);
-                                        },
-                                      );
-                                    },
-                                  );
-                                }
-                              );
+                                      },
+                                    );
+                                  });
                               // 如果有输入
                               if (res != null && res.length > 0) {
                                 await provider.setResult(context, startTime,
@@ -118,7 +137,7 @@ class MRSCard extends StatelessWidget {
                   );
                 } else {
                   return NoExpansionCard(
-                    title: "NIHSS评分",
+                    title: "mRS评分",
                     trailing: CupertinoActivityIndicator(),
                   );
                 }

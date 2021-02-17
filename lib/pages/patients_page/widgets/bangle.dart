@@ -5,6 +5,7 @@ import 'package:cyr/widgets/custom_tile/no_expansion_card.dart';
 import 'package:cyr/widgets/icon/round_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cyr/utils/time_format/time_format.dart';
 
 class BangleCard extends StatelessWidget {
   @override
@@ -26,13 +27,15 @@ class BangleCard extends StatelessWidget {
                       return IconButton(
                         icon: Icon(Icons.qr_code_scanner),
                         onPressed: () async {
-                            String res = await scan();
+                          String res = await scan();
+                          if (res != null) {
                             await provider.setBangle(context, res);
+                          }
                         },
                       );
                     }
                     return Text(
-                      "已绑定",
+                      "${formatTime(provider.arriveTime)}    已绑定",
                       style: TextStyle(color: Colors.grey),
                     );
                   },

@@ -46,12 +46,8 @@ dev_dependencies:
   connectivity: ^2.0.1
   # 图片选择
   image_picker: ^0.6.7+12
-  # 网络图片缓存
-  cached_network_image: ^2.3.3
   # 二维码扫描和生成
   qrscan: ^0.2.17
-  # 图片压缩
-  flutter_image_compress: ^0.7.0
   # 图表
   syncfusion_flutter_charts: ^18.4.34
   #  CloudBase
@@ -66,8 +62,6 @@ dev_dependencies:
   flutter_svg: ^0.19.1
   # 获取包名
   package_info: ^0.4.3+2
-  # 小红点
-  badges: ^1.1.4
   # 弹窗提示
   toast: ^0.1.5
   # 本地验证

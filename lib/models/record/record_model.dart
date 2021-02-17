@@ -21,10 +21,13 @@ class VisitRecordModel {
   DateTime arriveTime;
   // 就诊时间
   DateTime visitTime;
+  // 创建时间
+  DateTime createTime;
   // 诊断结果
   String result;
-  bool isIVCT;
   bool isEVT;
+  // 受否缺血性脑卒中
+  bool isCI;
   String lastStep;
 
   // 是否TIA
@@ -40,14 +43,15 @@ class VisitRecordModel {
       this.chiefComplaint,
       this.visitTime,
       this.arriveTime,
-        this.lastStep,
-        this.isEVT,
-        this.isIVCT,
+      this.lastStep,
+      this.isCI,
+      this.createTime,
+      this.isEVT,
       this.patientAge,
       this.patientGender,
       this.patientName,
       this.result,
-        this.isTIA,
+      this.isTIA,
       this.bangle,
       this.doctorName,
       this.doctorId});
@@ -64,12 +68,15 @@ class VisitRecordModel {
     if (json["arriveTime"] != null) {
       arriveTime = DateTime.parse(json["arriveTime"]);
     }
+    if (json["createTime"] != null) {
+      createTime = DateTime.parse(json["createTime"]);
+    }
     result = json["result"];
-    isTIA = json["isTIA"];
+    isTIA = json["isTIA"] as bool ?? false;
     lastStep = json["lastStep"];
     isWeekUpStroke = json["isWeekUpStroke"] ?? false;
-    isIVCT = json["isIVCT"] as bool??false;
-    isEVT = json["isEVT"] as bool??false;
+    isEVT = json["isEVT"] as bool ?? false;
+    isCI = json["isCI"] as bool ?? false;
     pastHistory = json["pastHistory"];
     chiefComplaint = json["chiefComplaint"];
     doctorId = json["doctorId"];

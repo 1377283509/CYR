@@ -25,8 +25,8 @@ class _InputAspectPageState extends State<InputAspectPage> {
 
   @override
   void initState() {
-    score = 0;
-    totalScore = 0;
+    score = 10;
+    totalScore = 14;
     _controller = StreamController.broadcast();
     result = "点击对应按钮进行评分";
     _controller.stream.listen((event) {
@@ -185,7 +185,7 @@ class ChoiceItem extends StatefulWidget {
 }
 
 class _ChoiceItemState extends State<ChoiceItem> {
-  bool selected = false;
+  bool selected = true;
 
   @override
   Widget build(BuildContext context) {

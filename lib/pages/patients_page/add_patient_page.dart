@@ -1,5 +1,4 @@
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/pages/doctor_page/doctor_list_page.dart';
 import 'package:cyr/pages/input_page/select_input_page.dart';
 import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/providers/patient/patient_provider.dart';
@@ -119,6 +118,9 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             child: CustomButton(
               loading: _loading,
               onTap: () async {
+                if (_loading == true) {
+                  return;
+                }
                 setState(() {
                   _loading = true;
                 });
@@ -308,7 +310,6 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
                       SingleInputPage(
                         title: "主诉",
                         value: _chiefComplaint,
-                        isOneLine: false,
                       )).then((value) {
                     if (value != null && value.length != 0) {
                       setState(() {
@@ -343,6 +344,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
                 TimeOfDay time = await showTimePicker(
                     cancelText: "取消",
                     confirmText: "确认",
+                    helpText: "选择时间",
                     context: context,
                     initialTime: TimeOfDay.now());
 

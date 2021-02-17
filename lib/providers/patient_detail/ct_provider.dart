@@ -106,28 +106,24 @@ class CTProvider extends ChangeNotifier {
   }
 
   // 更新图片
-  Future<void> setImages(BuildContext context, List<String> images) async {
-    _ctModel.images = images;
+  Future<void> setEndTime(BuildContext context) async {
     _ctModel.endTime = DateTime.now();
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("ct", {
-        "\$url": "setImages",
+        "\$url": "setEndTime",
         "id": _ctModel.id,
-        "images": images,
         "endTime": _ctModel.endTime.toIso8601String()
       });
       print(res);
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
-        _ctModel.images = null;
         _ctModel.endTime = null;
         notifyListeners();
       }
     } catch (e) {
       print(e);
       showToast(e.toString(), context);
-      _ctModel.images = null;
       _ctModel.endTime = null;
       notifyListeners();
     }

@@ -36,6 +36,7 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) => PatientProvider(),
         ),
         ChangeNotifierProvider(
+          lazy: false,
           create: (BuildContext context) => MessageProvider(),
         ),
       ],

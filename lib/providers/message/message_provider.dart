@@ -1,7 +1,9 @@
 import 'package:cyr/models/message/message_model.dart';
+import 'package:cyr/providers/doctor/doctor_provider.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
+import 'package:provider/provider.dart';
 
 class MessageProvider with ChangeNotifier {
   CloudBaseUtil _cloudBase;
@@ -38,4 +40,21 @@ class MessageProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  // 一键已读
+  Future<void> setAllRead(BuildContext context)async{
+    String id = Provider.of<DoctorProvider>(context, listen: false).user.id;
+    try {
+      CloudBaseResponse res = await _cloudBase.callFunction("message", {
+        "\$url": "setAllRead",
+        "id": id
+      });
+      if(res.data["code"]!=1){
+        showToast(res.data["data"], context);
+      }      
+    } catch (e) {
+      showToast(e.toString(), context);
+    }
+  }
+
 }
