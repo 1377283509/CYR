@@ -103,28 +103,24 @@ class LaboratoryExaminationProvider extends ChangeNotifier{
     }
   }
 
-  // 更新图片
-  Future<void> setImages(BuildContext context, List<String> images) async {
-    _laboratoryExamination.images = images;
+  // 更新结束时间
+  Future<void> setEndTime(BuildContext context) async {
     _laboratoryExamination.endTime = DateTime.now();
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("laboratory-examination", {
-        "\$url": "setImages",
+        "\$url": "setEndTime",
         "id": _laboratoryExamination.id,
-        "images": images,
         "endTime": _laboratoryExamination.endTime.toIso8601String()
       });
       print(res);
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
-        _laboratoryExamination.images = null;
         _laboratoryExamination.endTime = null;
         notifyListeners();
       }
     } catch (e) {
       showToast(e.toString(), context);
-      _laboratoryExamination.images = null;
       _laboratoryExamination.endTime = null;
       notifyListeners();
     }

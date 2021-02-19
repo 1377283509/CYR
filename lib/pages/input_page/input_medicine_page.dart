@@ -4,7 +4,7 @@ import 'package:cyr/widgets/buttons/normal_button.dart';
 import 'package:cyr/widgets/form/text_input.dart';
 import 'package:flutter/material.dart';
 
-List<String> medicineList = ["阿替普酶", "尿激酶", "尿激酶原", "替奶普酶", "其它"];
+List<String> medicineList = ["阿替普酶", "尿激酶", "尿激酶原", "替奈普酶", "其它"];
 
 class InputMedicinePage extends StatefulWidget {
   @override
@@ -142,10 +142,16 @@ class _InputMedicinePageState extends State<InputMedicinePage> {
               showToast("请输入药品名", context);
               return;
             }
-            int dosage = int.parse(_dosageController.text);
-            String unit = _unitController.text.isEmpty?"mg":_unitController.text;
-            String info =
-                "$_curMedicine $dosage $unit";
+            String dosageValue = _dosageController.text;
+            int dosage = 50;
+            if (dosageValue != null && dosageValue.trim() != "") {
+              dosage = int.parse(
+                  _dosageController.text.isEmpty ? 50 : _dosageController.text);
+            }
+
+            String unit =
+                _unitController.text.isEmpty ? "mg" : _unitController.text;
+            String info = "$_curMedicine $dosage $unit";
             bool res = await showConfirmDialog(context, "提交确认", content: info);
             if (res) {
               Navigator.pop(context, [info]);

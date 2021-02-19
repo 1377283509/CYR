@@ -10,7 +10,7 @@ import 'widgets/patient_card.dart';
 class PatientsPage extends StatelessWidget {
   _appBar(context) {
     return AppBar(
-      title: Text("所有患者"),
+      title: Text("新到患者"),
       actions: [],
     );
   }

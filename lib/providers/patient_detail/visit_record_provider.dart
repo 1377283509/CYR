@@ -1,4 +1,6 @@
 // 就诊记录
+import 'dart:async';
+
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/utils/cloudbase/cloudbase.dart';
 import 'package:cyr/utils/toast/toast.dart';
@@ -11,6 +13,8 @@ class VisitRecordProvider extends ChangeNotifier {
   VisitRecordModel _visitRecordModel;
   VisitRecordModel get visitRecordModel => _visitRecordModel;
 
+  int _patientsCount;
+  int get patientCount => _patientsCount;
   // 主治医生
   String get doctorId => _visitRecordModel?.doctorId;
   String get doctorName => _visitRecordModel?.doctorName;
@@ -22,11 +26,16 @@ class VisitRecordProvider extends ChangeNotifier {
   // 到院时间
   DateTime get arriveTime => _visitRecordModel?.arriveTime;
 
+  DateTime get createTime => _visitRecordModel?.createTime;
+
   // 手环
   String get bangle => _visitRecordModel?.bangle;
 
-  // 是否进行静脉溶栓
-  bool get isIVCT => _visitRecordModel?.isIVCT;
+  // 是否进行缺血性脑卒中
+  bool get isCI => _visitRecordModel?.isCI;
+
+  // 是否TIA
+  bool get isTIA => _visitRecordModel?.isTIA;
 
   // 是否进行血管内治疗
   bool get isEVT => _visitRecordModel?.isEVT;
@@ -54,7 +63,6 @@ class VisitRecordProvider extends ChangeNotifier {
       }
     } catch (e) {
       showToast(e.toString(), context);
-      print(e);
     }
     return false;
   }
@@ -140,12 +148,12 @@ class VisitRecordProvider extends ChangeNotifier {
   }
 
   // 更新TIA
-  Future<void> setTIA(BuildContext context, bool isTIA) async {
-    _visitRecordModel.isTIA = isTIA;
+  Future<void> setTIA(BuildContext context) async {
+    _visitRecordModel.isTIA = !_visitRecordModel.isTIA;
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("visit-record",
-          {"\$url": "setTIA", "TIA": isTIA, "id": _visitRecordModel.id});
+          {"\$url": "setTIA", "TIA": _visitRecordModel.isTIA, "id": _visitRecordModel.id});
 
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
@@ -160,26 +168,26 @@ class VisitRecordProvider extends ChangeNotifier {
     }
   }
 
-  // 更新IVCT
-  Future<void> setIVCT(BuildContext context) async {
-    _visitRecordModel.isIVCT = !_visitRecordModel.isIVCT;
+  // 更新缺血性脑卒中
+  Future<void> setCI(BuildContext context) async {
+    _visitRecordModel.isCI = !_visitRecordModel.isCI;
     notifyListeners();
     try {
       CloudBaseResponse res =
           await _cloudBaseUtil.callFunction("visit-record", {
-        "\$url": "setIVCT",
-        "isIVCT": _visitRecordModel.isIVCT,
+        "\$url": "setCI",
+        "isCI": _visitRecordModel.isCI,
         "id": _visitRecordModel.id
       });
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
-        _visitRecordModel.isIVCT = !_visitRecordModel.isIVCT;
+        _visitRecordModel.isCI = !_visitRecordModel.isCI;
         notifyListeners();
       }
     } catch (e) {
       print(e);
       showToast(e.toString(), context);
-      _visitRecordModel.isIVCT = !_visitRecordModel.isIVCT;
+      _visitRecordModel.isCI = !_visitRecordModel.isCI;
       notifyListeners();
     }
   }
@@ -232,4 +240,6 @@ class VisitRecordProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+
 }

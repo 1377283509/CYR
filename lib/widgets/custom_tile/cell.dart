@@ -7,11 +7,13 @@ class Cell extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final Color iconColor;
+  final Widget trailling;
 
   const Cell(
       {@required this.title,
       @required this.color,
       @required this.icon,
+      this.trailling,
       this.backgroundColor = Colors.white,
       this.textColor = Colors.black54,
       this.iconColor = Colors.grey});
@@ -33,7 +35,7 @@ class Cell extends StatelessWidget {
             style: TextStyle(
                 color: textColor, fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          trailing: const Icon(
+          trailing: trailling ?? const Icon(
             Icons.keyboard_arrow_right,
             color: Colors.grey,
           )),

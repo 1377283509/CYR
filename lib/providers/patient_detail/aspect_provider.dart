@@ -17,6 +17,7 @@ class AspectProvider extends ChangeNotifier {
   int get score => _aspectModel?.score;
 
   DateTime get endTime => _aspectModel?.endTime;
+  String get doctorName => _aspectModel?.doctorName;
 
   //根据就诊记录获取数据
   Future<void> getDataByVisitRecordId(BuildContext context) async {
@@ -61,7 +62,6 @@ class AspectProvider extends ChangeNotifier {
         notifyListeners();
       }
     } catch (e) {
-      print(e);
       showToast(e.toString(), context);
       _aspectModel = null;
       notifyListeners();

@@ -70,11 +70,13 @@ class Patient {
     isWeekUpStroke = json["isWeekUpStroke"] ?? false;
     doctorId = json["doctorId"];
     doctorName = json["doctorName"];
-    Map patient = json["patient"][0];
-    idCard = patient["idCard"];
-    name = patient["name"];
-    gender = patient["gender"];
-    phone = patient["phone"];
-    age = patient["age"];
+    if (json["patient"] != null) {
+      Map patient = json["patient"][0];
+      idCard = patient["idCard"];
+      name = patient["name"];
+      gender = patient["gender"];
+      phone = patient["phone"];
+      age = patient["age"];
+    }
   }
 }

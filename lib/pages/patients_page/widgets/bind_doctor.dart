@@ -22,7 +22,7 @@ class BindDoctor extends StatelessWidget {
           Expanded(
               flex: 8,
               child: NoExpansionCard(
-                title: "主治医生",
+                title: "急诊医生",
                 trailing: Consumer<VisitRecordProvider>(
                   builder: (_, provider, __) {
                     if (provider.doctorId == null) {
@@ -33,10 +33,9 @@ class BindDoctor extends StatelessWidget {
                                   listen: false)
                               .user;
                           if(!permissionHandler(PermissionType.DOCTOR, doctor.department)){
-                            showToast("无权限", context);
+                            showToast("急诊科权限", context);
                             return;
                           }
-
                           bool res = await showConfirmDialog(
                               context,
                               "主治医生绑定确认",

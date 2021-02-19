@@ -1,8 +1,9 @@
+import 'package:cyr/models/record/risk_assessment.dart';
 import 'package:cyr/pages/input_page/input_medicine_page.dart';
 import 'package:cyr/pages/input_page/input_nihss_page.dart';
+import 'package:cyr/pages/input_page/input_risk_assessment.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/patient_detail/ivct_provider.dart';
-import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
 import 'package:cyr/providers/provider_list.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/dialog/single_input_dialog.dart';
@@ -10,21 +11,23 @@ import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'bool_card.dart';
 import 'single_tile.dart';
 
 class IVCTCard extends StatelessWidget {
-
-  // 权限检查: 判断当前用户是否是手术责任医生
-  bool checkPermission(BuildContext context){
+  // 权限检查: 判断当前用户是否是责任医生
+  bool checkPermission(BuildContext context) {
     // 当前用户
-    String doctorId = Provider.of<DoctorProvider>(
-        context,
-        listen: false)
-        .user.idCard;
-    // 溶栓责任医生
-    String desDoctorId = Provider.of<IVCTProvider>(context, listen: false).doctorId;
-    return doctorId == desDoctorId;
+    String doctorId =
+        Provider.of<DoctorProvider>(context, listen: false).user.idCard;
+    // 二线医生
+    String desDoctorId =
+        Provider.of<SecondLineDoctorProvider>(context, listen: false)
+            .secondDoctorId;
+    if(doctorId == desDoctorId){
+      return true;
+    }
+    showToast("二线医生权限", context);
+    return false;
   }
 
   @override
@@ -53,24 +56,24 @@ class IVCTCard extends StatelessWidget {
                         title: "静脉溶栓",
                         children: [
                           // 风险评估
-                          SingleTile(
-                            title: "风险评估",
-                            value: provider.riskAssessment,
+                          InkWell(
                             onTap: () async {
-                              List<String> res = await showDialog(
-                                context: context,
-                                builder: (BuildContext context){
-                                  return SingleInputDialog(
-                                    label: "风险评估",
-                                  );
-                                }
-                              );
-                              // 如果有输入
-                              if (res != null && res.length > 0) {
+                              if (!checkPermission(context))  return;
+                              List<RiskAssessmentModel> res = await navigateTo(
+                                  context,
+                                  RiskAssessmentPage(provider.riskAssessment));
+                              if (res != null) {
+                                // 保存数据
                                 await provider.setRiskAssessment(
                                     context, res[0]);
                               }
                             },
+                            child: SingleTile(
+                              title: "风险评估",
+                              value: provider.riskAssessment?.appearTime == null
+                                  ? "点击输入"
+                                  : provider.riskAssessment?.appearTime,
+                            ),
                           ),
                           // 开始知情
                           SingleTile(
@@ -80,6 +83,7 @@ class IVCTCard extends StatelessWidget {
                                 ? null
                                 : formatTime(provider.startWitting),
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               await provider.setStartWitting(context);
                             },
                           ),
@@ -91,6 +95,7 @@ class IVCTCard extends StatelessWidget {
                                 ? null
                                 : formatTime(provider.endWitting),
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               await provider.setEndWitting(context);
                             },
                           ),
@@ -100,6 +105,7 @@ class IVCTCard extends StatelessWidget {
                             buttonLabel: "输入",
                             value: provider.beforeNIHSS,
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               List<int> res = await navigateTo(
                                 context,
                                 InputNIHSSPage(DateTime.now()),
@@ -115,8 +121,11 @@ class IVCTCard extends StatelessWidget {
                           SingleTile(
                             title: "溶栓开始",
                             buttonLabel: "开始",
-                            value: provider.startTime==null?null:formatTime(provider.startTime),
+                            value: provider.startTime == null
+                                ? null
+                                : formatTime(provider.startTime),
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               await provider.setStartTime(context);
                             },
                           ),
@@ -126,10 +135,9 @@ class IVCTCard extends StatelessWidget {
                             buttonLabel: "输入",
                             value: provider.medicineInfo,
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               List<String> res = await navigateTo(
-                                context,
-                                InputMedicinePage()
-                              );
+                                  context, InputMedicinePage());
                               // 如果有输入
                               if (res != null && res.length > 0) {
                                 await provider.setMedicineInfo(context, res[0]);
@@ -142,13 +150,13 @@ class IVCTCard extends StatelessWidget {
                             buttonLabel: "输入",
                             value: provider.afterNIHSS,
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               List<int> res = await navigateTo(
-                                context,
-                                InputNIHSSPage(DateTime.now())
-                              );
+                                  context, InputNIHSSPage(DateTime.now()));
                               // 如果有输入
                               if (res != null && res.length > 0) {
-                                await provider.setAfterNIHSS(context, "${res[0]} 分");
+                                await provider.setAfterNIHSS(
+                                    context, "${res[0]} 分");
                               }
                             },
                           ),
@@ -158,17 +166,18 @@ class IVCTCard extends StatelessWidget {
                             buttonLabel: "输入",
                             value: provider.adverseReaction,
                             onTap: () async {
+                              if (!checkPermission(context)) return;
                               List<String> res = await showDialog(
-                                context: context,
-                                builder: (BuildContext context){
-                                  return SingleInputDialog(
-                                    label:"不良反应",
-                                  );
-                                }
-                              );
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return SingleInputDialog(
+                                      label: "不良反应",
+                                    );
+                                  });
                               // 如果有输入
                               if (res != null && res.length > 0) {
-                                   await provider.setAdverseReaction(context, res[0]);
+                                await provider.setAdverseReaction(
+                                    context, res[0]);
                               }
                             },
                           ),
@@ -176,8 +185,11 @@ class IVCTCard extends StatelessWidget {
                           SingleTile(
                             title: "完成时间",
                             buttonLabel: "完成",
-                            value: provider.endTime == null ? null:formatTime(provider.endTime),
-                            onTap: ()async{
+                            value: provider.endTime == null
+                                ? null
+                                : formatTime(provider.endTime),
+                            onTap: () async {
+                              if (!checkPermission(context)) return;
                               await provider.setEndTime(context);
                             },
                           ),
@@ -191,38 +203,6 @@ class IVCTCard extends StatelessWidget {
                     trailing: CupertinoActivityIndicator(),
                   );
                 }
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class IVCTConfirmCard extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Row(
-        children: [
-          Expanded(
-            flex: 1,
-            child: LeftIcon(RoundIcon(Icons.compare_arrows, Colors.orange)),
-          ),
-          Expanded(
-            flex: 8,
-            child: Consumer<VisitRecordProvider>(
-              builder: (_, provider, __) {
-                return NoExpansionCard(
-                  title: "是否进行溶栓",
-                  onTap: () async {
-                    await provider.setIVCT(context);
-                  },
-                  trailing: BoolCard(
-                    state: provider.isIVCT,
-                  ),
-                );
               },
             ),
           ),

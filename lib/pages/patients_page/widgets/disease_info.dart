@@ -3,7 +3,6 @@ import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
 import 'package:cyr/utils/time_format/time_format.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/material.dart';
-
 import 'single_tile.dart';
 import 'package:provider/provider.dart';
 

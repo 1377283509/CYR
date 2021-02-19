@@ -18,8 +18,8 @@ SecondLineDoctorModel _$SecondLineDoctorFromJson(Map<String, dynamic> json) {
       arriveTime: json['arriveTime'] == null
           ? null
           : DateTime.parse(json['arriveTime'] as String),
-      doctorName: json['doctorName'] as String,
-      doctorId: json['doctorId'] as String);
+      doctorName: json['secondDoctorName'] as String,
+      doctorId: json['secondDoctorId'] as String);
 }
 
 Map<String, dynamic> _$SecondLineDoctorToJson(SecondLineDoctorModel instance) =>

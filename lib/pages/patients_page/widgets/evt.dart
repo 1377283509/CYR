@@ -68,26 +68,24 @@ class EVTCard extends StatelessWidget {
   }
 
   bool checkPermission(BuildContext context) {
-    return true;
+    // 二线id
+    String secondDoctorId =
+        Provider.of<SecondLineDoctorProvider>(context, listen: false)
+            .secondDoctorId;
+    // 我的id
+    String id = Provider.of<DoctorProvider>(context, listen: false).user.idCard;
+    return id == secondDoctorId;
   }
 
   Future<bool> checkbangle(BuildContext context) async {
     String bangle = await scan();
-    String curBangle = Provider.of<VisitRecordProvider>(context, listen: false).bangle;
+    String curBangle =
+        Provider.of<VisitRecordProvider>(context, listen: false).bangle;
     if (bangle != curBangle) {
       showToast("患者身份不匹配", context);
       return false;
     }
     return true;
-  }
-
-  Future<void> eventHandle(BuildContext context, Future callback) async {
-    if (!checkPermission(context)) {
-      showToast("无权限", context);
-      return;
-    }
-    print("执行回调");
-    await callback;
   }
 
   // 开始知情
@@ -100,7 +98,11 @@ class EVTCard extends StatelessWidget {
             ? null
             : formatTime(provider.startWitting),
         onTap: () async {
-          await eventHandle(context, provider.setStartWitting(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setStartWitting(context);
         },
       );
     });
@@ -116,7 +118,11 @@ class EVTCard extends StatelessWidget {
             ? null
             : formatTime(provider.endWitting),
         onTap: () async {
-          await eventHandle(context, provider.setEndWitting(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setEndWitting(context);
         },
       );
     });
@@ -130,10 +136,18 @@ class EVTCard extends StatelessWidget {
         value: provider.beforeNIHSS,
         buttonLabel: "输入",
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           List<int> res =
               await navigateTo(context, InputNIHSSPage(DateTime.now()));
           // 如果有输入
           if (res != null && res.length > 0) {
+            if (!checkPermission(context)) {
+              showToast("二线医生权限", context);
+              return;
+            }
             await provider.setBeforeNIHSS(context, "${res[0]} 分");
           }
         },
@@ -151,9 +165,13 @@ class EVTCard extends StatelessWidget {
             ? null
             : formatTime(provider.arriveTime),
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           bool res = await checkbangle(context);
           if (res) {
-            await eventHandle(context, provider.setArriveTime(context));
+            await provider.setArriveTime(context);
           }
         },
       );
@@ -169,8 +187,12 @@ class EVTCard extends StatelessWidget {
         value:
             provider.startTime == null ? null : formatTime(provider.startTime),
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           if (await checkbangle(context)) {
-            await eventHandle(context, provider.setStartTime(context));
+            await provider.setStartTime(context);
           }
         },
       );
@@ -187,7 +209,11 @@ class EVTCard extends StatelessWidget {
             ? null
             : formatTime(provider.assetsTime),
         onTap: () async {
-          await eventHandle(context, provider.setAssetsTime(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setAssetsTime(context);
         },
       );
     });
@@ -203,7 +229,11 @@ class EVTCard extends StatelessWidget {
             : formatTime(provider.punctureTime),
         buttonLabel: "开始",
         onTap: () async {
-          await eventHandle(context, provider.setPunctureTime(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setPunctureTime(context);
         },
       );
     });
@@ -219,7 +249,11 @@ class EVTCard extends StatelessWidget {
             : formatTime(provider.radiographyTime),
         buttonLabel: "完成",
         onTap: () async {
-          await eventHandle(context, provider.setRadiographyTime(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setRadiographyTime(context);
         },
       );
     });
@@ -237,9 +271,14 @@ class EVTCard extends StatelessWidget {
                 : "否",
         buttonLabel: "选择",
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           bool res = await showConfirmDialog(context, "仅造影",
               confirmLabel: "是", cancelLabel: "否");
-          await eventHandle(context, provider.setOnlyRadiography(context, res));
+
+          await provider.setOnlyRadiography(context, res);
         },
       );
     });
@@ -261,6 +300,10 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "选择",
         value: provider.methods,
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           List<String> res = await showModalBottomSheet<List<String>>(
               context: context,
               builder: (BuildContext context) {
@@ -286,7 +329,7 @@ class EVTCard extends StatelessWidget {
                 );
               });
           if (res != null) {
-            await eventHandle(context, provider.setMethods(context, res[0]));
+            await provider.setMethods(context, res[0]);
           }
         },
       );
@@ -303,8 +346,11 @@ class EVTCard extends StatelessWidget {
             ? null
             : formatTime(provider.revascularizationTime),
         onTap: () async {
-          await eventHandle(
-              context, provider.setRevascularizationTime(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setRevascularizationTime(context);
         },
       );
     });
@@ -318,7 +364,11 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "确认",
         value: provider.endTime == null ? null : formatTime(provider.endTime),
         onTap: () async {
-          await eventHandle(context, provider.setEndTime(context));
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
+          await provider.setEndTime(context);
         },
       );
     });
@@ -340,6 +390,10 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "选择",
         value: provider.mTICI,
         onTap: () async {
+          if (!checkPermission(context)) {
+              showToast("二线医生权限", context);
+              return;
+            }
           List<String> res = await showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {
@@ -363,7 +417,7 @@ class EVTCard extends StatelessWidget {
                 );
               });
           if (res != null) {
-            await eventHandle(context, provider.setMTICI(context, res[0]));
+            await provider.setMTICI(context, res[0]);
           }
         },
       );
@@ -378,6 +432,10 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "输入",
         value: provider.result,
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           List<String> res = await showDialog(
               context: context,
               builder: (BuildContext context) {
@@ -402,6 +460,10 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "输入",
         value: provider.afterNIHSS,
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           List<int> res =
               await navigateTo(context, InputNIHSSPage(DateTime.now()));
           // 如果有输入
@@ -421,6 +483,10 @@ class EVTCard extends StatelessWidget {
         buttonLabel: "输入",
         value: provider.adverseReaction,
         onTap: () async {
+          if (!checkPermission(context)) {
+            showToast("二线医生权限", context);
+            return;
+          }
           List<String> res = await showDialog(
               context: context,
               builder: (BuildContext context) {

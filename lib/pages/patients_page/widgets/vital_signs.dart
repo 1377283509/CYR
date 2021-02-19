@@ -76,8 +76,18 @@ class VitalSignsWidget extends StatelessWidget {
     return null;
   }
 
+  bool checkPermission(BuildContext context, String department) {
+    if (!permissionHandler(PermissionType.VITAL_SIGNS, department)) {
+      showToast("急诊科权限", context);
+      return false;
+    }
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Doctor doctor =
+                      Provider.of<DoctorProvider>(context, listen: false).user;
     return Container(
       child: Consumer<VitalSignsProvider>(
         builder: (_, provider, __) {
@@ -92,6 +102,8 @@ class VitalSignsWidget extends StatelessWidget {
                     : formatTime(provider.startTime),
                 buttonLabel: "开始",
                 onTap: () async {
+                  // 校验权限
+                  if (!checkPermission(context, doctor.department)) return;
                   // 手环二维码校验
                   // 获取患者手环id
                   String bangleId = await scan();
@@ -99,18 +111,11 @@ class VitalSignsWidget extends StatelessWidget {
                   String curBangleId =
                       Provider.of<VisitRecordProvider>(context, listen: false)
                           .bangle;
-                  if (bangleId != curBangleId) {
+                  if (curBangleId != null && bangleId != curBangleId) {
                     showToast("患者信息不匹配", context);
                     return;
                   }
-                  Doctor doctor =
-                      Provider.of<DoctorProvider>(context, listen: false).user;
-                  // 校验权限
-                  if (!permissionHandler(
-                      PermissionType.VITAL_SIGNS, doctor.department)) {
-                    showConfirmDialog(context, "无权限", content: "仅急诊科医生可修改");
-                    return;
-                  }
+
                   // 更新开始时间
                   await provider.setDoctor(context, doctor.idCard, doctor.name);
                 },
@@ -123,14 +128,8 @@ class VitalSignsWidget extends StatelessWidget {
                     ? provider.bloodSugar
                     : "${provider.bloodSugar}",
                 onTap: () async {
-                  String doctorId =
-                      Provider.of<DoctorProvider>(context, listen: false)
-                          .user
-                          .idCard;
-                  if (doctorId != provider.vitalSigns.doctorId) {
-                    showConfirmDialog(context, "无权限", content: "该信息需由主治医生修改");
-                    return;
-                  }
+                 // 校验权限
+                  if (!checkPermission(context, doctor.department)) return;
                   String res = await getInputValue(
                       context, "血糖", "单位：mmol/L", TextInputType.number);
                   // 如果有输入
@@ -145,14 +144,8 @@ class VitalSignsWidget extends StatelessWidget {
                     ? provider.bloodPressure
                     : "${provider.bloodPressure}",
                 onTap: () async {
-                  String doctorId =
-                      Provider.of<DoctorProvider>(context, listen: false)
-                          .user
-                          .idCard;
-                  if (doctorId != provider.vitalSigns.doctorId) {
-                    showConfirmDialog(context, "无权限", content: "该信息需由主治医生修改");
-                    return;
-                  }
+                  // 校验权限
+                  if (!checkPermission(context, doctor.department)) return;
                   String res = await getInputValue(
                       context, "血压", "收缩压/舒张压 mmHg", TextInputType.number);
                   // 如果有输入
@@ -167,14 +160,8 @@ class VitalSignsWidget extends StatelessWidget {
                     ? provider.weight
                     : "${provider.weight}",
                 onTap: () async {
-                  String doctorId =
-                      Provider.of<DoctorProvider>(context, listen: false)
-                          .user
-                          .idCard;
-                  if (doctorId != provider.vitalSigns.doctorId) {
-                    showConfirmDialog(context, "无权限", content: "该信息需由主治医生修改");
-                    return;
-                  }
+                  // 校验权限
+                  if (!checkPermission(context, doctor.department)) return;
                   String res = await getInputValue(
                       context, "体重", "单位：kg", TextInputType.number);
                   if (res != null) {
@@ -188,19 +175,9 @@ class VitalSignsWidget extends StatelessWidget {
                     ? null
                     : formatTime(vitalSigns.endTime),
                 onTap: () async {
-                  String doctorId =
-                      Provider.of<DoctorProvider>(context, listen: false)
-                          .user
-                          .idCard;
-                  if (doctorId != provider.vitalSigns.doctorId) {
-                    showConfirmDialog(context, "无权限", content: "该信息需由主治医生修改");
-                    return;
-                  }
-                  bool res = await showConfirmDialog(context, "确认完成吗?",
-                      content: "一旦确认，将不可更改");
-                  if (res) {
-                    await provider.setEndTime(context);
-                  }
+                  // 校验权限
+                  if (!checkPermission(context, doctor.department)) return;
+                  await provider.setEndTime(context);
                 },
                 buttonLabel: "完成",
               ),

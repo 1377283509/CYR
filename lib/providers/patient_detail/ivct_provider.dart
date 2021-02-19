@@ -1,13 +1,13 @@
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/models/record/ivct.dart';
+import 'package:cyr/models/record/risk_assessment.dart';
 import 'package:cyr/providers/doctor/doctor_provider.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
 import 'package:provider/provider.dart';
 
-class IVCTProvider extends ChangeNotifier{
-
+class IVCTProvider extends ChangeNotifier {
   final String visitRecordId;
   IVCTProvider(this.visitRecordId);
 
@@ -22,7 +22,6 @@ class IVCTProvider extends ChangeNotifier{
   DateTime get startTime => _ivctModel?.startTime;
   DateTime get endTime => _ivctModel?.endTime;
 
-
   String get beforeNIHSS => _ivctModel?.beforeNIHSS;
   String get afterNIHSS => _ivctModel?.afterNIHSS;
 
@@ -31,7 +30,7 @@ class IVCTProvider extends ChangeNotifier{
   // 用药信息
   String get medicineInfo => _ivctModel?.medicineInfo;
   // 风险评估
-  String get riskAssessment => _ivctModel?.riskAssessment;
+  RiskAssessmentModel get riskAssessment => _ivctModel?.riskAssessment;
 
   // 根据就诊记录获取详情
   Future<void> getIVCT(BuildContext context) async {
@@ -41,32 +40,36 @@ class IVCTProvider extends ChangeNotifier{
         "visitRecordId": visitRecordId,
       });
       if (res.data["code"] == 1) {
-        _ivctModel = IVCTModel.fromJson(res.data["data"]);
+        _ivctModel = IVCTModel.fromJson(res.data["data"]["ivct"]);
+        RiskAssessmentModel riskAssessmentModel =
+            RiskAssessmentModel.fromJson(res.data["data"]["risk"]);
+        _ivctModel.riskAssessment = riskAssessmentModel;
         notifyListeners();
       } else {
         showToast(res.data["data"], context);
       }
     } catch (e) {
-      print(e);
       showToast(e.toString(), context);
     }
   }
 
   // 更新风险评估
-  Future<void> setRiskAssessment(BuildContext context, String result) async {
-    _ivctModel.riskAssessment = result;
-    Doctor doctor = Provider.of<DoctorProvider>(context,listen: false).user;
-  
+  Future<void> setRiskAssessment(
+      BuildContext context, RiskAssessmentModel riskAssessment) async {
+    Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
+    _ivctModel.riskAssessment = riskAssessment;
     notifyListeners();
+    print(_ivctModel.riskAssessment.id);
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("ivct", {
         "\$url": "setRiskAssessment",
-        "riskAssessment": riskAssessment,
+        "riskAssessment": riskAssessment.toJson(),
+        "riskAssessmentId": _ivctModel.riskAssessment.id,
         "id": _ivctModel.id,
         "doctorId": doctor.idCard,
         "doctorName": doctor.name
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.riskAssessment = null;
         notifyListeners();
@@ -88,7 +91,7 @@ class IVCTProvider extends ChangeNotifier{
         "startWitting": _ivctModel.startWitting.toIso8601String(),
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.startWitting = null;
         notifyListeners();
@@ -110,7 +113,7 @@ class IVCTProvider extends ChangeNotifier{
         "endWitting": _ivctModel.endWitting.toIso8601String(),
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.endWitting = null;
         notifyListeners();
@@ -123,7 +126,7 @@ class IVCTProvider extends ChangeNotifier{
   }
 
   // 更新前NIHSS评分
-  Future<void> setBeforeNIHSS(BuildContext context, String result)async{
+  Future<void> setBeforeNIHSS(BuildContext context, String result) async {
     _ivctModel.beforeNIHSS = result;
     notifyListeners();
     try {
@@ -132,7 +135,7 @@ class IVCTProvider extends ChangeNotifier{
         "beforeNIHSS": result,
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.beforeNIHSS = null;
         notifyListeners();
@@ -145,7 +148,7 @@ class IVCTProvider extends ChangeNotifier{
   }
 
   // 更新后NIHSS评分
-  Future<void> setAfterNIHSS(BuildContext context, String result)async{
+  Future<void> setAfterNIHSS(BuildContext context, String result) async {
     _ivctModel.afterNIHSS = result;
     notifyListeners();
     try {
@@ -154,7 +157,7 @@ class IVCTProvider extends ChangeNotifier{
         "afterNIHSS": result,
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.afterNIHSS = null;
         notifyListeners();
@@ -176,7 +179,7 @@ class IVCTProvider extends ChangeNotifier{
         "startTime": _ivctModel.startTime.toIso8601String(),
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.startTime = null;
         notifyListeners();
@@ -198,7 +201,7 @@ class IVCTProvider extends ChangeNotifier{
         "medicineInfo": _ivctModel.medicineInfo,
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.medicineInfo = null;
         notifyListeners();
@@ -220,7 +223,7 @@ class IVCTProvider extends ChangeNotifier{
         "adverseReaction": _ivctModel.adverseReaction,
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.adverseReaction = null;
         notifyListeners();
@@ -242,7 +245,7 @@ class IVCTProvider extends ChangeNotifier{
         "endTime": _ivctModel.endTime.toIso8601String(),
         "id": _ivctModel.id,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _ivctModel.endTime = null;
         notifyListeners();

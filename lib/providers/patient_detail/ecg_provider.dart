@@ -68,26 +68,24 @@ class ECGProvider extends ChangeNotifier {
     }
   }
 
-  // 更新图片
-  Future<void> setImages(BuildContext context, List<String> images) async {
+  // 更新完成时间
+  Future<void> setEndTime(BuildContext context) async {
     _ecgModel.endTime = DateTime.now();
-    _ecgModel.images = images;
     notifyListeners();
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("ecg", {
-        "\$url": "setImages",
-        "images": images,
+        "\$url": "setEndTime",
         "endTime": _ecgModel.endTime.toIso8601String(),
         "id": _ecgModel.id,
       });
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
-        _ecgModel.images = null;
+        _ecgModel.endTime = null;
         notifyListeners();
       }
     } catch (e) {
       print(e);
-      _ecgModel.images = null;
+      _ecgModel.endTime = null;
       notifyListeners();
     }
   }

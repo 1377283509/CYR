@@ -11,7 +11,7 @@ import 'package:cyr/providers/provider_list.dart';
 class FinishedPatientsPage extends StatelessWidget {
   _appBar(context) {
     return AppBar(
-      title: Text("历史患者"),
+      title: Text("结束患者"),
       actions: [],
     );
   }
@@ -196,3 +196,7 @@ class PatientCard extends StatelessWidget {
     );
   }
 }
+
+
+
+

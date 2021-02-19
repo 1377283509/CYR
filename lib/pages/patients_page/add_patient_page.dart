@@ -119,6 +119,9 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             child: CustomButton(
               loading: _loading,
               onTap: () async {
+                if(_loading == true){
+                  return;
+                }
                 setState(() {
                   _loading = true;
                 });
