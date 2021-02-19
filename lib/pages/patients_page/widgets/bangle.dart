@@ -27,7 +27,7 @@ class BangleCard extends StatelessWidget {
                       return IconButton(
                         icon: Icon(Icons.qr_code_scanner),
                         onPressed: () async {
-                          String res = await scan();
+                          String res = await scan(context);
                           if (res != null) {
                             await provider.setBangle(context, res);
                           }

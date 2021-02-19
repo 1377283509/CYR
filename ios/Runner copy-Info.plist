@@ -43,9 +43,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-	<string>扫码需要申请您的相机权限</string>
-	<key>io.flutter.embedded_views_preview</key>
-	<string>YES</string>
 </dict>
 </plist>

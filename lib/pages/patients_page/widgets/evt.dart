@@ -78,7 +78,7 @@ class EVTCard extends StatelessWidget {
   }
 
   Future<bool> checkbangle(BuildContext context) async {
-    String bangle = await scan();
+    String bangle = await scan(context);
     String curBangle =
         Provider.of<VisitRecordProvider>(context, listen: false).bangle;
     if (bangle != curBangle) {
@@ -391,9 +391,9 @@ class EVTCard extends StatelessWidget {
         value: provider.mTICI,
         onTap: () async {
           if (!checkPermission(context)) {
-              showToast("二线医生权限", context);
-              return;
-            }
+            showToast("二线医生权限", context);
+            return;
+          }
           List<String> res = await showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {

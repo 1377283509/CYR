@@ -19,7 +19,7 @@ class CTCard extends StatelessWidget {
   Future<bool> _checkBangle(BuildContext context, String curBangleId) async {
     String bangle;
     try {
-      bangle = await scan();
+      bangle = await scan(context);
     } catch (e) {}
 
     if (bangle != curBangleId) {
@@ -116,7 +116,7 @@ class CTCard extends StatelessWidget {
                             value: provider.endTime == null
                                 ? null
                                 : formatTime(provider.endTime),
-                            onTap: ()async{
+                            onTap: () async {
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
@@ -127,7 +127,6 @@ class CTCard extends StatelessWidget {
                                 return;
                               }
                               await provider.setEndTime(context);
-
                             },
                           ),
                         ],

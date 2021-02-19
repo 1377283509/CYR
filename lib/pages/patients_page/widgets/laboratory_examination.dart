@@ -17,7 +17,7 @@ class LaboratoryExaminationCard extends StatelessWidget {
   // 校验手环
   // [curId]: 当前患者手环Id
   Future<bool> _checkBangle(BuildContext context, String curId) async {
-    String bangleId = await scan();
+    String bangleId = await scan(context);
     if (curId != bangleId) {
       showToast("患者身份不匹配", context);
     }

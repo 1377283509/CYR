@@ -86,8 +86,7 @@ class VitalSignsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Doctor doctor =
-                      Provider.of<DoctorProvider>(context, listen: false).user;
+    Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
     return Container(
       child: Consumer<VitalSignsProvider>(
         builder: (_, provider, __) {
@@ -106,7 +105,7 @@ class VitalSignsWidget extends StatelessWidget {
                   if (!checkPermission(context, doctor.department)) return;
                   // 手环二维码校验
                   // 获取患者手环id
-                  String bangleId = await scan();
+                  String bangleId = await scan(context);
                   // 获取当前患者手环id
                   String curBangleId =
                       Provider.of<VisitRecordProvider>(context, listen: false)
@@ -128,7 +127,7 @@ class VitalSignsWidget extends StatelessWidget {
                     ? provider.bloodSugar
                     : "${provider.bloodSugar}",
                 onTap: () async {
-                 // 校验权限
+                  // 校验权限
                   if (!checkPermission(context, doctor.department)) return;
                   String res = await getInputValue(
                       context, "血糖", "单位：mmol/L", TextInputType.number);

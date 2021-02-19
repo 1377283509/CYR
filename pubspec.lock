@@ -583,6 +583,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.10.0"
+  permission_handler:
+    dependency: "direct dev"
+    description:
+      name: permission_handler
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "5.1.0+2"
+  permission_handler_platform_interface:
+    dependency: transitive
+    description:
+      name: permission_handler_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.2"
   petitparser:
     dependency: transitive
     description:
@@ -653,6 +667,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.2.22"
+  scan:
+    dependency: "direct dev"
+    description:
+      name: scan
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.6"
   shared_preferences:
     dependency: "direct dev"
     description:
