@@ -57,7 +57,7 @@ class EctCard extends StatelessWidget {
                           onTap: () async {
                             if(!checkPermission(context, doctor.department)) return;
                             // 扫描手环Id
-                            String bangleId = await scan();
+                            String bangleId = await scan(context);
                             // 获取患者手环Id
                             String curBangleId =
                                 Provider.of<VisitRecordProvider>(context,

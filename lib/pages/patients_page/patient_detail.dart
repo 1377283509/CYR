@@ -184,11 +184,17 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
                   width: double.infinity,
                   child: Column(
                     children: [
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: TimeInfoCard(),
+                      Visibility(
+                        visible: Provider.of<VisitRecordProvider>(context,
+                                    listen: true)
+                                .lastStep ==
+                            null,
+                        child: Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: TimeInfoCard(),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -236,7 +242,6 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
                                   );
                                 },
                               ),
-                              
 
                               // ASPECT评分
                               Consumer<VisitRecordProvider>(

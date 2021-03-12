@@ -1,5 +1,4 @@
 import 'package:cyr/config/config_list.dart';
-import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/custom_tile/navigate_tile.dart';
 import 'package:flutter/material.dart';
@@ -11,21 +10,6 @@ class DoctorCard extends StatelessWidget {
   final Doctor doctor;
   const DoctorCard(this.doctor, {this.isCallPhone = false, Key key})
       : super(key: key);
-
-  _editPhone(BuildContext context) async {
-    // 检测是否支持本地验证
-    if (!await canUseLocalAuth()) {
-      showToast("当前设备不支持本地验证，请联系管理员进行修改", context);
-      return;
-    }
-    bool res = await localAuth();
-    // 验证成功修改手机号
-    if (res) {
-      navigateTo(context, EditPhonePage());
-    } else {
-      showToast("身份验证失败", context);
-    }
-  }
 
   _callPhone(String phone) async {
     if (phone != null) {
@@ -57,9 +41,7 @@ class DoctorCard extends StatelessWidget {
                     )),
                 title: Text(
                   doctor.name,
-                  style: const TextStyle(
-                    fontSize: 16,
-                      letterSpacing: 1),
+                  style: const TextStyle(fontSize: 16, letterSpacing: 1),
                 ),
                 subtitle: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -76,12 +58,6 @@ class DoctorCard extends StatelessWidget {
                     ),
                     Text("${doctor.age}岁"),
                   ],
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.qr_code),
-                  onPressed: () async {
-                    showQrCode(context, doctor.id);
-                  },
                 ),
               ),
             ),
@@ -105,9 +81,7 @@ class DoctorCard extends StatelessWidget {
             // 电话
             InkWell(
               onTap: () async {
-                isCallPhone
-                    ? await _callPhone(doctor.phone)
-                    : await _editPhone(context);
+                await _callPhone(doctor.phone);
               },
               child: NavigateTile(
                 icon: const Icon(

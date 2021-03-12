@@ -6,3 +6,9 @@ launchPhone(String phone) async {
     await launch(url);
   }
 }
+
+launchUrl(String url)async{
+  if(await canLaunch(url)){
+    await launch(url);
+  }
+}

@@ -13,6 +13,8 @@ class InputTextTile extends StatefulWidget {
   final Function onChanged;
   final TextInputType inputType;
   final bool autoFocus;
+  final bool isObscure;
+  final bool readOnly;
 
   InputTextTile(
       {@required this.controller,
@@ -24,7 +26,9 @@ class InputTextTile extends StatefulWidget {
       this.autoFocus = false,
       this.inputType = TextInputType.text,
       this.onSubmitted,
-      this.onChanged});
+      this.onChanged,
+      this.isObscure = false,
+      this.readOnly = false});
 
   @override
   _InputTextTileState createState() => _InputTextTileState();
@@ -34,10 +38,12 @@ class _InputTextTileState extends State<InputTextTile> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      readOnly: widget.readOnly,
       autofocus: widget.autoFocus,
       maxLines: 1,
-      onChanged: (v){
-        if(widget.onChanged != null){
+      obscureText: widget.isObscure,
+      onChanged: (v) {
+        if (widget.onChanged != null) {
           widget.onChanged(v);
         }
       },
@@ -100,11 +106,12 @@ class InputTextArea extends StatefulWidget {
   final String label;
   final bool autoFocus;
 
-  InputTextArea(
-      {@required this.controller,
-      this.placeHolder = "",
-      this.label = "",
-      this.autoFocus = false,});
+  InputTextArea({
+    @required this.controller,
+    this.placeHolder = "",
+    this.label = "",
+    this.autoFocus = false,
+  });
 
   @override
   _InputTextAreaState createState() => _InputTextAreaState();

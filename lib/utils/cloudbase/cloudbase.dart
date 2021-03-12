@@ -29,11 +29,15 @@ class CloudBaseUtil {
   CloudBaseDatabase get db => _db;
 
   Doctor _doctor;
+  Doctor get doctor => _doctor;
+
+  bool _enableRegiste = false;
+  bool get enableRegister => _enableRegiste;
 
   Future<Doctor> getDoctor() async {
     if (_doctor == null) {
       String res = await login();
-      if(res != "SUCCESS"){
+      if (res != "SUCCESS") {
         return null;
       }
     }
@@ -63,17 +67,18 @@ class CloudBaseUtil {
   }
 
   Future<String> login() async {
+    print("login with device code");
     // 登录
     try {
       if (await _auth.getAuthState() == null) {
         await _auth.signInAnonymously();
       }
       String device = await getDeviceCode();
-      CloudBaseResponse res = await _cloud
-          .callFunction("doctor", {"\$url": "login", "device": device});
+      CloudBaseResponse res = await _cloud.callFunction(
+          "doctor", {"\$url": "loginWithDeviceCode", "device": device});
       Map result = Map.of(res.data);
+      _enableRegiste = result["enableRegiste"] as bool;
       _doctor = Doctor.fromJson(result["data"]);
-      print(res.data);
       return "SUCCESS";
     } catch (e) {
       return e.toString();
@@ -86,8 +91,8 @@ class CloudBaseUtil {
     return await _cloud.callFunction(name, params);
   }
 
-  // 上传文件
-  Future upLoadFile(String filePath, Function process) async {
+  // 上传图片
+  Future upLoadImage(String filePath, Function process) async {
     String cloudPath = "images/" + filePath.split("/").last;
     CloudBaseStorageRes<UploadRes> res = await _storage.uploadFile(
         cloudPath: cloudPath, filePath: filePath, onProcess: process);

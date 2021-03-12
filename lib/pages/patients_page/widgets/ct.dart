@@ -19,7 +19,7 @@ class CTCard extends StatelessWidget {
   Future<bool> _checkBangle(BuildContext context, String curBangleId) async {
     String bangle;
     try {
-      bangle = await scan();
+      bangle = await scan(context);
     } catch (e) {}
 
     if (bangle != curBangleId) {

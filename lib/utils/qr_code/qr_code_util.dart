@@ -1,18 +1,15 @@
-import 'dart:typed_data';
-import 'package:qrscan/qrscan.dart' as qrscan;
+import 'package:cyr/pages/qr_scan_page/qr_scan_page.dart';
+import 'package:cyr/utils/util_list.dart';
+import 'package:flutter/material.dart';
 
 // 扫码
-Future<String> scan() async {
+Future<String> scan(BuildContext context) async {
   try {
-    String res = await qrscan.scan();
-    return res;
+    List<String> res = await navigateTo(context, ScanPage());
+    if (res == null || res.length == 0) return null;
+    return res[0];
   } catch (e) {
-    return null;
+    print(e);
   }
-}
-
-// 生成二维码
-Future<Uint8List> generateQrCode(String content) async {
-  Uint8List res = await qrscan.generateBarCode(content);
-  return res;
+  return null;
 }

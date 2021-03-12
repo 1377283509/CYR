@@ -152,8 +152,12 @@ class VisitRecordProvider extends ChangeNotifier {
     _visitRecordModel.isTIA = !_visitRecordModel.isTIA;
     notifyListeners();
     try {
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction("visit-record",
-          {"\$url": "setTIA", "TIA": _visitRecordModel.isTIA, "id": _visitRecordModel.id});
+      CloudBaseResponse res = await _cloudBaseUtil.callFunction(
+          "visit-record", {
+        "\$url": "setTIA",
+        "TIA": _visitRecordModel.isTIA,
+        "id": _visitRecordModel.id
+      });
 
       if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
@@ -173,8 +177,8 @@ class VisitRecordProvider extends ChangeNotifier {
     _visitRecordModel.isCI = !_visitRecordModel.isCI;
     notifyListeners();
     try {
-      CloudBaseResponse res =
-          await _cloudBaseUtil.callFunction("visit-record", {
+      CloudBaseResponse res = await _cloudBaseUtil.callFunction(
+          "visit-record", {
         "\$url": "setCI",
         "isCI": _visitRecordModel.isCI,
         "id": _visitRecordModel.id
@@ -240,6 +244,4 @@ class VisitRecordProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
-
 }

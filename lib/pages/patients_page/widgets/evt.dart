@@ -78,7 +78,7 @@ class EVTCard extends StatelessWidget {
   }
 
   Future<bool> checkbangle(BuildContext context) async {
-    String bangle = await scan();
+    String bangle = await scan(context);
     String curBangle =
         Provider.of<VisitRecordProvider>(context, listen: false).bangle;
     if (bangle != curBangle) {

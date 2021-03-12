@@ -4,7 +4,6 @@ export 'qr_code/qr_code_util.dart';
 export 'navigator/custom_navigator.dart';
 export 'verification/verify_phone.dart';
 export 'toast/toast.dart';
-export 'local_auth/local_auth.dart';
 export 'pick_image/pick_image.dart';
 export 'device_info/device_info.dart';
 export 'qr_code/show_qr_code.dart';

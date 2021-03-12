@@ -11,10 +11,8 @@ void main() async {
   CloudConfig.init().then((value) async {
     // 获取医护人员信息
     Doctor doctor = await CloudBaseUtil().getDoctor();
-    runApp(MyApp(
-      user: doctor,
-    ));
-  }).catchError((error){
+    runApp(MyApp(user: doctor));
+  }).catchError((error) {
     runApp(MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primaryColor: Colors.indigo),

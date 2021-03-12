@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:cyr/pages/patients_page/finished_patients_list.dart';
 import 'package:cyr/providers/message/message_provider.dart';
 import 'package:cyr/providers/patient/patient_provider.dart';
-import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/utils/navigator/custom_navigator.dart';
@@ -190,27 +189,28 @@ class _NewPatientsState extends State<NewPatients> {
         icon: Icons.menu,
         color: Colors.green,
         trailling: FutureBuilder(
-          future: Provider.of<PatientProvider>(context, listen: false)
-          .getPatientsCount(),
-          builder: (context, snapshot) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              child: Consumer<PatientProvider>(
-                builder: (context, provider, child) {
-                  if(provider.patientCount != null){
-                    return Text("${provider.patientCount}", style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold
-                    ),);
-                  }else{
-                    return CupertinoActivityIndicator();
-                  }
-                },
-              ),
-            );
-          }
-        ),
+            future: Provider.of<PatientProvider>(context, listen: false)
+                .getPatientsCount(),
+            builder: (context, snapshot) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Consumer<PatientProvider>(
+                  builder: (context, provider, child) {
+                    if (provider.patientCount != null) {
+                      return Text(
+                        "${provider.patientCount}",
+                        style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      );
+                    } else {
+                      return CupertinoActivityIndicator();
+                    }
+                  },
+                ),
+              );
+            }),
       ),
     );
   }

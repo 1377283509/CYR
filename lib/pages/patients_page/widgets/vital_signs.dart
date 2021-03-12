@@ -106,7 +106,7 @@ class VitalSignsWidget extends StatelessWidget {
                   if (!checkPermission(context, doctor.department)) return;
                   // 手环二维码校验
                   // 获取患者手环id
-                  String bangleId = await scan();
+                  String bangleId = await scan(context);
                   // 获取当前患者手环id
                   String curBangleId =
                       Provider.of<VisitRecordProvider>(context, listen: false)

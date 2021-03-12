@@ -51,7 +51,6 @@ class PatientCard extends StatelessWidget {
               color: Colors.white,
             ),
             onPressed: () async {
-              showQrCode(context, patient.id);
             },
           ),
           const SizedBox(

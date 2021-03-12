@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 class QrScanButton extends StatelessWidget {
   _scan(BuildContext context) async {
-    String res = await scan();
+    String res = await scan(context);
     if (res != null) {
       navigateTo(
         context,

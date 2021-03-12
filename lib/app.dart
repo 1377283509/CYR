@@ -13,7 +13,7 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 
 class MyApp extends StatefulWidget {
   final Doctor user;
-  MyApp({@required this.user});
+  MyApp({this.user});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (BuildContext context) => DoctorProvider(widget.user),
+          create: (BuildContext context) => DoctorProvider(),
         ),
         ChangeNotifierProvider(
           create: (BuildContext context) => PatientProvider(),

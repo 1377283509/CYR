@@ -52,7 +52,7 @@ class SecondLineDoctor extends StatelessWidget {
                                   return;
                               }
                               // 扫码验证身份
-                              String bangle = await scan();
+                              String bangle = await scan(context);
                               String curBangle = Provider.of<VisitRecordProvider>(context, listen: false).bangle;
                               if(bangle != curBangle) {
                                 showToast("患者身份不匹配", context);
