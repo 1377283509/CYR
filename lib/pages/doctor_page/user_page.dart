@@ -68,22 +68,4 @@ class UserPageBody extends StatelessWidget {
           ],
         ));
   }
-
-  // 历史记录
-  Widget _buildHistoryCard() {
-    return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 12),
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(12)),
-        child: ListTile(
-            leading: Icon(
-              Icons.history,
-              color: Colors.grey,
-            ),
-            title: Text("历史记录"),
-            trailing: Icon(
-              Icons.keyboard_arrow_right,
-              color: Colors.grey,
-            )));
-  }
 }

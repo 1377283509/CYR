@@ -1,3 +1,4 @@
+import 'package:cyr/models/doctor/doctor_model.dart';
 import 'package:cyr/pages/input_page/input_nihss_page.dart';
 import 'package:cyr/pages/patients_page/widgets/bool_card.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
@@ -72,9 +73,9 @@ class EVTCard extends StatelessWidget {
     String secondDoctorId =
         Provider.of<SecondLineDoctorProvider>(context, listen: false)
             .secondDoctorId;
-    // 我的id
-    String id = Provider.of<DoctorProvider>(context, listen: false).user.idCard;
-    return id == secondDoctorId;
+
+    Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
+    return doctor.idCard == secondDoctorId || doctor.hasRecordOwnership;
   }
 
   Future<bool> checkbangle(BuildContext context) async {
@@ -391,9 +392,9 @@ class EVTCard extends StatelessWidget {
         value: provider.mTICI,
         onTap: () async {
           if (!checkPermission(context)) {
-              showToast("二线医生权限", context);
-              return;
-            }
+            showToast("二线医生权限", context);
+            return;
+          }
           List<String> res = await showModalBottomSheet(
               context: context,
               builder: (BuildContext context) {

@@ -1,3 +1,4 @@
+import 'package:cyr/models/doctor/doctor_model.dart';
 import 'package:cyr/providers/doctor/doctor_provider.dart';
 import 'package:cyr/utils/toast/toast.dart';
 import 'package:flutter/material.dart';
@@ -25,11 +26,11 @@ class TIAConfirmCard extends StatelessWidget {
                 return NoExpansionCard(
                   title: "短暂性脑出血发作",
                   onTap: () async {
-                    String department =
+                    Doctor doctor =
                         Provider.of<DoctorProvider>(context, listen: false)
-                            .user
-                            .department;
-                    if (!permissionHandler(PermissionType.CI, department)) {
+                            .user;
+                    if (!permissionHandler(PermissionType.CI, doctor.department,
+                        doctor.hasRecordOwnership)) {
                       showToast("神经内科权限", context);
                       return;
                     }

@@ -32,14 +32,15 @@ class BindDoctor extends StatelessWidget {
                           Doctor doctor = Provider.of<DoctorProvider>(context,
                                   listen: false)
                               .user;
-                          if(!permissionHandler(PermissionType.DOCTOR, doctor.department)){
+                          if (!permissionHandler(PermissionType.DOCTOR,
+                              doctor.department, doctor.hasRecordOwnership)) {
                             showToast("急诊科权限", context);
                             return;
                           }
                           bool res = await showConfirmDialog(
-                              context,
-                              "主治医生绑定确认",
-                              content: "姓名: ${doctor.name} \n职工号: ${doctor.idCard}");
+                              context, "主治医生绑定确认",
+                              content:
+                                  "姓名: ${doctor.name} \n职工号: ${doctor.idCard}");
                           if (res) {
                             await provider.setDoctor(
                                 context, doctor.idCard, doctor.name);

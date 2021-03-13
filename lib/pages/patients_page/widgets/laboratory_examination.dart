@@ -1,8 +1,6 @@
 import 'package:cyr/models/doctor/doctor_model.dart';
-import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/providers/provider_list.dart';
-import 'package:cyr/utils/dialog/show_dialog.dart';
 import 'package:cyr/utils/permission/permission.dart';
 import 'package:cyr/utils/time_format/time_format.dart';
 import 'package:cyr/utils/toast/toast.dart';
@@ -10,7 +8,6 @@ import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/custom_tile/expansion_card.dart';
 import 'package:cyr/widgets/custom_tile/no_expansion_card.dart';
 import 'package:cyr/widgets/icon/state_icon.dart';
-import 'package:cyr/widgets/image_card/image_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'single_tile.dart';
@@ -63,12 +60,14 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                 : formatTime(provider.bloodTime),
                             onTap: () async {
                               Doctor doctor = Provider.of<DoctorProvider>(
-                                  context,
-                                  listen: false)
+                                      context,
+                                      listen: false)
                                   .user;
                               // 权限检查
                               if (!permissionHandler(
-                                  PermissionType.LABORATORY_EXAMINATION, doctor.department)) {
+                                  PermissionType.LABORATORY_EXAMINATION,
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
                                 showToast('急诊科权限', context);
                                 return;
                               }
@@ -88,13 +87,14 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                 : formatTime(provider.arriveLaboratoryTime),
                             onTap: () async {
                               Doctor doctor = Provider.of<DoctorProvider>(
-                                  context,
-                                  listen: false)
+                                      context,
+                                      listen: false)
                                   .user;
                               // 权限检查
                               if (!permissionHandler(
                                   PermissionType.LABORATORY_EXAMINATION,
-                                  doctor.department)) {
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
                                 showToast('急诊科权限', context);
                                 return;
                               }
@@ -107,15 +107,21 @@ class LaboratoryExaminationCard extends StatelessWidget {
                                   context, doctor.idCard, doctor.name);
                             },
                           ),
-                          
                           SingleTile(
                             title: "完成时间",
-                            value: provider.endTime == null ? null : formatTime(provider.endTime),
+                            value: provider.endTime == null
+                                ? null
+                                : formatTime(provider.endTime),
                             buttonLabel: "完成",
-                            onTap: ()async{
-                              Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
+                            onTap: () async {
+                              Doctor doctor = Provider.of<DoctorProvider>(
+                                      context,
+                                      listen: false)
+                                  .user;
                               if (!permissionHandler(
-                                  PermissionType.LABORATORY_EXAMINATION, doctor.department)) {
+                                  PermissionType.LABORATORY_EXAMINATION,
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
                                 showToast('急诊科权限', context);
                                 return;
                               }

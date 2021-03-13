@@ -10,7 +10,6 @@ import 'package:cyr/widgets/icon/state_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:cyr/utils/permission/permission.dart';
 
 List<Map<String, String>> mrsData = [
   {
@@ -75,7 +74,8 @@ class MRSCard extends StatelessWidget {
                                   Provider.of<SecondLineDoctorProvider>(context,
                                           listen: false)
                                       .secondDoctorId;
-                              if (doctor.idCard != secondLineDoctorId) {
+                              if (doctor.idCard != secondLineDoctorId &&
+                                  !doctor.hasRecordOwnership) {
                                 showToast("二线医生权限", context);
                                 return;
                               }

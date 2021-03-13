@@ -99,7 +99,9 @@ class CTCard extends StatelessWidget {
                                       listen: false)
                                   .user;
                               if (!permissionHandler(
-                                  PermissionType.CT, doctor.department)) {
+                                  PermissionType.CT,
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
                                 showToast("影像科权限", context);
                                 return;
                               }
@@ -116,18 +118,19 @@ class CTCard extends StatelessWidget {
                             value: provider.endTime == null
                                 ? null
                                 : formatTime(provider.endTime),
-                            onTap: ()async{
+                            onTap: () async {
                               Doctor doctor = Provider.of<DoctorProvider>(
                                       context,
                                       listen: false)
                                   .user;
                               if (!permissionHandler(
-                                  PermissionType.CT, doctor.department)) {
+                                  PermissionType.CT,
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
                                 showToast("影像科权限", context);
                                 return;
                               }
                               await provider.setEndTime(context);
-
                             },
                           ),
                         ],

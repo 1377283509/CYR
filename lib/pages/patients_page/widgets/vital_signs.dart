@@ -76,8 +76,9 @@ class VitalSignsWidget extends StatelessWidget {
     return null;
   }
 
-  bool checkPermission(BuildContext context, String department) {
-    if (!permissionHandler(PermissionType.VITAL_SIGNS, department)) {
+  bool checkPermission(BuildContext context, Doctor doctor) {
+    if (!permissionHandler(PermissionType.VITAL_SIGNS, doctor.department,
+        doctor.hasRecordOwnership)) {
       showToast("急诊科权限", context);
       return false;
     }
@@ -86,8 +87,7 @@ class VitalSignsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Doctor doctor =
-                      Provider.of<DoctorProvider>(context, listen: false).user;
+    Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
     return Container(
       child: Consumer<VitalSignsProvider>(
         builder: (_, provider, __) {
@@ -103,7 +103,7 @@ class VitalSignsWidget extends StatelessWidget {
                 buttonLabel: "开始",
                 onTap: () async {
                   // 校验权限
-                  if (!checkPermission(context, doctor.department)) return;
+                  if (!checkPermission(context, doctor)) return;
                   // 手环二维码校验
                   // 获取患者手环id
                   String bangleId = await scan(context);
@@ -128,8 +128,8 @@ class VitalSignsWidget extends StatelessWidget {
                     ? provider.bloodSugar
                     : "${provider.bloodSugar}",
                 onTap: () async {
-                 // 校验权限
-                  if (!checkPermission(context, doctor.department)) return;
+                  // 校验权限
+                  if (!checkPermission(context, doctor)) return;
                   String res = await getInputValue(
                       context, "血糖", "单位：mmol/L", TextInputType.number);
                   // 如果有输入
@@ -145,7 +145,7 @@ class VitalSignsWidget extends StatelessWidget {
                     : "${provider.bloodPressure}",
                 onTap: () async {
                   // 校验权限
-                  if (!checkPermission(context, doctor.department)) return;
+                  if (!checkPermission(context, doctor)) return;
                   String res = await getInputValue(
                       context, "血压", "收缩压/舒张压 mmHg", TextInputType.number);
                   // 如果有输入
@@ -161,7 +161,7 @@ class VitalSignsWidget extends StatelessWidget {
                     : "${provider.weight}",
                 onTap: () async {
                   // 校验权限
-                  if (!checkPermission(context, doctor.department)) return;
+                  if (!checkPermission(context, doctor)) return;
                   String res = await getInputValue(
                       context, "体重", "单位：kg", TextInputType.number);
                   if (res != null) {
@@ -176,7 +176,7 @@ class VitalSignsWidget extends StatelessWidget {
                     : formatTime(vitalSigns.endTime),
                 onTap: () async {
                   // 校验权限
-                  if (!checkPermission(context, doctor.department)) return;
+                  if (!checkPermission(context, doctor)) return;
                   await provider.setEndTime(context);
                 },
                 buttonLabel: "完成",

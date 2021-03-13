@@ -1,5 +1,4 @@
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/pages/image_page/upload_image.dart';
 import 'package:cyr/pages/patients_page/widgets/left_icon.dart';
 import 'package:cyr/pages/patients_page/widgets/single_tile.dart';
 import 'package:cyr/providers/doctor/doctor_provider.dart';
@@ -15,8 +14,9 @@ import 'package:provider/provider.dart';
 
 class EctCard extends StatelessWidget {
   // 权限检查
-  bool checkPermission(BuildContext context, String department) {
-    if (!permissionHandler(PermissionType.ECG,department)) {
+  bool checkPermission(BuildContext context, Doctor doctor) {
+    if (!permissionHandler(
+        PermissionType.ECG, doctor.department, doctor.hasRecordOwnership)) {
       showToast("急诊科权限", context);
       return false;
     }
@@ -55,7 +55,7 @@ class EctCard extends StatelessWidget {
                               : formatTime(provider.ecgModel.startTime),
                           buttonLabel: "开始",
                           onTap: () async {
-                            if(!checkPermission(context, doctor.department)) return;
+                            if (!checkPermission(context, doctor)) return;
                             // 扫描手环Id
                             String bangleId = await scan(context);
                             // 获取患者手环Id
@@ -82,15 +82,14 @@ class EctCard extends StatelessWidget {
                               : formatTime(provider.ecgModel.endTime),
                           onTap: () async {
                             // 检查权限
-                            if(!checkPermission(context, doctor.department)) return;
+                            if (!checkPermission(context, doctor)) return;
                             // 是否开始
-                            if(provider.ecgModel?.startTime == null ) {
+                            if (provider.ecgModel?.startTime == null) {
                               showToast("还未开始", context);
                               return;
                             }
                             // 更新完成时间
                             await provider.setEndTime(context);
-
                           },
                         ),
                       ],

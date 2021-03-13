@@ -1,8 +1,5 @@
-import 'package:cyr/models/model_list.dart';
 import 'package:cyr/pages/home_page/home_page.dart';
-import 'package:cyr/providers/doctor/doctor_provider.dart';
 import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
-import 'package:cyr/utils/toast/toast.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

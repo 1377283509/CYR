@@ -21,17 +21,19 @@ enum PermissionType {
 }
 
 // 科室 权限表
-Map<PermissionType, String> departmentPermission = {
-  PermissionType.BANGLE: "急救中心",
-  PermissionType.VISIT_RESULT: "急诊科",
-  PermissionType.DOCTOR: "急诊科",
-  PermissionType.VITAL_SIGNS: "急诊科",
-  PermissionType.ECG: "急诊科",
-  PermissionType.LABORATORY_EXAMINATION: "急诊科",
-  PermissionType.CT: "影像科",
-  PermissionType.SECOND_LINE_DOCTOR: "神经内科",
-  PermissionType.ASPECT: "神经内科",
-  PermissionType.CI: "神经内科"
+Map<PermissionType, List<String>> departmentPermission = {
+  PermissionType.BANGLE: ["急救中心"],
+  PermissionType.VISIT_RESULT: ["急诊科"],
+  PermissionType.DOCTOR: ["急诊科"],
+  PermissionType.VITAL_SIGNS: ["急诊科"],
+  PermissionType.ECG: ["急诊科"],
+  PermissionType.LABORATORY_EXAMINATION: ["急诊科"],
+  PermissionType.CT: ["影像科"],
+  PermissionType.SECOND_LINE_DOCTOR: ["神经内科"],
+  PermissionType.ASPECT: ["神经内科"],
+  PermissionType.CI: ["神经内科"]
 };
 
-bool permissionHandler(PermissionType type, String department) => departmentPermission[type] == department;
+bool permissionHandler(
+        PermissionType type, String department, bool hasRecordOwnership) =>
+    departmentPermission[type].contains(department) || hasRecordOwnership;

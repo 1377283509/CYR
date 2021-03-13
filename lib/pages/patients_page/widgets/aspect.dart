@@ -70,7 +70,7 @@ class AspectCard extends StatelessWidget {
                                               context,
                                               listen: false)
                                           .secondDoctorId;
-                                  if (doctor.idCard != secondLineDoctorId) {
+                                  if (doctor.idCard != secondLineDoctorId && !doctor.hasRecordOwnership) {
                                     showToast("二线医生权限", context);
                                     return;
                                   }

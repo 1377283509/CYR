@@ -35,7 +35,10 @@ class SecondLineDoctor extends StatelessWidget {
                           // 有通知时间，说明已经通知
                           SingleTile(
                             title: "通知时间",
-                            value: formatTime(Provider.of<VisitRecordProvider>(context, listen: true).createTime),
+                            value: formatTime(Provider.of<VisitRecordProvider>(
+                                    context,
+                                    listen: true)
+                                .createTime),
                           ),
 
                           // 到达时间
@@ -46,15 +49,24 @@ class SecondLineDoctor extends StatelessWidget {
                                 : formatTime(provider.arriveTime),
                             buttonLabel: "到达",
                             onTap: () async {
-                              Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user; 
-                              if(!permissionHandler(PermissionType.SECOND_LINE_DOCTOR, doctor.department)){
-                                  showToast("神经内科权限", context);
-                                  return;
+                              Doctor doctor = Provider.of<DoctorProvider>(
+                                      context,
+                                      listen: false)
+                                  .user;
+                              if (!permissionHandler(
+                                  PermissionType.SECOND_LINE_DOCTOR,
+                                  doctor.department,
+                                  doctor.hasRecordOwnership)) {
+                                showToast("神经内科权限", context);
+                                return;
                               }
                               // 扫码验证身份
                               String bangle = await scan(context);
-                              String curBangle = Provider.of<VisitRecordProvider>(context, listen: false).bangle;
-                              if(bangle != curBangle) {
+                              String curBangle =
+                                  Provider.of<VisitRecordProvider>(context,
+                                          listen: false)
+                                      .bangle;
+                              if (bangle != curBangle) {
                                 showToast("患者身份不匹配", context);
                                 return;
                               }

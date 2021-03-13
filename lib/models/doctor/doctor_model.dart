@@ -8,6 +8,7 @@ class Doctor {
   String job;
   String department;
   String phone;
+  bool hasRecordOwnership;
 
   Doctor(
       {this.name,
@@ -18,10 +19,12 @@ class Doctor {
       this.department,
       this.phone,
       this.id,
+      this.hasRecordOwnership,
       this.idCard});
 
   Doctor.fromJson(Map<String, dynamic> json) {
     id = json["_id"];
+    hasRecordOwnership = json["hasRecordOwnership"] as bool ?? false;
     idCard = json["idCard"] ?? "";
     name = json["name"] ?? "";
     age = json["age"] ?? 0;

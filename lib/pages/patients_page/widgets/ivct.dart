@@ -1,3 +1,4 @@
+import 'package:cyr/models/doctor/doctor_model.dart';
 import 'package:cyr/models/record/risk_assessment.dart';
 import 'package:cyr/pages/input_page/input_medicine_page.dart';
 import 'package:cyr/pages/input_page/input_nihss_page.dart';
@@ -17,13 +18,12 @@ class IVCTCard extends StatelessWidget {
   // 权限检查: 判断当前用户是否是责任医生
   bool checkPermission(BuildContext context) {
     // 当前用户
-    String doctorId =
-        Provider.of<DoctorProvider>(context, listen: false).user.idCard;
+    Doctor doctor = Provider.of<DoctorProvider>(context, listen: false).user;
     // 二线医生
     String desDoctorId =
         Provider.of<SecondLineDoctorProvider>(context, listen: false)
             .secondDoctorId;
-    if(doctorId == desDoctorId){
+    if (doctor.idCard == desDoctorId || doctor.hasRecordOwnership) {
       return true;
     }
     showToast("二线医生权限", context);
@@ -58,7 +58,7 @@ class IVCTCard extends StatelessWidget {
                           // 风险评估
                           InkWell(
                             onTap: () async {
-                              if (!checkPermission(context))  return;
+                              if (!checkPermission(context)) return;
                               List<RiskAssessmentModel> res = await navigateTo(
                                   context,
                                   RiskAssessmentPage(provider.riskAssessment));

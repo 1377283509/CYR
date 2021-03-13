@@ -1,5 +1,4 @@
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/pages/doctor_page/doctor_list_page.dart';
 import 'package:cyr/pages/input_page/select_input_page.dart';
 import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/providers/patient/patient_provider.dart';
@@ -54,10 +53,6 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
   String _pastHistory;
   DateTime _diseaseTime;
   WayToHospital _way;
-
-  String _doctorId;
-  String _doctorName;
-  String _bangle;
 
   bool _loading;
 
@@ -119,7 +114,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             child: CustomButton(
               loading: _loading,
               onTap: () async {
-                if(_loading == true){
+                if (_loading == true) {
                   return;
                 }
                 setState(() {
