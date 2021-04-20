@@ -195,9 +195,11 @@ class CenterItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16),
             child: Text(
-              centerItemModel.time == -1?" — ":"${centerItemModel.time}",
+              centerItemModel.time == -1 ? " — " : "${centerItemModel.time}",
               style: TextStyle(
-                  color: centerItemModel.time > centerItemModel.referTime?Colors.red:Colors.green,
+                  color: centerItemModel.time > centerItemModel.referTime
+                      ? Colors.red
+                      : Colors.green,
                   fontWeight: FontWeight.bold,
                   fontSize: 18),
             ),
@@ -363,7 +365,7 @@ class TimePointItem extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              time == -1?" — ":"$time",
+              time == -1 ? " — " : "$time",
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,

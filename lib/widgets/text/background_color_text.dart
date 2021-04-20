@@ -15,11 +15,13 @@ class ColorText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-      decoration: BoxDecoration(color: backgroundColor.withOpacity(0.1), borderRadius: BorderRadius.circular(6)),
-      child: Text(text??"", style: textStyle??TextStyle(
-        color: backgroundColor,
-        fontSize: 14
-      ),),
+      decoration: BoxDecoration(
+          color: backgroundColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(6)),
+      child: Text(
+        text ?? "",
+        style: textStyle ?? TextStyle(color: backgroundColor, fontSize: 14),
+      ),
     );
   }
 }

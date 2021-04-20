@@ -11,6 +11,7 @@ class SecondLineDoctorProvider extends ChangeNotifier {
 
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();
   SecondLineDoctorModel _secondLineDoctor;
+  SecondLineDoctorModel get secondlineDoctor => _secondLineDoctor;
 
   List<Doctor> _secondLineDoctors = [];
   List<Doctor> get secondLineDoctors => _secondLineDoctors;

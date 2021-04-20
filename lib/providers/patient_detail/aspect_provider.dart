@@ -10,6 +10,7 @@ class AspectProvider extends ChangeNotifier {
   CloudBaseUtil _cloudBaseUtil = CloudBaseUtil();
 
   AspectModel _aspectModel;
+  AspectModel get aspectModel => _aspectModel;
 
   bool get state => _aspectModel?.state ?? false;
   String get result => _aspectModel?.result;

@@ -36,6 +36,7 @@ class AppInfoCard extends StatefulWidget {
 
 class _AppInfoCardState extends State<AppInfoCard> {
   bool isloading = false;
+  String versionInfo = "最新版";
 
   // 获取版本信息
   Future<String> _getPackageInfo() async {
@@ -58,9 +59,9 @@ class _AppInfoCardState extends State<AppInfoCard> {
       // 判断版本是否一样
       // 版本信息一样
       if (versionModel.version == curVersion) {
-        showToast("已是最新版", context);
         setState(() {
           isloading = false;
+          versionInfo = "最新版";
         });
         return;
       }
@@ -156,13 +157,9 @@ class _AppInfoCardState extends State<AppInfoCard> {
     CloudBaseUtil cloudBaseUtil = CloudBaseUtil();
     var res = await cloudBaseUtil.db
         .collection("versions")
-        .orderBy("date", "desc")
-        .where({"platform": platform})
-        .limit(1)
-        .get();
+        .where({"platform": platform}).get();
     // 无版本信息
     if (res.data == null || res.data.length == 0) {
-      showToast("无版本信息", context);
       return null;
     }
     // 有版本信息

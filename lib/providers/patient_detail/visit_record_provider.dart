@@ -1,6 +1,5 @@
 // 就诊记录
 import 'dart:async';
-
 import 'package:cyr/models/model_list.dart';
 import 'package:cyr/utils/cloudbase/cloudbase.dart';
 import 'package:cyr/utils/toast/toast.dart';
@@ -12,6 +11,9 @@ class VisitRecordProvider extends ChangeNotifier {
 
   VisitRecordModel _visitRecordModel;
   VisitRecordModel get visitRecordModel => _visitRecordModel;
+
+  bool _loading = false;
+  bool get loading => _loading;
 
   int _patientsCount;
   int get patientCount => _patientsCount;
@@ -47,6 +49,9 @@ class VisitRecordProvider extends ChangeNotifier {
   // 获取就诊记录详情
   Future<bool> getVisitRecord(
       BuildContext context, String id, String bangle) async {
+    if (_visitRecordModel != null) {
+      return true;
+    }
     try {
       CloudBaseResponse res =
           await _cloudBaseUtil.callFunction("visit-record", {
@@ -56,6 +61,7 @@ class VisitRecordProvider extends ChangeNotifier {
       });
       if (res.data["code"] == 1) {
         _visitRecordModel = VisitRecordModel.fromJson(res.data["data"]);
+        _loading = false;
         notifyListeners();
         return true;
       } else {
@@ -244,4 +250,7 @@ class VisitRecordProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  // 获取
+
 }

@@ -5,7 +5,6 @@ import 'package:cyr/pages/patients_page/widgets/ecg.dart';
 import 'package:cyr/pages/patients_page/widgets/laboratory_examination.dart';
 import 'package:cyr/pages/patients_page/widgets/second_line_doctor.dart';
 import 'package:cyr/providers/patient_detail/evt_provider.dart';
-import 'package:cyr/providers/patient_detail/patient_detail_provider.dart';
 import 'package:cyr/providers/patient_detail/quility_control_provider.dart';
 import 'package:cyr/providers/patient_detail/visit_record_provider.dart';
 import 'package:cyr/providers/provider_list.dart';
@@ -40,9 +39,6 @@ class PatientDetailPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(
-          create: (BuildContext context) => PatientDetailProvider(),
-        ),
         ChangeNotifierProvider(
           create: (BuildContext context) => FilesProvider(),
         ),
@@ -140,10 +136,7 @@ class _PatientDetailPageBodyState extends State<PatientDetailPageBody>
             builder: (_, provider, __) {
               return provider.patientName == null
                   ? CupertinoActivityIndicator()
-                  : Text(
-                      provider.patientName,
-                      style: Theme.of(context).textTheme.headline1,
-                    );
+                  : Text(provider.patientName);
             },
           ),
           centerTitle: true,

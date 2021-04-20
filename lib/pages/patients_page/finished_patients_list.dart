@@ -1,5 +1,5 @@
 import 'package:cyr/models/model_list.dart';
-import 'package:cyr/pages/patients_page/patient_detail.dart';
+import 'package:cyr/pages/page_list.dart';
 import 'package:cyr/utils/util_list.dart';
 import 'package:cyr/widgets/widget_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -77,7 +77,11 @@ class PatientCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        navigateTo(context, PatientDetailPage(id: patient.id,));
+        navigateTo(
+            context,
+            FlowDetailPage(
+              id: patient.id,
+            ));
       },
       child: Card(
         color: Colors.white,
@@ -113,8 +117,7 @@ class PatientCard extends StatelessWidget {
               Icons.local_hotel,
               color: Colors.white,
             ),
-            onPressed: () {
-            },
+            onPressed: () {},
           ),
           const SizedBox(
             width: 12,
@@ -195,7 +198,3 @@ class PatientCard extends StatelessWidget {
     );
   }
 }
-
-
-
-

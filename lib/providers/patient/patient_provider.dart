@@ -13,13 +13,12 @@ class PatientProvider extends ChangeNotifier {
   List<Patient> _patients = [];
   List<Patient> get patients => _patients;
 
-    int _patientsCount;
+  int _patientsCount;
   int get patientCount => _patientsCount;
 
   // 完成的患者
   List<Patient> _finished = [];
   List<Patient> get finished => _finished;
-
 
   // 获取所有患者
   Future<void> getAllPatients(BuildContext context) async {
@@ -30,7 +29,11 @@ class PatientProvider extends ChangeNotifier {
       });
       if (res.data["code"] == 1) {
         List<Patient> list = [];
-        res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
+        res.data["data"].forEach((e) {
+          if (e["user"]?.length != 0) {
+            list.add(Patient.fromJson(e));
+          }
+        });
         _patients = list;
       } else {
         showToast(res.data["data"], context);
@@ -40,7 +43,7 @@ class PatientProvider extends ChangeNotifier {
     }
   }
 
-   Future<void> getAllFinishedPatients(BuildContext context) async {
+  Future<void> getAllFinishedPatients(BuildContext context) async {
     try {
       CloudBaseResponse res =
           await _cloudBaseUtil.callFunction("visit-record", {
@@ -48,7 +51,11 @@ class PatientProvider extends ChangeNotifier {
       });
       if (res.data["code"] == 1) {
         List<Patient> list = [];
-        res.data["data"].forEach((e) => {list.add(Patient.fromJson(e))});
+        res.data["data"].forEach((e) {
+          if (e["user"]?.length != 0) {
+            list.add(Patient.fromJson(e));
+          }
+        });
         _finished = list;
       } else {
         showToast(res.data["data"], context);
@@ -59,21 +66,17 @@ class PatientProvider extends ChangeNotifier {
   }
 
   // 获取患者数
-  Future<void> getPatientsCount()async{
+  Future<void> getPatientsCount() async {
     print("获取患者");
-    try{
-      CloudBaseResponse res = await _cloudBaseUtil.callFunction("visit-record", {
-        "\$url": "getProcessPatientsCount"
-      });
-      if(res.data["code"] == 1){
+    try {
+      CloudBaseResponse res = await _cloudBaseUtil
+          .callFunction("visit-record", {"\$url": "getProcessPatientsCount"});
+      if (res.data["code"] == 1) {
         _patientsCount = res.data["data"] as int;
         notifyListeners();
       }
-    }catch(error){
-    }
+    } catch (error) {}
   }
-
-
 
   // 添加患者
   Future<void> createPatient(
@@ -115,7 +118,11 @@ class PatientProvider extends ChangeNotifier {
           "content": "有新的患者，请各部门提前做好准备",
           "patientName": idCard.name
         });
-        navigateReplacement(context, ResultPage(content: "创建成功",));
+        navigateReplacement(
+            context,
+            ResultPage(
+              content: "创建成功",
+            ));
       } else {
         showAlertDialog(context, addRes.data["data"]);
       }

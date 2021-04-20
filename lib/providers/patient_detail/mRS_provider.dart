@@ -3,7 +3,7 @@ import 'package:cyr/utils/util_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:cloudbase_core/cloudbase_core.dart';
 
-class MRSProvider extends ChangeNotifier{
+class MRSProvider extends ChangeNotifier {
   final String visitRecordId;
   MRSProvider(this.visitRecordId);
 
@@ -15,7 +15,7 @@ class MRSProvider extends ChangeNotifier{
   String get result => _mrsModel?.result;
   DateTime get endTime => _mrsModel?.endTime;
 
-  Future<void> getNIHSS(BuildContext context) async {
+  Future<void> getMRS(BuildContext context) async {
     try {
       CloudBaseResponse res = await _cloudBaseUtil.callFunction("mrs", {
         "\$url": "getByVisitRecordId",
@@ -33,8 +33,8 @@ class MRSProvider extends ChangeNotifier{
     }
   }
 
-  Future<void> setResult(
-      BuildContext context,DateTime startTime, String doctorId, String doctorName, String result) async {
+  Future<void> setResult(BuildContext context, DateTime startTime,
+      String doctorId, String doctorName, String result) async {
     _mrsModel.startTime = startTime;
     _mrsModel.doctorId = doctorId;
     _mrsModel.endTime = DateTime.now();
@@ -51,7 +51,7 @@ class MRSProvider extends ChangeNotifier{
         "doctorName": _mrsModel.doctorName,
         "result": result,
       });
-      if(res.data["code"] != 1){
+      if (res.data["code"] != 1) {
         showToast(res.data["data"], context);
         _mrsModel.startTime = null;
         _mrsModel.doctorId = null;

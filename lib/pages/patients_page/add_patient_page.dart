@@ -22,10 +22,7 @@ class AddPatientPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       appBar: AppBar(
-        title: Text(
-          "添加患者",
-          style: Theme.of(context).textTheme.headline1,
-        ),
+        title: Text("添加患者"),
       ),
       body: AddPatientPageBody(),
     );
@@ -82,14 +79,6 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
           const BlankSpace(),
           _buildOtherInfoCard(),
           const BlankSpace(),
-          // Container(
-          //   alignment: Alignment.centerLeft,
-          //   padding: const EdgeInsets.symmetric(horizontal: 12),
-          //   child: const Text(
-          //     " * 注：主治医生、手环可在患者详情页进行绑定",
-          //     style: TextStyle(color: Colors.white, fontSize: 12),
-          //   ),
-          // ),
           const BlankSpace(),
           _buildButton(),
           const BlankSpace(),
@@ -372,12 +361,21 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
     return Text.rich(
       TextSpan(
         text: title,
+        style: TextStyle(fontSize: 16),
         children: [
           isRequired
               ? TextSpan(text: "*", style: const TextStyle(color: Colors.red))
               : TextSpan()
         ],
       ),
+    );
+  }
+
+  // value
+  _buildValue(String value) {
+    return Text(
+      value ?? _defaultValue,
+      style: const TextStyle(fontSize: 16),
     );
   }
 
@@ -462,9 +460,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: CustomListTile(
               leading: _buildLabel("  姓    名  ", true),
-              title: Text(
-                _idCard.name ?? _defaultValue,
-              ),
+              title: _buildValue(_idCard.name),
               trailing: const Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,
@@ -511,9 +507,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: CustomListTile(
               leading: _buildLabel("  性    别  ", true),
-              title: Text(
-                _idCard.gender ?? _defaultValue,
-              ),
+              title: _buildValue(_idCard.gender),
               trailing: const Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,
@@ -542,7 +536,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: CustomListTile(
               leading: _buildLabel("  年    龄  ", true),
-              title: Text(
+              title: _buildValue(
                 _idCard.age == null
                     ? _defaultValue
                     : _idCard.age.toString() + " 岁",
@@ -575,10 +569,8 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: CustomListTile(
-              leading: _buildLabel("身份证号", true),
-              title: Text(
-                _idCard.id ?? _defaultValue,
-              ),
+              leading: _buildLabel("身份证号 ", true),
+              title: _buildValue(_idCard.id),
               trailing: const Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,
@@ -608,9 +600,7 @@ class _AddPatientPageBodyState extends State<AddPatientPageBody> {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: CustomListTile(
               leading: _buildLabel("家庭住址  ", false),
-              title: Text(
-                _idCard.address ?? _defaultValue,
-              ),
+              title: _buildValue(_idCard.address),
               trailing: const Icon(
                 Icons.keyboard_arrow_right,
                 color: Colors.grey,

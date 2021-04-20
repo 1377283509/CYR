@@ -5,10 +5,8 @@ class CustomListTile extends StatelessWidget {
   final Widget title;
   final Widget trailing;
 
-  const CustomListTile({
-    this.leading, this.title, this.trailing, Key key
-}):super(key: key);
-
+  const CustomListTile({this.leading, this.title, this.trailing, Key key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +17,16 @@ class CustomListTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          leading??Container(),
+          leading ?? Container(),
           Expanded(
-            child: title??Container(),
+              child: Padding(
+            padding: const EdgeInsets.only(left: 12),
+            child: title ?? Container(),
+          )),
+          SizedBox(
+            width: 16,
           ),
-          SizedBox(width: 16,),
-          trailing??Container(),
+          trailing ?? Container(),
         ],
       ),
     );

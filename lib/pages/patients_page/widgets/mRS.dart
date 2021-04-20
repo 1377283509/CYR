@@ -51,7 +51,7 @@ class MRSCard extends StatelessWidget {
             flex: 8,
             child: FutureBuilder(
               future: Provider.of<MRSProvider>(context, listen: false)
-                  .getNIHSS(context),
+                  .getMRS(context),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return Consumer<MRSProvider>(

@@ -13,3 +13,4 @@ export 'result_page/result_page.dart';
 export 'patients_page/patient_detail.dart';
 export 'image_page/image_page.dart';
 export 'image_page/upload_image.dart';
+export 'flow_detail_page/flow_detail_page.dart';

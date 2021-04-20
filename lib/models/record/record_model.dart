@@ -25,6 +25,7 @@ class VisitRecordModel {
   DateTime createTime;
   // 诊断结果
   String result;
+  // 血管内治疗
   bool isEVT;
   // 受否缺血性脑卒中
   bool isCI;
